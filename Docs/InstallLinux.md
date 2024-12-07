@@ -191,5 +191,13 @@ Start the emulator with the device you created
 
 ```bash
 emulator -avd kriklik
+emulator -avd kriklik -no-snapshot-save 
 ```
 
+Delete the avd if necessary
+
+```bash
+ avdmanager delete avd -n kriklik
+
+AVD 'kriklik' deleted.
+```
