@@ -1,5 +1,21 @@
 # Hello world
 
+
+<!-- TOC -->
+
+- [Hello world](#hello-world)
+    - [Compilarea aplicatiei](#compilarea-aplicatiei)
+    - [Instalarea aplicatiei pe terminal](#instalarea-aplicatiei-pe-terminal)
+    - [Structura aplicatiei](#structura-aplicatiei)
+        - [Fisierele sursa](#fisierele-sursa)
+            - [MainActivity.java](#mainactivityjava)
+            - [AndroidManifest.xml](#androidmanifestxml)
+        - [Fisierele care configureaza constructia pachetului](#fisierele-care-configureaza-constructia-pachetului)
+            - [app/build.gradle](#appbuildgradle)
+            - [build.gradle](#buildgradle)
+            - [settings.gradle](#settingsgradle)
+
+<!-- /TOC -->
 Aceasta este cea mai simpla aplicatie Android care afiseaza ceva. 
 
 ![alt text](images/app_screenshot.jpg)
