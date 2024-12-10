@@ -22,7 +22,11 @@
 
 Aceasta aplicatie afiseaza un text "Hello World" si un buton "Quit" care paraseste aplicatia. 
 
+Aspectul imaginii cand se foloseste tema predefinita.
+
 ![alt text](images/screenshot_appcompat_theme.jpg)
+
+Aspectul imaginii cand se foloseste tema de tip material design.
 
 ![alt text](images/screenshot_material_design.jpg)
 
