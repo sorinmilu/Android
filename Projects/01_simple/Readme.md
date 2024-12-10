@@ -22,7 +22,11 @@
 
 Aceasta aplicatie afiseaza un text "Hello World" si un buton "Quit" care paraseste aplicatia. 
 
-![alt text](images/screenshot.png)
+![alt text](images/screenshot_appcompat_theme.jpg)
+
+![alt text](images/screenshot_material_design.jpg)
+
+
 
 Aplicatia adauga un layout specificat intr-un fisier xml (nu construit dinamic). Layoutul este de tip "constrained layout". 
 
