@@ -12,17 +12,12 @@
     - [MainActivity.java](#mainactivityjava)
     - [activity\_main.xml](#activity_mainxml)
     - [AndroidManifest.xml](#androidmanifestxml)
-  - [Fisierele care controleaza constructia proiectului](#fisierele-care-controleaza-constructia-proiectului)
+  - [Fisierele de constructie](#fisierele-de-constructie)
     - [app/build.gradle](#appbuildgradle)
     - [build.gradle](#buildgradle)
     - [settings.gradle](#settingsgradle)
 
-<!-- /TOC -->ild.gradle](#appbuildgradle)
-    - [build.gradle](#buildgradle)
-    - [settings.gradle](#settingsgradle)
-
 <!-- /TOC -->
-
 
 Aplicatia preia glume in format json si le afiseaza in activitatea principala. Exista un buton "Refresh joke" care preia o alta gluma si un buton de "Quit" care paraseste aplicatia. 
 
@@ -302,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
 ```
 
 
-## Fisierele care controleaza constructia proiectului
+## Fisierele de constructie
 
 
 ### app/build.gradle
