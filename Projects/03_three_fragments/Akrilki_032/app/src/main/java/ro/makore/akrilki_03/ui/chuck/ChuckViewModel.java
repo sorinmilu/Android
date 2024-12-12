@@ -39,7 +39,7 @@ public class ChuckViewModel extends ViewModel {
             @Override
             public void onFailure(Call call, IOException e) {
                 // If the request fails, update the LiveData with an error message
-                mText.postValue("Failed to load joke.");
+                mText.postValue("Failed to load joke." + e.getMessage());
             }
 
             @Override
