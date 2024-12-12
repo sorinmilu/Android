@@ -2,7 +2,6 @@
 
 Aplicatia are o activitate principala care contine trei fragmente distincte, fiecare dintre ele preluand o serie de informatii dintr-un anumit API si afisand-ul intr-un TextView. Componentele sunt urmatoarele: 
 
-
 ## Descrierea aplicatiei
 
 ### Chuck Norris facts
@@ -81,6 +80,13 @@ Preia datele de la url-ul: https://www.thecocktaildb.com/api/json/v1/1/random.ph
 ```
 
 Fragmentul preia aceste date, inclusiv imaginea din cheia "strDrinkThumb" si le afiseaza in fragment. 
+
+
+![alt text](images/screenshot_chuck.png)
+
+![alt text](images/screenshot_jokes.png)
+
+![alt text](images/screenshot_cocktails.png)
 
 ## Structura aplicatiei
 
