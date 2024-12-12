@@ -9,6 +9,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 import ro.makore.akrilki_03.databinding.ActivityMainBinding;
 
@@ -22,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        FloatingActionButton fabQuit = findViewById(R.id.fab_quit);
+        fabQuit.setOnClickListener(v -> finishAffinity());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each

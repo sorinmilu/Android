@@ -31,4 +31,16 @@
         app:navGraph="@navigation/mobile_navigation"
         android:paddingBottom="1200dp" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_quit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintBottom_toBottomOf="@id/nav_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="16dp"
+        android:src="@drawable/ic_quit_black_24dp" /> 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
