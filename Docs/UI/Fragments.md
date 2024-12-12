@@ -150,3 +150,45 @@ Apps with collapsible or expandable menus. Description: One fragment (e.g., a me
 
 Apps that use a bottom sheet for navigation or displaying secondary information.
 Description: One fragment displays the main content, and another appears as a collapsible panel at the bottom.
+
+## By type
+
+In Android, views defined in layouts can generally be classified into two broad categories:
+
+### Widgets (UI Elements)
+These are individual, interactive components that users can see and interact with. Examples include:
+- TextView
+- Button
+- ImageView
+- EditText
+- CheckBox
+- RadioButton
+- Switch
+- ProgressBar
+
+Widgets are primarily used to display content or receive user input.
+
+### ViewGroups (Containers)
+These act as containers for organizing and managing other views, including both widgets and other ViewGroups. Examples include:
+
+- LinearLayout
+- RelativeLayout
+- ConstraintLayout
+- FrameLayout
+- ScrollView
+- RecyclerView
+- ListView
+- ViewPager
+
+ViewGroups are responsible for layout and arrangement. They determine the positioning and behavior of their child views.
+
+#### Key Difference
+
+- Widgets: Represent individual UI components.
+- ViewGroups: Represent containers that hold and organize widgets or other ViewGroups.
+
+#### Clarification
+While these two categories cover most cases, it's worth noting that:
+
+All UI components, whether widgets or ViewGroups, inherit from the View class.
+Certain elements, like FragmentContainerView or SurfaceView, might not fit cleanly into these two categories because they serve specialized purposes but are technically still View or ViewGroup.

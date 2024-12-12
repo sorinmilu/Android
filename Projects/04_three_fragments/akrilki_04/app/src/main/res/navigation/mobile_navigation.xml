@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    android:elevation="-8dp"
+    app:startDestination="@+id/navigation_chuck">
+
+    <fragment
+        android:id="@+id/navigation_chuck"
+        android:name="ro.makore.akrilki_04.ui.chuck.ChuckFragment"
+        android:label="Chuck"
+        tools:layout="@layout/fragment_chuck" />
+
+    <fragment
+        android:id="@+id/navigation_joke"
+        android:name="ro.makore.akrilki_04.ui.joke.JokeFragment"
+        android:label="Jokes"
+        tools:layout="@layout/fragment_joke" />
+
+    <fragment
+        android:id="@+id/navigation_cocktail"
+        android:name="ro.makore.akrilki_04.ui.cocktail.CocktailFragment"
+        android:label="Cocktail"
+        tools:layout="@layout/fragment_cocktail" />
+</navigation>
