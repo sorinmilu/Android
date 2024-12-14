@@ -51,3 +51,12 @@ Instalare
     adb shell ps | findstr akrilki 
 
     adb uninstall ro.makore.akrilki_032
+
+# Build, clean
+
+In directorul aplicatiei 
+
+    gradle build
+
+    gradle clean
+

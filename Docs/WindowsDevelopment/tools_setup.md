@@ -5,60 +5,60 @@
 
 - [Dezvoltare Android pe platforma Windows, fara Android Studio](#dezvoltare-android-pe-platforma-windows-fara-android-studio)
 - [Instalrea JAVA DEVELOPMENT KIT](#instalrea-java-development-kit)
-    - [Descarcarea Java SE](#descarcarea-java-se)
-    - [Instalarea Java SE](#instalarea-java-se)
-    - [Setarea PATH-ului](#setarea-path-ului)
-    - [Verificarea existentei comenzilor](#verificarea-existentei-comenzilor)
+  - [Descarcarea Java SE](#descarcarea-java-se)
+  - [Instalarea Java SE](#instalarea-java-se)
+  - [Setarea PATH-ului](#setarea-path-ului)
+  - [Verificarea existentei comenzilor](#verificarea-existentei-comenzilor)
 - [Instalarea Android Command Line Tools](#instalarea-android-command-line-tools)
-    - [Descarcati Android Command-Line Tools](#descarcati-android-command-line-tools)
-    - [Instalarea Android Command-Line Tools](#instalarea-android-command-line-tools)
-    - [Adaugati directorul "bin" al cmdline-tools la PATH](#adaugati-directorul-bin-al-cmdline-tools-la-path)
-    - [Adaugati variabile la environment: ANDROID_HOME si ANDROID_SDK_ROOT](#adaugati-variabile-la-environment-android_home-si-android_sdk_root)
-    - [Instalarea restului instrumentelor](#instalarea-restului-instrumentelor)
-        - [Care sunt restul instrumentelor](#care-sunt-restul-instrumentelor)
-        - [Versiuni Android](#versiuni-android)
-        - [Instalarea propriu-zisa](#instalarea-propriu-zisa)
+  - [Descarcati Android Command-Line Tools](#descarcati-android-command-line-tools)
+  - [Instalarea Android Command-Line Tools](#instalarea-android-command-line-tools-1)
+  - [Adaugati directorul "bin" al cmdline-tools la PATH](#adaugati-directorul-bin-al-cmdline-tools-la-path)
+  - [Adaugati variabile la environment: ANDROID\_HOME si ANDROID\_SDK\_ROOT](#adaugati-variabile-la-environment-android_home-si-android_sdk_root)
+  - [Instalarea restului instrumentelor](#instalarea-restului-instrumentelor)
+    - [Care sunt restul instrumentelor](#care-sunt-restul-instrumentelor)
+    - [Versiuni Android](#versiuni-android)
+    - [Instalarea propriu-zisa](#instalarea-propriu-zisa)
 - [Instalare gradle](#instalare-gradle)
-    - [Adaugati calea in PATH](#adaugati-calea-in-path)
+  - [Adaugati calea in PATH](#adaugati-calea-in-path)
 - [Verificati disponibilitatea comenzilor](#verificati-disponibilitatea-comenzilor)
-    - [adb](#adb)
-    - [gradle](#gradle)
-    - [avdmanager](#avdmanager)
-    - [emulator](#emulator)
-    - [Verificati toate componentele folosind sdkmanager](#verificati-toate-componentele-folosind-sdkmanager)
-- [Emulator](#emulator)
-    - [Creati un avd](#creati-un-avd)
-    - [Porniti emulatorul](#porniti-emulatorul)
-    - [Lista de dispozitive existente](#lista-de-dispozitive-existente)
-    - [Instalati aplicatia pe dispozitiv](#instalati-aplicatia-pe-dispozitiv)
-    - [Verificati existenta aplicatiei powershell](#verificati-existenta-aplicatiei-powershell)
+  - [adb](#adb)
+  - [gradle](#gradle)
+  - [avdmanager](#avdmanager)
+  - [emulator](#emulator)
+  - [Verificati toate componentele folosind sdkmanager](#verificati-toate-componentele-folosind-sdkmanager)
+- [Emulator](#emulator-1)
+  - [Creati un avd](#creati-un-avd)
+  - [Porniti emulatorul](#porniti-emulatorul)
+  - [Lista de dispozitive existente](#lista-de-dispozitive-existente)
+  - [Instalati aplicatia pe dispozitiv](#instalati-aplicatia-pe-dispozitiv)
+  - [Verificati existenta aplicatiei (powershell)](#verificati-existenta-aplicatiei-powershell)
 - [Instalari partiale](#instalari-partiale)
-    - [Platform tools](#platform-tools)
+  - [Platform tools](#platform-tools)
 - [Acces telefon hardware](#acces-telefon-hardware)
-    - [Pregatirea dispozitivului](#pregatirea-dispozitivului)
-        - [Activarea optiunilor de dezvoltare](#activarea-optiunilor-de-dezvoltare)
-        - [Cateva comenzi adb](#cateva-comenzi-adb)
-        - [adb shell pm list packages](#adb-shell-pm-list-packages)
-        - [adb logcat](#adb-logcat)
-        - [screenshot](#screenshot)
-        - [screen recording](#screen-recording)
-        - [adb shell getprop](#adb-shell-getprop)
-        - [adb shell settings put](#adb-shell-settings-put)
-        - [Alte comenzi](#alte-comenzi)
-        - [Conectarea unui dispozitiv USB la o masina virtuala](#conectarea-unui-dispozitiv-usb-la-o-masina-virtuala)
+  - [Pregatirea dispozitivului](#pregatirea-dispozitivului)
+    - [Activarea optiunilor de dezvoltare](#activarea-optiunilor-de-dezvoltare)
+    - [Cateva comenzi adb](#cateva-comenzi-adb)
+    - [adb shell pm list packages](#adb-shell-pm-list-packages)
+    - [adb logcat](#adb-logcat)
+    - [screenshot](#screenshot)
+    - [screen recording](#screen-recording)
+    - [adb shell getprop](#adb-shell-getprop)
+    - [adb shell settings put](#adb-shell-settings-put)
+    - [Alte comenzi](#alte-comenzi)
+    - [Conectarea unui dispozitiv USB la o masina virtuala](#conectarea-unui-dispozitiv-usb-la-o-masina-virtuala)
 - [Alte instrumente utile](#alte-instrumente-utile)
-    - [git](#git)
-    - [Windows terminal](#windows-terminal)
-        - [Descarcarea directa din repository](#descarcarea-directa-din-repository)
-        - [Alte variante](#alte-variante)
-    - [Scrcpy](#scrcpy)
-        - [Instalare](#instalare)
-        - [Utilizare](#utilizare)
+  - [git](#git)
+  - [Windows terminal](#windows-terminal)
+    - [Descarcarea directa din repository](#descarcarea-directa-din-repository)
+    - [Alte variante](#alte-variante)
+  - [Scrcpy](#scrcpy)
+    - [Instalare](#instalare)
+    - [Utilizare](#utilizare)
 
 <!-- /TOC -->
 # Instalrea JAVA DEVELOPMENT KIT
 
-JAVA de obicei este distribuita in doua feluri: JRE (Java Runtime Edition) si JDK (Java Development Kit). Pentru orice dezvoltare avem nevoie de JDK. JDK poate fi descarcat fie de la OpenJDK, fie direct de la Oracke de pe pagina, ca parte din distributia numita "Java Standard Edition" - Java SE. Vom lucra cu Java SE 21 (cea mai recenta versiune este 23). 
+JAVA de obicei este distribuită in două feluri: JRE (Java Runtime Edition) si JDK (Java Development Kit). Pentru orice dezvoltare avem nevoie de JDK. JDK poate fi descarcat fie de la OpenJDK, fie direct de la Oracle de pe pagina, ca parte din distributia numita "Java Standard Edition" - Java SE. Vom lucra cu Java SE 21 (cea mai recenta versiune este 23). 
 
 ## Descarcarea Java SE
 
@@ -110,7 +110,7 @@ Dupa salvarea dialogului respectiv, puteti verifica in powershell (deschizand o 
 
 
 ```sh
-PS C:\Users\smilutinovici> java
+PS C:\Users\MYUSER> java
 Usage: java [options] <mainclass> [args...]
            (to execute a class)
    or  java [options] -jar <jarfile> [args...]
@@ -130,7 +130,7 @@ Usage: java [options] <mainclass> [args...]
  ```
 
  ```sh
-PS C:\Users\smilutinovici> javac
+PS C:\Users\MYUSER> javac
 Usage: javac <options> <source files>
 where possible options include:
   @<filename>                  Read options and filenames from file
@@ -153,7 +153,7 @@ where possible options include:
 ```
 
 ```sh
-PS C:\Users\sorin> jar
+PS C:\Users\MYUSER> jar
 Usage: jar [OPTION...] [ [--release VERSION] [-C dir] files] ...
 Try `jar --help' for more information.
 ```
@@ -170,7 +170,7 @@ Use jpackage --help (or -h) for a list of possible options
 
 https://developer.android.com/studio#command-tools
 
-Navigati la adresa de mai sus si cautati in josul paginii. 
+Navigați la adresa de mai sus si cautati in josul paginii. 
 
 ![alt text](images/download_command_line_tools.jpg)
 
@@ -191,7 +191,7 @@ Mutati continutul acestui director intrpun subdirector "latest", astfel incat in
 Dupa adaugarea acestuia, comanda "sdkmanager.bat" trebuie sa devina disponibila intr-o sesiune noua de PowerShell. 
 
 ```sh
-PS C:\Users\sorin> sdkmanager.bat
+PS C:\Users\MYUSER> sdkmanager.bat
 Usage:
   sdkmanager [--uninstall] [<common args>] [--package_file=<file>] [<packages>...]
   sdkmanager --update [<common args>]
@@ -324,10 +324,10 @@ Dupa setarea tuturor componentelor PATH-ului inchideti si redeschideti instanta 
 ## adb
 
 ```sh
-PS C:\Users\sorin> adb
+PS C:\Users\MYUSER> adb
 Android Debug Bridge version 1.0.41
 Version 35.0.2-12147458
-Installed as C:\Users\sorin\Android\platform-tools\adb.exe
+Installed as C:\Users\MYUSER\Android\platform-tools\adb.exe
 Running on Windows 10.0.19045
 ...
 ```
@@ -335,13 +335,13 @@ Running on Windows 10.0.19045
 ## gradle
 
 ```sh
-PS C:\Users\sorin> gradle
+PS C:\Users\MYUSER> gradle
 
 > Task :help
 
 Welcome to Gradle 8.11.1.
 
-Directory 'C:\Users\sorin' does not contain a Gradle build.
+Directory 'C:\Users\MYUSER' does not contain a Gradle build.
 
 To create a new build in this directory, run gradle init
 
@@ -359,7 +359,7 @@ For troubleshooting, visit https://help.gradle.org
 ## avdmanager
 
 ```sh
-PS C:\Users\sorin> avdmanager
+PS C:\Users\MYUSER> avdmanager
 
 Usage:
       avdmanager [global options] [action] [action options]
@@ -382,7 +382,7 @@ Valid actions are composed of a verb and an optional direct object:
 ## emulator
 
 ```sh
-PS C:\Users\sorin> emulator
+PS C:\Users\MYUSER> emulator
 INFO    | Android emulator version 35.2.10.0 (build_id 12414864) (CL:N/A)
 INFO    | Graphics backend: gfxstream
 ERROR   | No AVD specified. Use '@foo' or '-avd foo' to launch a virtual device named 'foo'
@@ -535,7 +535,7 @@ Daca conexiunea este corecta, veti observa o notificare venita de la sistemul de
 In cazul in care doriti sa verificati mai departe, puteti folosi comanda Get-PnpDevice -Class USB (ideal cu o rulare inainte de conexiunea respectiva) pentru a verifica prezenta dispozitivului USB in subsistem. De cele mai multe ori acesta apare ca UDB Composite Device. 
 
 ```sh
-PS C:\Users\sorin>  Get-PnpDevice -Class USB
+PS C:\Users\MYUSER>  Get-PnpDevice -Class USB
 
 Status     Class           FriendlyName                                                                     InstanceId
 ------     -----           ------------                                                                     ----------
@@ -547,7 +547,7 @@ OK         USB             Intel(R) USB 3.0 eXtensible Host Controller - 1.0 (Mi
 Daca toptul a mers bine si aveti instalat pachetul "platform tools", comanda adb va va afisa dispozitivul prezent: 
 
 ```sh
-C:\Users\sorin\Android\platform-tools> adb devices
+C:\Users\MYUSER\Android\platform-tools> adb devices
 List of devices attached
 ZY224F8Q2G      device
 ```
@@ -555,7 +555,7 @@ ZY224F8Q2G      device
 Ocazional, se poate intampla ca dispozitivul sa fie afisat ca fiind neautorizat, caz in care va trebui sa verificati dispozitivul unde va aparea un nou dialog de confirmare.  
 
 ```sh
-C:\Users\sorin\Android\platform-tools> adb devices
+C:\Users\MYUSER\Android\platform-tools> adb devices
 * daemon not running; starting now at tcp:5037
 * daemon started successfully
 List of devices attached
@@ -567,7 +567,7 @@ ZY224F8Q2G      unauthorized
 ### adb shell pm list packages
 
 ```sh
-C:\Users\sorin\Android\platform-tools> adb shell pm list packages
+C:\Users\MYUSER\Android\platform-tools> adb shell pm list packages
 package:com.android.cts.priv.ctsshim
 package:com.aura.oobe.ml
 package:com.google.android.youtube
@@ -587,7 +587,7 @@ package:com.qti.service.colorservice
 ### adb logcat
 
 ```sh
-C:\Users\sorin\Android\platform-tools> adb logcat
+C:\Users\MYUSER\Android\platform-tools> adb logcat
 --------- beginning of system
 12-07 23:47:59.505   638   843 I SFPerfTracer:      triggers: (rate: 0:6) (8441 sw vsyncs) (0 skipped) (588:6468 vsyncs) (590:15013)
 12-07 23:47:59.596  2777  4285 I chatty  : uid=1000(system) Binder:2777_B expire 22 lines
@@ -620,7 +620,7 @@ adb pull /sdcard/screen.mp4
 Android mentine o baza de date de proprietati (un fel de registry) care poate fi vizualizat: 
 
 ```sh
-(base) PS C:\Users\sorin\Android\platform-tools> adb shell getprop
+(base) PS C:\Users\MYUSER\Android\platform-tools> adb shell getprop
 [DEVICE_PROVISIONED]: [1]
 [af.fast_track_multiplier]: [1]
 [audio.deep_buffer.media]: [true]
@@ -684,7 +684,7 @@ wlan0     Link encap:UNSPEC    Driver wcnss_wlan
 Lista proceselor care ruleaza in linux
 
 ```sh
-(base) PS C:\Users\sorin\Android\platform-tools> adb shell ps
+(base) PS C:\Users\MYUSER\Android\platform-tools> adb shell ps
 USER           PID  PPID     VSZ    RSS WCHAN            ADDR S NAME
 root             1     0   18232   1976 SyS_epoll_wait      0 S init
 root             2     0       0      0 kthreadd            0 S [kthreadd]
@@ -730,7 +730,7 @@ este insotita de o versiune de OpenSSH. Windows 10 sau 11 au si ele o versiune d
 comenzii `Get-Command ssh` 
 
 ```sh 
-PS C:\Users\sorin> Get-Command ssh.exe
+PS C:\Users\MYUSER> Get-Command ssh.exe
 
 CommandType     Name                                               Version    Source
 -----------     ----                                               -------    ------
