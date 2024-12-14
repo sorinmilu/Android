@@ -1,6 +1,33 @@
 # Aplicatie mobila cu o activitate si trei fragmente
+<!-- TOC -->
+
+- [Aplicatie mobila cu o activitate si trei fragmente](#aplicatie-mobila-cu-o-activitate-si-trei-fragmente)
+  - [Descrierea aplicatiei](#descrierea-aplicatiei)
+    - [Chuck Norris facts](#chuck-norris-facts)
+    - [Jokes](#jokes)
+    - [Cocktails](#cocktails)
+  - [Structura aplicatiei](#structura-aplicatiei)
+    - [fisiere cu imagini](#fisiere-cu-imagini)
+    - [fisiere de layout](#fisiere-de-layout)
+      - [layout/activity\_main.xml](#layoutactivity_mainxml)
+      - [layout/fragment\_joke.xml](#layoutfragment_jokexml)
+      - [layout/fragment\_chuck.xml](#layoutfragment_chuckxml)
+      - [layout/fragment\_cocktail.xml](#layoutfragment_cocktailxml)
+    - [Fisiere pentru meniu](#fisiere-pentru-meniu)
+    - [Fisiere pentru navigatie](#fisiere-pentru-navigatie)
+  - [AndroidManifest.xml](#androidmanifestxml)
+  - [Codul JAVA](#codul-java)
+    - [MainActivity.java](#mainactivityjava)
+    - [ui/ChuckFragment.java](#uichuckfragmentjava)
+    - [ui/chuck/ChuckViewModel.java](#uichuckchuckviewmodeljava)
+    - [ui/cocktail/CocktailViewModel.java](#uicocktailcocktailviewmodeljava)
+
+<!-- /TOC -->
+
 
 Aplicatia are o activitate principala care contine trei fragmente distincte, fiecare dintre ele preluand o serie de informatii dintr-un anumit API si afisand-ul intr-un TextView. Componentele sunt urmatoarele: 
+
+
 
 ## Descrierea aplicatiei
 

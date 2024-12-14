@@ -1,5 +1,4 @@
 # Aplicatie care interactioneaza cu un API
-
 <!-- TOC -->
 
 - [Aplicatie care interactioneaza cu un API](#aplicatie-care-interactioneaza-cu-un-api)
@@ -10,6 +9,7 @@
   - [Structura aplicatiei](#structura-aplicatiei)
   - [Fisierele sursa](#fisierele-sursa)
     - [MainActivity.java](#mainactivityjava)
+    - [MainViewModel.java](#mainviewmodeljava)
     - [activity\_main.xml](#activity_mainxml)
     - [AndroidManifest.xml](#androidmanifestxml)
       - [Permisiuni](#permisiuni)
@@ -19,11 +19,11 @@
     - [build.gradle](#buildgradle)
     - [settings.gradle](#settingsgradle)
 
-<!-- /TOC -->
+<!-- /TOC -->ia glume in format json si le afiseaza in activitatea principala. Exista un buton "Refresh joke" care preia o alta gluma si un buton de "Quit" care paraseste aplicatia. 
 
-Aplicatia preia glume in format json si le afiseaza in activitatea principala. Exista un buton "Refresh joke" care preia o alta gluma si un buton de "Quit" care paraseste aplicatia. 
+Aplicatia nu reface apelul API la rotirea ecranului datorita utilizarii unui ViewModel
 
-Se observa ca aplicatia va reface apelul API la rotirea ecranului. 
+ViewModel este o componentă parte din arhitectura recomandată pentru aplicații, care are rolul de a stoca și gestiona datele legate de interfața utilizatorului (UI) într-un mod care să persiste în timpul schimbărilor de configurație, cum ar fi rotația ecranului
 
 ![alt text](images/application_screenshot.png)
 
@@ -69,24 +69,28 @@ adb uninstall ro.makore.akrilki_02
 ## Structura aplicatiei
 
 ```sh
-└── akrilki_02
-    ├── Readme.md
-    ├── app
-    │   ├── build.gradle
-    │   └── src
-    │       └── main
-    │           ├── AndroidManifest.xml
-    │           ├── java
-    │           │   └── ro
-    │           │       └── makore
-    │           │           └── akrilki_02
-    │           │               └── MainActivity.java
-    │           └── res
-    │               └── layout
-    │                   └── activity_main.xml
-    ├── build.gradle
-    ├── gradle.properties
-    └── settings.gradle
+akrilki_03/
+├── app
+│   ├── build.gradle
+│   └── src
+│       └── main
+│           ├── AndroidManifest.xml
+│           ├── java
+│           │   └── ro
+│           │       └── makore
+│           │           └── akrilki_03
+│           │               ├── MainActivity.java
+│           │               └── MainViewModel.java
+│           └── res
+│               └── layout
+│                   └── activity_main.xml
+├── build
+│   └── reports
+│       └── problems
+│           └── problems-report.html
+├── build.gradle
+├── gradle.properties
+└── settings.gradle
 ```
 
 ## Fisierele sursa
@@ -95,41 +99,23 @@ adb uninstall ro.makore.akrilki_02
 
 ```java
 
-
-package ro.makore.akrilki_02;
+package ro.makore.akrilki_03;
 
 import android.os.Bundle;
-import android.util.Log;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
 import android.widget.Button;
 import android.widget.TextView;
-import androidx.core.view.WindowInsetsCompat;
 
-/* clasele necesare pentru procesarea JSON */
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-/* clasele necesare pentru apelurile http */
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-//clasa MainActivity trebuie sa extinda fie AppCompatActivity fie ComponentActivity fie direct Activity. 
-//Mentinem AppCompatActivity pentru coerenta si compatibilitate cu dispozitivele mai vechi 
+//clasa MainActivity trebuie sa extinda fie AppCompatActivity fie ComponentActivity fie direct Activity. Mentinem AppCompatActivity pentru coerenta si compatibilitate cu dispozitivele mai vechi 
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private MainViewModel mViewModel;
     private TextView jokeTextView;
     private Button refreshButton;
-    private OkHttpClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,99 +123,161 @@ public class MainActivity extends AppCompatActivity {
         //apelam onCreate din metoda parinte catre care trimitem savedInstanceState
         //care este un obiect de tip sesiune cu perechi cheie valoare care mentine 
         //starea activitatii in timpul recreerii acesteia (ex. rotirea ecranului)
-
+        
         super.onCreate(savedInstanceState);
 
         //setam layoutul acestei activitati
         setContentView(R.layout.activity_main);
 
-        // Initializarea clientului ar putea fi facuta si la nivel de atribut de clasa. 
+        // Initializeaza o instanta a obiectului MainViewModel. get(MainViewModel.class)
+        // va crea si returna o instanta noua daca aceasta nu exista iar daca aceasta 
+        // exista, va returna instanta existenta. 
+        mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        client = new OkHttpClient();
 
-         //Clasa R (Resources) este o clasă generată automat în Android care conține referințe la toate resursele 
-         //din aplicație, cum ar fi layout-uri, imagini, șiruri de caractere, culori, etc. Fiecare resursă are un 
-         //identificator unic (ID) care poate fi folosit în cod pentru a accesa resursele respective
+        //Clasa R (Resources) este o clasă generată automat în Android care conține referințe la toate resursele din aplicație, cum ar fi layout-uri, imagini, șiruri de caractere, culori, etc. Fiecare resursă are un identificator unic (ID) care poate fi folosit în cod pentru a accesa resursele respective
 
         jokeTextView = findViewById(R.id.jokeTextView);
         refreshButton = findViewById(R.id.refreshButton);
 
         Button quitButton = findViewById(R.id.quitButton);
-        TextView jokeTextView = findViewById(R.id.jokeTextView);
 
-        fetchJoke();
+        // se poate folosi versiunea clasica a callbackului:
+        /* quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
+            }
+            });
+        */
 
         quitButton.setOnClickListener(v -> finishAffinity());
-        refreshButton.setOnClickListener(v -> fetchJoke());
 
+
+        // Observa datele din model. Practic creaza un fel de eveniment onChange pe metoda standard LiveData
+        // din ViewModel 
+        mViewModel.getText().observe(this, joke -> {
+            jokeTextView.setText(joke);
+        });
+
+        // Solicita reapelarea API-ului si preluarea unei alte glume la apasarea pe butonul refresh. 
+        refreshButton.setOnClickListener(v -> mViewModel.fetchJoke());
+    }
+}
+
+
+
+```
+
+### MainViewModel.java
+
+```java
+
+package ro.makore.akrilki_03;
+
+//biblioteci utile pentru gestionarea ciclului de viata al activitatilor
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import android.util.Log;
+
+//biblioteci necesare pentru JSON
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+
+// biblioteci necesare pentru apelul http
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class MainViewModel  extends ViewModel {
+
+    //MutableLiveData este o clasa generica (o clasa cu tipul variabil) de aceea apare 
+    //<String>. Definitia inseamna ca se declara o variabila numit mText care este de tip 
+    // MutableLiveData<String>. final inseamna ca variabila nu mai poate fi modificata dupa
+    //initializare, ceea ce e straniu avand in vedere ca avem un tip care are in el cuvantul 
+    // Mutable. Ceea ce este imutabil insa este referinta catre obiectul clasei 
+    // MutableLiveData.   
+    private final MutableLiveData<String> mText;
+    private OkHttpClient client;
+    public MainViewModel () {
+        // <> - diamond operator declanseaza type inference pentru clasele generice.
+        // pentru ca am definit atributul clasei ca fiind String mai sus
+        mText = new MutableLiveData<>();
+        fetchJoke();
     }
 
-    /* 
-    FetchJoke se va executa asincron - fiind o operatie IO. La sosirea raspunsului se va executa o functie de tip callback. Nu putem returna din functia callback asa ca trebuie sa trimitem informatia in interfata
-    in momentul in care o primim. Facem aceasta cu ajutorul functiei runOnUiThread care permite rularea unei actiuni in threadul principal. 
-    */
 
-    private void fetchJoke() {
+    //Metoda fetchJoke va face urmatoarele:
+    // - initializeaza requestul HTTP
+    // - lanseaza requestul HTTP cu functii de callback care trimit text in mText
 
-        //URL-ul care este apelat pentru obtinerea unei glume in format JSON    
+    public void fetchJoke() {
         String url = "https://official-joke-api.appspot.com/random_joke";
 
-        // Crearea requestului HTTP
+        //o solicitare (request) HTTP are diferite componente (headere, metode, url, etc.) 
+        // Builderul construieste o instanta a unui astfel de obiect. 
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
-        // Executarea asincrona a solicitarii HTTP
+        client = new OkHttpClient();    
+        
+        //executam requestul http in mod asincron, trimitand functiile care sa se execute
+        // la definitivarea acestuia (callbackuri)
+        // la primirea datelor vom apela mtext.postValue care modifica instanta clasei 
+        // MutableLiveData
+
         client.newCall(request).enqueue(new Callback() {
-           
-            // Functie de tip callback care se va executa in cazul esuarii apelului HTTP
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e("MainActivity", "Failed to fetch joke", e);
-                runOnUiThread(() -> jokeTextView.setText("Failed to load joke."));
+                // timitem eroarea in mText pentru a fi afisata pe ecran. Poate fi bine, poate fi rau
+                mText.postValue("Failed to load joke." + e.getMessage());
             }
 
-            // Functie de tip callback care se executa in cazul sosirii unui raspuns in urma solicitarii HTTP
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                
-                // Verificăm daca raspunsul este valid (codul de stare 2xx)
                 if (!response.isSuccessful()) {
-                    // Daca nu este, afisam un mesaj de eroare in locul continutului asteptat
-                    runOnUiThread(() -> jokeTextView.setText("Failed to load joke."));
+                    // timitem eroarea in mText pentru a fi afisata pe ecran. Poate fi bine, poate fi rau
+                    mText.postValue("Failed to load joke.");
                     return;
                 }
 
-                // Blocul try-catch pentru a capta eventualele erori JSON
-
                 try {
-                    // Citim corpul raspunsului ca un sir de caractere
                     String responseData = response.body().string();
-
-                    // Crearea unui obiect JSON din raspunsul primit
+                    // transformam JSON-ul in obiect (deserializare)
                     JSONObject json = new JSONObject(responseData);
-
-                    // Extragem partea de setup (introducerea glumei) din JSON
                     String setup = json.getString("setup");
-
-                    // Extragem punchline-ul (rezultatul glumei) din JSON
                     String punchline = json.getString("punchline");
 
-                    // Concatenăm setup-ul și punchline-ul pentru a forma gluma completa
                     String joke = setup + "\n\n" + punchline;
 
-                    // Actualizăm UI-ul pentru a afisa gluma
-                    runOnUiThread(() -> jokeTextView.setText(joke));
+                    // trimitem stringul in mText
+                    mText.postValue(joke);
                 } catch (JSONException e) {
-                    // Dacă apare o eroare la procesarea JSON-ului
                     Log.e("MainActivity", "Failed to parse joke JSON", e);
-                    runOnUiThread(() -> jokeTextView.setText("Failed to load joke."));
+                    mText.postValue("Failed to parse joke." + e.getMessage());
                 }
             }
         });
     }
+
+    //metoda getText returneaza un obiect de tip LiveData. MutableLiveData este o subclasa
+    // a lui LiveData. 
+    public LiveData<String> getText() {
+        return mText;
+    }
 }
+
 ```
+
+
 
 ### activity_main.xml
 
@@ -312,6 +360,7 @@ Intent filter-ul specifică ce tipuri de intenții (acțiuni) sunt acceptate de 
 
 Astfel, aceste două elemente împreună spun sistemului Android că activitatea respectivă trebuie să fie lansată atunci când utilizatorul deschide aplicația din launcher.
 
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -319,7 +368,7 @@ Astfel, aceste două elemente împreună spun sistemului Android că activitatea
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="Alkrilki02"
+        android:label="Alkrilki03"
         android:theme="@style/Theme.Material3.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
@@ -350,11 +399,11 @@ Astfel, aceste două elemente împreună spun sistemului Android că activitatea
 apply plugin: 'com.android.application'
 
 android {
-    namespace 'ro.makore.akrilki_02'
+    namespace 'ro.makore.akrilki_03'
     compileSdk 34
 
     defaultConfig {
-        applicationId "ro.makore.akrilki_02"
+        applicationId "ro.makore.akrilki_03"
         minSdk 28
         targetSdk 34
         versionCode 1
@@ -396,6 +445,8 @@ android {
 // sunt executate pe un dispozitiv Android sau pe un emulator. 
 
 dependencies {
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.activity:activity:1.8.0'
@@ -405,6 +456,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.2.1' 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1' 
 }
+
 ```
 
 ### build.gradle
@@ -446,7 +498,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "akrilki_02"
+rootProject.name = "akrilki_03"
 include ':app'
 
 ```
