@@ -1,3 +1,11 @@
+<!-- TOC -->
+
+- [Sdk tools](#sdk-tools)
+- [Devices](#devices)
+- [Build, clean](#build-clean)
+
+<!-- /TOC -->
+
 # Sdk tools
 
 Lista tuturor pachetelor instalate

@@ -1,5 +1,46 @@
 # Dezvoltare Android pe platforma Linux, fara Android Studio
 
+<!-- TOC -->
+
+- [Dezvoltare Android pe platforma Linux, fara Android Studio](#dezvoltare-android-pe-platforma-linux-fara-android-studio)
+- [Instalrea JAVA DEVELOPMENT KIT](#instalrea-java-development-kit)
+- [Instalarea Android Command Line Tools](#instalarea-android-command-line-tools)
+  - [Descarcati Android Command-Line Tools](#descarcati-android-command-line-tools)
+  - [Instalarea Android Command-Line Tools](#instalarea-android-command-line-tools-1)
+    - [1.2 Creati un director pentru Android SDK](#12-creati-un-director-pentru-android-sdk)
+    - [1.3 Dezarhivati fisierul descarcat](#13-dezarhivati-fisierul-descarcat)
+    - [1.4 Redenumiti directorul extras](#14-redenumiti-directorul-extras)
+    - [1.5 Adaugati noile directoare la PATH prin intermediul fișierului bashrc](#15-adaugati-noile-directoare-la-path-prin-intermediul-fișierului-bashrc)
+    - [1.6 Verificați instalarea](#16-verificați-instalarea)
+  - [2 Instalați pachetele esențiale ale SDK-ului](#2-instalați-pachetele-esențiale-ale-sdk-ului)
+    - [Care sunt restul instrumentelor](#care-sunt-restul-instrumentelor)
+    - [Versiuni Android](#versiuni-android)
+    - [Instalarea propriu-zisa](#instalarea-propriu-zisa)
+    - [Adaugati calea catre emulator in variabila PATH in ~/.bashrc](#adaugati-calea-catre-emulator-in-variabila-path-in-bashrc)
+  - [3. Install Gradle](#3-install-gradle)
+    - [3.1.  Descărcați cea mai recentă versiune de Gradle de la https://gradle.org/releases](#31--descărcați-cea-mai-recentă-versiune-de-gradle-de-la-httpsgradleorgreleases)
+    - [3.2. Dezarhivați arhica in directorul /opt](#32-dezarhivați-arhica-in-directorul-opt)
+    - [3.3. Creați un simlink de la /opt/gradle-version catre /opt/gradle](#33-creați-un-simlink-de-la-optgradle-version-catre-optgradle)
+    - [3.4. Adăugați directorul bin din /opt/gradle la calea dvs.](#34-adăugați-directorul-bin-din-optgradle-la-calea-dvs)
+    - [3.5. Testați instalarea](#35-testați-instalarea)
+  - [Final steps](#final-steps)
+  - [Initializarea instrumentelor de lucru](#initializarea-instrumentelor-de-lucru)
+- [Acces telefon hardware](#acces-telefon-hardware)
+  - [Pregatirea dispozitivului](#pregatirea-dispozitivului)
+    - [Activarea optiunilor de dezvoltare](#activarea-optiunilor-de-dezvoltare)
+    - [Cateva comenzi adb](#cateva-comenzi-adb)
+    - [adb shell pm list packages](#adb-shell-pm-list-packages)
+    - [adb logcat](#adb-logcat)
+    - [screenshot](#screenshot)
+    - [screen recording](#screen-recording)
+    - [adb shell getprop](#adb-shell-getprop)
+    - [adb shell settings put](#adb-shell-settings-put)
+    - [Alte comenzi](#alte-comenzi)
+  - [Scrcpy](#scrcpy)
+    - [Instalare](#instalare)
+    - [Utilizare](#utilizare)
+
+<!-- /TOC -->
 
 # Instalrea JAVA DEVELOPMENT KIT
 
