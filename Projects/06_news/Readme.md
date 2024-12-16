@@ -24,7 +24,7 @@ Preluarea stirilor de la un API extern are o serie de subactivitati:
 Fiecare dintre aceste operatii a fost implementata intr-o clasa separata. 
 
 
-## Strucutra aplicatiei
+## Structura aplicatiei
 
 ─akrilki_06
     │   build.gradle
