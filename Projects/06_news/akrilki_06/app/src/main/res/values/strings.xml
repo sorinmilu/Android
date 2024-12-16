@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General App Strings -->
+    <string name="app_name">Akrilki06 News App</string>
+
+    <!-- News Item -->
+    <string name="thumbnail_description">Thumbnail image of the news</string>
+    
+    <!-- Button Text -->
+    <string name="action_back">Back</string>
+
+    <!-- Other Texts -->
+    <string name="no_news_found">No news found</string>
+    <string name="news_detail_activity_label">News detail</string>
+</resources>
