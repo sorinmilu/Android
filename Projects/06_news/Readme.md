@@ -26,40 +26,51 @@ Fiecare dintre aceste operatii a fost implementata intr-o clasa separata.
 
 ## Strucutra aplicatiei
 
- akrilki_06
-    ├── app
-    │   ├── build.gradle
-    │   └── src
-    │       └── main
-    │           ├── AndroidManifest.xml
-    │           ├── assets
-    │           │   └── request_body.json
-    │           ├── java
-    │           │   └── ro
-    │           │       └── makore
-    │           │           └── akrilki_06
-    │           │               ├── MainActivity.java
-    │           │               ├── NewsDetailActivity.java
-    │           │               ├── adapter
-    │           │               │   └── NewsAdapter.java
-    │           │               ├── api
-    │           │               │   └── NewsAPI.java
-    │           │               ├── model
-    │           │               │   └── NewsItem.java
-    │           │               └── parser
-    │           │                   └── NewsParser.java
-    │           └── res
-    │               ├── drawable
-    │               │   ├── ic_launcher_6.png
-    │               │   └── ic_launcher_round_6.png
-    │               ├── layout
-    │               │   ├── activity_main.xml
-    │               │   ├── activity_news_detail.xml
-    │               │   └── item_news.xml
-    │               └── values
-    │                   ├── colors.xml
-    │                   ├── strings.xml
-    │                   └── themes.xml
-    ├── build.gradle
-    ├── gradle.properties
-    └── settings.gradle
+─akrilki_06
+    │   build.gradle
+    │   gradle.properties
+    │   settings.gradle
+    │
+    └───app
+        │   build.gradle
+        │
+        └───src
+            └───main
+                │   AndroidManifest.xml
+                │
+                ├───assets
+                │       request_body.json
+                │
+                ├───java
+                │   └───ro
+                │       └───makore
+                │           └───akrilki_06
+                │               │   MainActivity.java
+                │               │   NewsDetailActivity.java
+                │               │
+                │               ├───adapter
+                │               │       NewsAdapter.java
+                │               │
+                │               ├───api
+                │               │       NewsAPI.java
+                │               │
+                │               ├───model
+                │               │       NewsItem.java
+                │               │
+                │               └───parser
+                │                       NewsParser.java
+                │
+                └───res
+                    ├───drawable
+                    │       ic_launcher_6.png
+                    │       ic_launcher_round_6.png
+                    │
+                    ├───layout
+                    │       activity_main.xml
+                    │       activity_news_detail.xml
+                    │       item_news.xml
+                    │
+                    └───values
+                            colors.xml
+                            strings.xml
+                            themes.xml
