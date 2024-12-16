@@ -26,6 +26,7 @@ Fiecare dintre aceste operatii a fost implementata intr-o clasa separata.
 
 ## Structura aplicatiei
 
+```sh
  akrilki_06
     ├── app
     │   ├── build.gradle
@@ -63,3 +64,4 @@ Fiecare dintre aceste operatii a fost implementata intr-o clasa separata.
     ├── build.gradle
     ├── gradle.properties
     └── settings.gradle
+```
