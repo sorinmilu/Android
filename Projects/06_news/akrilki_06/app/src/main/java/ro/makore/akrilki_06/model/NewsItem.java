@@ -8,26 +8,36 @@ public class NewsItem implements Parcelable {
     private String title;
     private String body;
     private String thumbnailUrl;
+    private String language;
+    private String source;
+    private String datetime;
+
     private List<String> concepts;
 
     // Unparceleable Constructor
     public NewsItem() {
     }
 
-    // Parcelable constructor
+    // Parcelable constructor - aceasi ordine ca in metoda writeToParcel
     protected NewsItem(Parcel in) {
         title = in.readString();
         body = in.readString();
         thumbnailUrl = in.readString();
+        language = in.readString();
+        source = in.readString();
+        datetime = in.readString();
         concepts = in.createStringArrayList();
     }
 
-    // Write object data to parcel
+    // writeString trebuie date in fix aceeasi ordine ca in constructor
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
         dest.writeString(body);
         dest.writeString(thumbnailUrl);
+        dest.writeString(language);
+        dest.writeString(source);
+        dest.writeString(datetime);
         dest.writeStringList(concepts);
     }
 
@@ -50,7 +60,7 @@ public class NewsItem implements Parcelable {
     };
 
      // Getters and Setters
-     public String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -80,6 +90,30 @@ public class NewsItem implements Parcelable {
 
     public void setConcepts(List<String> concepts) {
         this.concepts = concepts;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getDateTime() {
+        return datetime;
+    }
+
+    public void setDateTime(String datetime) {
+        this.datetime = datetime;
     }
 
 }

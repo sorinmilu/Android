@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import ro.makore.akrilki_06.R;
+import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 import ro.makore.akrilki_06.model.NewsItem;
@@ -30,6 +31,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public NewsAdapter(Context context, List<NewsItem> newsItemList) {
         this.context = context;
         this.newsItemList = newsItemList;
+    }
+
+    public void updateData(List<NewsItem> newsItemList) {
+        Log.v("NEWS06", "Updating data");
+        this.newsItemList.clear();
+        this.newsItemList.addAll(newsItemList);
+        notifyDataSetChanged(); // Refresh the RecyclerView
     }
 
     @NonNull
@@ -53,6 +61,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         holder.bodyTextView.setText(newsItem.getBody().length() > 300 
             ? newsItem.getBody().substring(0, 300) + "..." 
             : newsItem.getBody());
+        holder.dateTimeTextView.setText(newsItem.getDateTime());
 
         // Join tags from concepts list and display them
         List<String> limitedTags = newsItem.getConcepts().subList(0, Math.min(newsItem.getConcepts().size(), 5));
@@ -60,9 +69,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         holder.tagsTextView.setText(tags);
 
         // Handle click event to pass the NewsItem to NewsDetailActivity
+        
+
+        
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, NewsDetailActivity.class);
             if (newsItem != null) {
+                Log.v("THUMBNAILURL IN PUT: ", newsItem.getThumbnailUrl());
                 intent.putExtra("news_item", newsItem); // Pass the NewsItem to the next activity
             }    
             context.startActivity(intent);
@@ -81,6 +94,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         private final TextView titleTextView;
         private final TextView bodyTextView;
         private final TextView tagsTextView;
+        private final TextView dateTimeTextView;
+
 
         public NewsViewHolder(View itemView) {
             super(itemView);
@@ -90,6 +105,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             titleTextView = itemView.findViewById(R.id.title);
             bodyTextView = itemView.findViewById(R.id.body);
             tagsTextView = itemView.findViewById(R.id.tags);
+            dateTimeTextView = itemView.findViewById(R.id.datetime);
         }
     }
 }

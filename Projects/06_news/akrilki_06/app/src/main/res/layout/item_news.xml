@@ -30,6 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:background="#dedeca"
             android:textColor="@android:color/black"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toRightOf="@id/thumbnail"
@@ -58,6 +59,20 @@
             app:layout_constraintTop_toBottomOf="@id/body"
             app:layout_constraintRight_toRightOf="parent" />
 
+        <TextView
+            android:id="@+id/datetime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:gravity="end"
+            android:layout_marginTop="4dp"
+            app:layout_constraintLeft_toRightOf="@id/thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/line"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintHorizontal_bias="1.0" />    
+
 
         <TextView
             android:id="@+id/tags"
@@ -67,8 +82,8 @@
             android:textColor="@android:color/black"
             android:layout_marginTop="4dp"
             app:layout_constraintLeft_toRightOf="@id/thumbnail"
-            app:layout_constraintTop_toBottomOf="@id/line"
-            app:layout_constraintRight_toRightOf="parent" />    
+            app:layout_constraintTop_toBottomOf="@id/datetime"
+            app:layout_constraintRight_toRightOf="parent"/>    
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
