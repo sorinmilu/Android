@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 
 import ro.makore.akrilki_06.model.NewsItem;
 import ro.makore.akrilki_06.parser.NewsParser;
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private NewsAdapter newsAdapter;
+    private ProgressBar progressBar; // ProgressBar for loading indicator
+    private TextView loadingText; // TextView for loading message
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,42 +44,39 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fabRefresh = findViewById(R.id.fab_refresh);
         fabRefresh.setOnClickListener(v -> refreshNewsData());
 
-
         recyclerView = findViewById(R.id.newsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Fetch the news data
-        // new Thread(() -> {
-        //     try {
-        //         String jsonResponse = NewsAPI.fetchNews(this);
-        //         List<NewsItem> newsItems = NewsParser.parseNews(jsonResponse);
+        progressBar = findViewById(R.id.progressBar);
+        loadingText = findViewById(R.id.loadingText);
 
-        //         // Update UI on the main thread
-        //         runOnUiThread(() -> {
-        //             newsAdapter = new NewsAdapter(MainActivity.this, newsItems);
-        //             recyclerView.setAdapter(newsAdapter);
-        //         });
-        //     } catch (IOException e) {
-        //         Log.e("MainActivity", "Error fetching news", e);
-        //     }  catch (Exception e) {
-        //         // Handle any other exceptions that might occur
-        //         Log.e("MainActivity", "Unexpected error", e);
-        //     }
-        // }).start();
         refreshNewsData();
     }
 
     private void refreshNewsData() {
+        
+        // Show loading indicators
+        runOnUiThread(() -> {
+            progressBar.setVisibility(View.VISIBLE);
+            loadingText.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        });
+
         new Thread(() -> {
-            Log.v("NEWS06", "Try to retrieve news");
             try {
                 String jsonResponse = NewsAPI.fetchNews(this);
                 List<NewsItem> newsItems = NewsParser.parseNews(jsonResponse);
 
                 int count = newsItems.size();
-                Log.v("NEWS06", "Number of NewsItems: " + count);
+
                 // Update UI on the main thread
                 runOnUiThread(() -> {
+                    progressBar.setVisibility(View.GONE);
+                    loadingText.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    
+                    // Scroll to the top (first item)
+                    recyclerView.scrollToPosition(0);    
                     if (newsAdapter == null) {
                         newsAdapter = new NewsAdapter(MainActivity.this, newsItems);
                         recyclerView.setAdapter(newsAdapter);
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             } catch (IOException e) {
-                Log.e("NEWS06", "Error fetching news", e);
+                Log.e("NEWS06", "Error fetching news "+ e.getMessage(), e);
             } catch (Exception e) {
                 // Handle any other exceptions that might occur
                 Log.e("NEWS06", "Unexpected error", e);

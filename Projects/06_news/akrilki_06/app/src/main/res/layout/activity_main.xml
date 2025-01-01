@@ -18,7 +18,34 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-     <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!-- ProgressBar for showing loading indicator -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Loading message TextView -->
+    <TextView
+        android:id="@+id/loadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading the news..."
+        android:textSize="16sp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="8dp" />
+
+    <!-- Floating Action Button to quit -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_quit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,8 +55,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:elevation="16dp"
-        android:src="@drawable/ic_quit_black_24dp" />     
+        android:src="@drawable/ic_quit_black_24dp" />
 
+    <!-- Floating Action Button to refresh the news -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_refresh"
         android:layout_width="wrap_content"
@@ -40,6 +68,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:elevation="16dp"
-        android:src="@drawable/ic_refresh_black_24dp" />         
+        android:src="@drawable/ic_refresh_black_24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,8 +24,11 @@ public class NewsParser {
     public static List<NewsItem> parseNews(String jsonResponse) {
         List<NewsItem> newsItems = new ArrayList<>();
         Gson gson = new Gson();
-        JsonObject jsonObject = gson.fromJson(jsonResponse, JsonObject.class);
-        JsonArray articles = jsonObject.getAsJsonObject("articles").getAsJsonArray("results");
+
+        JsonArray articles = gson.fromJson(jsonResponse, JsonObject.class)
+            .getAsJsonObject("articles")
+            .getAsJsonArray("results");
+
 
         for (int i = 0; i < articles.size(); i++) {
             JsonObject article = articles.get(i).getAsJsonObject();

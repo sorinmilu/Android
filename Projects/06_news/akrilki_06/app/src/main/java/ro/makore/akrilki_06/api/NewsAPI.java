@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import org.json.JSONObject;
 
 public class NewsAPI {
 
@@ -31,15 +32,25 @@ public class NewsAPI {
     public static String fetchNews(Context context) throws Exception {
         OkHttpClient client = new OkHttpClient();
 
-        // Read the JSON body from the assets folder
+        // Read the JSON body from the assets folder and the API key
         String jsonBody = readJsonFromAssets(context, "request_body.json");
+        String apiKeyJson = readJsonFromAssets(context, "api_key.json");
+
+        // Parse them into JSON objects
+        JSONObject requestBody = new JSONObject(jsonBody);
+        JSONObject apiKeyObject = new JSONObject(apiKeyJson);
+
+        // Add the API key dynamically
+        requestBody.put("apiKey", apiKeyObject.getString("apiKey"));
+
+        // Convert updated JSON object back to a string
+        jsonBody = requestBody.toString();
 
         // Define the media type for JSON
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
         // RequestBody with JSON data
         RequestBody body = RequestBody.create(JSON, jsonBody);
-
         Request request = new Request.Builder()
                 .url(API_URL)
                 .post(body)

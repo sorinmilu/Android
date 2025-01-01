@@ -14,3 +14,4 @@ build/
 .cxx
 local.properties
 settings.json
+api_key.*
