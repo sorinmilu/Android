@@ -4,6 +4,7 @@
 
 - [Aplicatie care preia un feed de stiri si il afiseaza in doua activitati](#aplicatie-care-preia-un-feed-de-stiri-si-il-afiseaza-in-doua-activitati)
   - [newsAPI](#newsapi)
+  - [Screenshots](#screenshots)
   - [Concepte importante](#concepte-importante)
     - [RecyclerView](#recyclerview)
     - [Parcelable](#parcelable)
@@ -38,6 +39,12 @@ Conținutul fișierului este astfel:
 "apiKey": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 }
 ```
+
+## Screenshots
+
+![alt text](images/loading.jpg)
+![alt text](images/mainview.jpg)
+![alt text](images/newsdetail.jpg)
 
 
 ## Concepte importante
@@ -264,7 +271,7 @@ Fiecare dintre aceste operatii a fost implementata intr-o clasa separata.
 
 ### Structura requestului
 
-NewsAPI
+Pentru a permite modificarea ușoară a parametrilor solicitarii către api-ul newsapi, elementele acesteia sunt plasate într-un fișier json, numit assets/requests_body.json. La acesta se va adăuga intrarea apikey din fisierul api_key.json. Intr-o versiune avansată a aplicației, acest json poate fi modificat într-un element de interfață.  
 
 ```json
 {
@@ -1031,4 +1038,12 @@ Metoda onResourceReady va returna tot false ceea ce permite Glide să continue o
 ## Layouturi
 
 ### activity_main.xml
+
+Layoutul principal care se încarcă odată cu pornirea aplicației. Conține un layout de tip constraintlayout în interiorul căruia se găsesc următoarele elemente: 
+
+ - RecyclerView - care conține lista de știri 
+ - ProgressBar - Care afișează 
+ - TextView
+ - FloatingActionButton (quit)
+ - FloatingActionButton (refresh)
 

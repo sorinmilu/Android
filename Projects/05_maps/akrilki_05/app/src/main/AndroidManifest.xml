@@ -9,16 +9,15 @@
         android:allowBackup="true"
         android:label="Akrilki_05"
         android:supportsRtl="true"
+        android:icon="@drawable/ic_launcher_5"
+        android:roundIcon="@drawable/ic_launcher_round_5"
         android:theme="@style/Theme.Akrilki_05"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:label="Akrilki_05"
-            android:theme="@style/Theme.Akrilki_05.NoActionBar">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

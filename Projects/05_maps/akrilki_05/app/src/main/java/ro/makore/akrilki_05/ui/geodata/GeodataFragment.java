@@ -1,7 +1,8 @@
 package ro.makore.akrilki_05.ui.geodata;
 
 import android.content.pm.PackageManager;
-import android.icu.text.SimpleDateFormat;
+
+import java.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
