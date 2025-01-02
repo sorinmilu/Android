@@ -1,10 +1,12 @@
+# Camera
+
 <!-- TOC -->
 
-- [Structura aplicației](#structura-aplicației)
-  - [MainActivity.java](#mainactivityjava)
-  - [layout](#layout)
+- [Camera](#camera)
+  - [Structura aplicației](#structura-aplicației)
+    - [MainActivity.java](#mainactivityjava)
+    - [layout](#layout)
 
-<!-- /TOC -->
 <!-- /TOC -->
 
 
