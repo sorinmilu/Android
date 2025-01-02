@@ -1,4 +1,21 @@
-# Android lifecycle
+<!-- TOC -->
+
+- [Evenimente legate de ciclul de viata](#evenimente-legate-de-ciclul-de-viata)
+  - [onCreate(Bundle savedInstanceState)](#oncreatebundle-savedinstancestate)
+  - [onStart()](#onstart)
+  - [onResume()](#onresume)
+  - [onPause()](#onpause)
+  - [onStop()](#onstop)
+  - [onRestart()](#onrestart)
+  - [onDestroy()](#ondestroy)
+  - [onRestoreInstanceState(Bundle savedInstanceState)](#onrestoreinstancestatebundle-savedinstancestate)
+- [Androix.lifecycle](#androixlifecycle)
+  - [Componente principale din androidx.lifecycle](#componente-principale-din-androidxlifecycle)
+  - [Exemple de utilizare:](#exemple-de-utilizare)
+
+<!-- /TOC -->
+
+
 
 În Android, "ciclul de viață" (lifecycle) al unei activități sau fragmente se referă la secvența de stări și tranziții prin care trece o activitate de-a lungul existenței sale, de la crearea sa până la distrugerea finală. Fiecare activitate din Android trece printr-o serie de evenimente, iar în fiecare dintre aceste evenimente, sistemul de operare al Android poate apela metode specifice pentru a gestiona resursele și a răspunde la schimbările contextuale, cum ar fi interacțiunea utilizatorului, schimbările de orientare ale ecranului sau gestionarea memoriei.
 
@@ -66,16 +83,18 @@ Exemplu: String savedData = savedInstanceState.getString("key");
 
 androidx.lifecycle, este un namespace din bibliotecile Android care oferă o serie de instrumente pentru gestionarea mai eficientă a ciclului de viață al componentelor, precum activități, fragmente și chiar ViewModels. Scopul principal al acestui namespace este de a ajuta dezvoltatorii să gestioneze stările aplicațiilor și să îmbunătățească modul în care datele sunt păstrate și actualizate pe parcursul ciclului de viață al unei activități sau al altor componente ale aplicației.
 
-Componente principale din androidx.lifecycle:
-LiveData: Este un tip de date observabil care se actualizează automat atunci când datele asociate se schimbă. Acesta permite gestionarea datelor care pot fi observate de activități și fragmente, fără a fi nevoie de o gestionare manuală a resurselor sau de a face upgrade-uri explicite ale UI-ului. LiveData respectă ciclul de viață al componentelor care o observă, asigurându-se că aceste componente nu vor primi actualizări după ce au fost distruse.
+### Componente principale din androidx.lifecycle
 
-ViewModel: Este o componentă destinată să păstreze datele legate de o activitate sau fragment pe termen lung. ViewModel nu va fi distrus la schimbarea orientării ecranului sau la alte modificări ale ciclului de viață, astfel încât să poată păstra datele aplicației chiar și atunci când activitatea este recreată.
+**LiveData**: Este un tip de date observabil care se actualizează automat atunci când datele asociate se schimbă. Acesta permite gestionarea datelor care pot fi observate de activități și fragmente, fără a fi nevoie de o gestionare manuală a resurselor sau de a face upgrade-uri explicite ale UI-ului. LiveData respectă ciclul de viață al componentelor care o observă, asigurându-se că aceste componente nu vor primi actualizări după ce au fost distruse.
 
-LifecycleOwner: Oricare componentă care are un ciclu de viață (cum ar fi o activitate sau un fragment) poate implementa interfața LifecycleOwner. Acesta furnizează un obiect care poate fi utilizat pentru a monitoriza și răspunde la schimbările ciclului de viață, cum ar fi onCreate(), onStart(), onStop(), etc.
+**ViewModel**: Este o componentă destinată să păstreze datele legate de o activitate sau fragment pe termen lung. ViewModel nu va fi distrus la schimbarea orientării ecranului sau la alte modificări ale ciclului de viață, astfel încât să poată păstra datele aplicației chiar și atunci când activitatea este recreată.
 
-LifecycleObserver: Oferă un mecanism de ascultare a schimbărilor de stare ale unui obiect care implementează LifecycleOwner. Acesta permite implementarea de logică personalizată pentru fiecare stare a ciclului de viață.
+**LifecycleOwner**: Oricare componentă care are un ciclu de viață (cum ar fi o activitate sau un fragment) poate implementa interfața LifecycleOwner. Acesta furnizează un obiect care poate fi utilizat pentru a monitoriza și răspunde la schimbările ciclului de viață, cum ar fi onCreate(), onStart(), onStop(), etc.
 
-Exemple de utilizare:
+**LifecycleObserver**: Oferă un mecanism de ascultare a schimbărilor de stare ale unui obiect care implementează LifecycleOwner. Acesta permite implementarea de logică personalizată pentru fiecare stare a ciclului de viață.
+
+### Exemple de utilizare:
 LiveData și ViewModel sunt deosebit de utile pentru gestionarea datelor persistente pe termen lung, care sunt legate de activități și fragmente, cum ar fi datele de utilizator, răspunsuri de la API-uri, sau starea aplicației.
 LifecycleObserver ajută la adăugarea de comportamente sau logică ce trebuie să fie activată sau dezactivată în funcție de starea ciclului de viață.
+
 În concluzie, androidx.lifecycle adaugă un strat suplimentar de abstracție pentru gestionarea ciclului de viață în Android, astfel încât dezvoltatorii să poată crea aplicații mai robuste, care sunt mai ușor de întreținut și mai eficiente din punct de vedere al resurselor.

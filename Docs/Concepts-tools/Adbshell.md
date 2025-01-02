@@ -1,9 +1,30 @@
-# Things that we can see with adb shell
+# adb shell
 
+ADB (Android Debug Bridge) este un instrument de linie de comandă care permite interacțiunea cu un dispozitiv Android pentru a efectua diverse acțiuni de dezvoltare și depanare. adb are mai multe subcomenzi, dintre care "shell" permite deschiderea unei console direct pe dispozitivul android. Comanda se poate rula pe dispozitive reale sau pe dispozitive emulate. 
 
-1. Start your emulator
-2. run adb shell
+Pentru a vedea dispozitivele conectate: 
 
+```sh
+adb devices
+List of devices attached
+ZY224F8Q2G      device
+emulator-5554   device
+```
+
+Rularea comenzii în cazul în care există mai multe dispozitive se face cu specificarea dispozitivului: 
+
+```sh
+adb -s emulator-5554 shell
+```
+
+# Comenzi în shell
+
+O parte din comenzi sunt comenzile obișnuite Linux. Shell-ul disponibil este o versiune redusă a sh: 
+
+```sh
+ echo $SHELL
+/system/bin/sh
+```
 
 ## ls /
 
@@ -55,7 +76,9 @@ dmesgd.rc                              lmkd.rc                profcollectd.rc   
 drmserver.rc                           logcatd.rc             racoon.rc           wificond.rc
 ```
 
-## cat /prop/cpuinfo
+## cat /proc/cpuinfo
+
+Informații despre procesor pe un dispozitiv emulat
 
 ```
 processor       : 0
@@ -86,6 +109,98 @@ address sizes   : 40 bits physical, 48 bits virtual
 power management:
 
 .....
+```
+
+Informnații despre procesor pe un dispozitiv real (Motorola ZPlay)
+
+```sh
+processor       : 0
+model name      : ARMv7 Processor rev 4 (v7l)
+BogoMIPS        : 38.00
+Features        : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32
+CPU implementer : 0x41
+CPU architecture: 7
+CPU variant     : 0x0
+CPU part        : 0xd03
+CPU revision    : 4
+
+processor       : 1
+model name      : ARMv7 Processor rev 4 (v7l)
+BogoMIPS        : 38.00
+Features        : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32
+CPU implementer : 0x41
+CPU architecture: 7
+CPU variant     : 0x0
+CPU part        : 0xd03
+CPU revision    : 4
+
+processor       : 2
+model name      : ARMv7 Processor rev 4 (v7l)
+BogoMIPS        : 38.00
+Features        : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32
+CPU implementer : 0x41
+CPU architecture: 7
+CPU variant     : 0x0
+CPU part        : 0xd03
+CPU revision    : 4
+
+processor       : 3
+model name      : ARMv7 Processor rev 4 (v7l)
+BogoMIPS        : 38.00
+Features        : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32
+CPU implementer : 0x41
+CPU architecture: 7
+CPU variant     : 0x0
+CPU part        : 0xd03
+CPU revision    : 4
+
+processor       : 4
+model name      : ARMv7 Processor rev 4 (v7l)
+BogoMIPS        : 38.00
+Features        : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32
+CPU implementer : 0x41
+CPU architecture: 7
+CPU variant     : 0x0
+CPU part        : 0xd03
+CPU revision    : 4
+
+processor       : 5
+model name      : ARMv7 Processor rev 4 (v7l)
+BogoMIPS        : 38.00
+Features        : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32
+CPU implementer : 0x41
+CPU architecture: 7
+CPU variant     : 0x0
+CPU part        : 0xd03
+CPU revision    : 4
+
+processor       : 6
+model name      : ARMv7 Processor rev 4 (v7l)
+BogoMIPS        : 38.00
+Features        : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32
+CPU implementer : 0x41
+CPU architecture: 7
+CPU variant     : 0x0
+CPU part        : 0xd03
+CPU revision    : 4
+
+processor       : 7
+model name      : ARMv7 Processor rev 4 (v7l)
+BogoMIPS        : 38.00
+Features        : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32
+CPU implementer : 0x41
+CPU architecture: 7
+CPU variant     : 0x0
+CPU part        : 0xd03
+CPU revision    : 4
+
+Hardware        : Qualcomm Technologies, Inc MSM8953
+Revision        : 8400
+Serial          : b75b11fe00000000
+Processor       : ARMv7 Processor rev 4 (v7l)
+Device          : albus
+Radio           : EMEA_APAC
+MSM Hardware    : MSM8953
 ```
 
 ## ps -A
@@ -200,12 +315,7 @@ u0_a150       5045   369   30714248  99200 0                   0 S com.android.c
 
 ## getprop
 
-Android has a system properties driver, it is a global key-value store. A system application can read or write info here (sort of a flat registry)
-In a lot of cases system properties is used for IPC. 
-
-Applications can use in a limited way the property store - they can add entries... etc. 
-
-
+În Android, driverul de proprietăți de sistem (System Properties Driver) este un mecanism utilizat pentru a stoca și accesa variabile de configurare la nivel de sistem. Aceste proprietăți sunt esențiale pentru configurarea și funcționarea dispozitivului și sunt accesibile prin intermediul interfeței android.os.SystemProperties în aplicațiile Android sau prin comanda ADB pentru debugging.
 
 ```
 [apex.all.ready]: [true]
@@ -780,9 +890,11 @@ reboot,1731933991]
 
 ## init reaction to property change
 
-For example, /etc/init/logcatd.rc the manager of the log service has a lot of on property:... - those are events that will fire up when properties content will reach certain values. 
+sistemul init al Androidului permite utilizarea proprietăților în scripturile de inițializare ale serviciilor. 
 
-init monitors the system properties and for the entire lifecycle of the device
+Fișierul /etc/init/logcatd.rc este un script utilizat de sistemele Android pentru a configura și controla serviciul logcatd, care gestionează capturarea și înregistrarea jurnalelor de sistem (logs) ale dispozitivului Android. Acest fișier este specific subsistemului init, responsabil pentru inițializarea serviciilor și proceselor la pornirea dispozitivului.
+
+
 
 ```bash
 #
@@ -850,7 +962,7 @@ service logcatd /system/bin/logcatd -L -b ${logd.logpersistd.buffer:-all} -v thr
 
 ```
 
-For example, when we enable usb debugging on Android, we set a value in this property store: sys.usb.config=adb. init monitors this and makes some changes accordingly. Efffectively, enabling usb deugging will start adb on the device. 
+Când pornim usb debugging pe un dispozitiv Android se va seta o valoare in property store:  sys.usb.config=adb. Init monitorizează această valoare și dacă este setată va porni serviciul adb pe dispozitiv. In fișierul /vendor/etc/init/hw/init.rc sau în alte fișiere (în funcție de fabricant - ex: /vendor/etc/init/hw/init.mmi.usb.rc) se găsesc linii de tipul acesta:
 
 ```
 on property:sys.usb.config=adb && property:sys.usb.configfs=0
@@ -861,10 +973,9 @@ on property:sys.usb.config=adb && property:sys.usb.configfs=0
     write /sys/class/android_usb/android0/enable 1
     start adbd
     setprop sys.usb.state ${sys.usb.config}
-
 ```
 
-The main file that executes on boot is /etc/init/hw/init.rc
+Fișierul principal executat pe un Android standard este /etc/init/hw/init.rc, alte versiuni pot avea alte fișiere similare, cum ar fi /vendor/etc/init/hw/init.mmi.rc
 
 
 ```bash
@@ -2240,6 +2351,8 @@ on property:persist.device_config.mglru_native.lru_gen_config=all
 
 ## Servicemanager
 
+Android ServiceManager este un component esențial al sistemului de operare Android, responsabil pentru gestionarea și furnizarea serviciilor între diferite procese. Acesta funcționează ca un registru centralizat, care permite aplicațiilor și componentelor sistemului să se conecteze și să interacționeze cu servicii partajate, cum ar fi serviciile de rețea, locație sau media. ServiceManager se află într-un proces de sistem dedicat și asigură comunicarea interproces între aplicații, facilitând accesul la resursele comune ale sistemului fără a necesita procese separate pentru fiecare serviciu.
+
 ```bash
 emu64xa:/etc $ cat init/servicemanager.rc
 service servicemanager /system/bin/servicemanager
@@ -2261,10 +2374,8 @@ service servicemanager /system/bin/servicemanager
 
 ## zygote
 
-zygote is a parent process for other applications. Preloads java classes. etc. Zygote forks itself to create system server. All apps are forked from the same zygote. Zygote is mostly writen in java?
+Zygote este un proces esențial în sistemul de operare Android, responsabil pentru inițializarea și crearea altor procese Android. La pornirea unui dispozitiv Android, Zygote este lansat ca un proces de sistem, iar acesta încarcă bibliotecile și resursele comune necesare pentru aplicațiile Android. Când o aplicație Android este lansată, Zygote creează o copie a sa, un proces copil, care se inițializează rapid și partajează multe dintre resursele deja încărcate de Zygote, economisind astfel timp și resurse. Acest mecanism de clonare rapidă a proceselor este esențial pentru performanța și eficiența sistemului Android.
 
-
-SystemServer is the main base for all apps
 
 ![boot stages](boot_1.png)
 

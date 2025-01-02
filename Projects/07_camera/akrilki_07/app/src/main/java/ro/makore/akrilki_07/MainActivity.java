@@ -273,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 100) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, initialize the camera
+                openCamera(currentCameraId);
             } else {
                 Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
             }

@@ -48,8 +48,8 @@ Stergere dispozitiv virtual
 Pornire dispozitiv virtual
 
     emulator -list-avds
-    emulator -avd <AVD_name>
-    emulator -avd <AVD_name> -no-snapshot-save
+    emulator -avd <AVD_name> (pornește dispozitivul pe baza unui snapshot preexistent - dacă există)
+    emulator -avd <AVD_name> -no-snapshot-save (pornește dispozitivul în cold boot)
 
 
 Instalare    
