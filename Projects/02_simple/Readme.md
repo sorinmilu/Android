@@ -25,7 +25,7 @@ Aplicatia preia glume in format json si le afiseaza in activitatea principala. E
 
 Se observa ca aplicatia va reface apelul API la rotirea ecranului. 
 
-![alt text](images/application_screenshot.png)
+![alt text](images/application_screenshot.jpg)
 
 ## Compilarea aplicatiei
 
