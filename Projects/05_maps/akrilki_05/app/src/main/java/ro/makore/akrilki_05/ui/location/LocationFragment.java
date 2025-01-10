@@ -21,8 +21,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.net.PlacesClient;
 
 
 import ro.makore.akrilki_05.databinding.FragmentLocationBinding;
@@ -31,7 +29,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback{
 
     private FragmentLocationBinding binding;
     private GoogleMap placesGoogleMap;
-    private PlacesClient placesClient;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
 
