@@ -8,9 +8,11 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Hello World"
+        android:textSize="42sp"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toTopOf="@+id/quitButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,9 +20,9 @@
 
     <Button
         android:id="@+id/quitButton"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="87dp"
-        android:layout_marginBottom="158dp"
+        android:layout_marginBottom="20dp"
         android:text="Quit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

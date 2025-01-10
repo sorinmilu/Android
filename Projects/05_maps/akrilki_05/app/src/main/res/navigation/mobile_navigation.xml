@@ -27,6 +27,4 @@
         android:name="ro.makore.akrilki_05.ui.address.AddressFragment"
         android:label="Address"
         tools:layout="@layout/fragment_address" />
-
-
 </navigation>
