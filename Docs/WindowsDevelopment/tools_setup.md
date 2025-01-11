@@ -307,7 +307,7 @@ Descarcati gradle de la https://gradle.org/releases/
 
 Dezarhivati gradle intr-un director oarecare
 
-"C:\Users\MYUSER\Android\gradle-8.11.1"
+"C:\Users\MYUSER\Android\gradle-8.11.1\bin"
 
 ## Adaugati calea in PATH
 
