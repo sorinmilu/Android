@@ -22,10 +22,7 @@
     - [activity\_main.xml](#activity_mainxml)
 
 <!-- /TOC -->
-<!-- /TOC -->tivity](#mainactivity)
 
-<!-- /TOC -->
-<!-- /TOC -->Structura unui element de tip stire
 
 
 ## newsAPI
