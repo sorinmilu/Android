@@ -29,7 +29,7 @@
 
 ## newsAPI
 
-Aplicația preia un feed de știri JSON de la https://www.newsapi.ai/. Pentru replicarea funcționaliății trebuie să vă înregistrați pe site-ul https://www.newsapi.ai/ și să obțineți o cheie API. Cheia API se pozitioneaza într-un fișier numit api_key.json în directorul app/src/main/assets, unde există deja request_body.json
+Aplicația preia un feed de știri JSON de la https://www.newsapi.ai/. Pentru replicarea funcționalității trebuie să vă înregistrați pe site-ul https://www.newsapi.ai/ și să obțineți o cheie API. Cheia API se pozitioneaza într-un fișier numit api_key.json în directorul app/src/main/assets, unde există deja request_body.json
 
 Conținutul fișierului este astfel: 
 
