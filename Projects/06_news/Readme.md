@@ -10,6 +10,7 @@
     - [Parcelable](#parcelable)
     - [Structura impartita pe componente](#structura-impartita-pe-componente)
   - [Structura aplicatiei](#structura-aplicatiei)
+    - [JSON-ul returnat de API](#json-ul-returnat-de-api)
     - [Structura requestului](#structura-requestului)
     - [ro.makore.akrilki\_06.api - clasa NewsAPI](#romakoreakrilki_06api---clasa-newsapi)
     - [ro.makore.akrilki\_06.model NewsItem](#romakoreakrilki_06model-newsitem)
@@ -21,6 +22,7 @@
   - [Layouturi](#layouturi)
     - [activity\_main.xml](#activity_mainxml)
 
+<!-- /TOC -->
 <!-- /TOC -->
 
 
@@ -72,45 +74,61 @@ Fiecare dintre aceste operatii a fost implementata intr-o clasa separata.
 
 ```sh
  akrilki_06
-    ├── app
-    │   ├── build.gradle
-    │   └── src
-    │       └── main
-    │           ├── AndroidManifest.xml
-    │           ├── assets
-    │           │   └── request_body.json
-    │           ├── java
-    │           │   └── ro
-    │           │       └── makore
-    │           │           └── akrilki_06
-    │           │               ├── MainActivity.java
-    │           │               ├── NewsDetailActivity.java
-    │           │               ├── adapter
-    │           │               │   └── NewsAdapter.java
-    │           │               ├── api
-    │           │               │   └── NewsAPI.java
-    │           │               ├── model
-    │           │               │   └── NewsItem.java
-    │           │               └── parser
-    │           │                   └── NewsParser.java
-    │           └── res
-    │               ├── drawable
-<!-- TOC -->
+ │   build.gradle
+│   gradle.properties
+│   settings.gradle
+│
+├───app
+│   │   build.gradle
+│   │
+│   └───src
+│       └───main
+│           │   AndroidManifest.xml
+│           │
+│           ├───assets
+│           │       api_key.json
+│           │       request_body.json
+│           │
+│           ├───java
+│           │   └───ro
+│           │       └───makore
+│           │           └───akrilki_06
+│           │               │   MainActivity.java
+│           │               │   NewsDetailActivity.java
+│           │               │
+│           │               ├───adapter
+│           │               │       NewsAdapter.java
+│           │               │
+│           │               ├───api
+│           │               │       NewsAPI.java
+│           │               │
+│           │               ├───model
+│           │               │       NewsItem.java
+│           │               │
+│           │               └───parser
+│           │                       NewsParser.java
+│           │
+│           └───res
+│               ├───drawable
+│               │       ic_chuck_black_24dp.xml
+│               │       ic_launcher_6.png
+│               │       ic_launcher_round_6.png
+│               │       ic_quit_black_24dp.xml
+│               │       ic_refresh_black_24dp.xml
+│               │
+│               ├───layout
+│               │       activity_main.xml
+│               │       activity_news_detail.xml
+│               │       item_news.xml
+│               │
+│               └───values
+│                       colors.xml
+│                       strings.xml
+│                       themes.xml
+│
+```
 
-- [Aplicatie care preia un feed de stiri si il afiseaza in doua activitati](#aplicatie-care-preia-un-feed-de-stiri-si-il-afiseaza-in-doua-activitati)
-        - [](#)
-    - [newsAPI](#newsapi)
-    - [Concepte importante](#concepte-importante)
-        - [RecyclerView](#recyclerview)
-        - [Parcelable](#parcelable)
-        - [Structura impartita pe componente](#structura-impartita-pe-componente)
-    - [Structura aplicatiei](#structura-aplicatiei)
-        - [Structura requestului](#structura-requestului)
-        - [ro.makore.akrilki_06.api - clasa NewsAPI](#romakoreakrilki_06api---clasa-newsapi)
-        - [ro.makore.akrilki_06.model NewsItem](#romakoreakrilki_06model-newsitem)
-        - [ro.makore.akrilki_06.parser NewsParser](#romakoreakrilki_06parser-newsparser)
-
-<!-- /TOC -->
+### JSON-ul returnat de API
 
 ```json
 {
