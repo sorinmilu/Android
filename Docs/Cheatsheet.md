@@ -58,9 +58,15 @@ Instalare
 
     adb -s emulator-5554 install  app/build/outputs/apk/debug/app-debug.apk
 
+
+Dezinstalare
+
+    aapt dump badging apk_name.apk | findstr package (putem afla numele pachetului daca nu il cunoastem)
+
     adb shell ps | findstr akrilki 
 
     adb uninstall ro.makore.akrilki_032
+
 
 # Build, clean
 
