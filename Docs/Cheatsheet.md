@@ -54,6 +54,8 @@ Pornire dispozitiv virtual
 
 Instalare    
 
+    adb devices (listeaza toate dispozitivele pornite/conectate)
+
     adb -s emulator-5554 install  app/build/outputs/apk/debug/app-debug.apk
 
     adb shell ps | findstr akrilki 
