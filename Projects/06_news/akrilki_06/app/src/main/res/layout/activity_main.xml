@@ -45,29 +45,30 @@
         android:paddingTop="8dp" />
 
     <!-- Floating Action Button to quit -->
+
+    <!-- Floating Action Button to refresh the news -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_quit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="200dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="96dp"
         android:elevation="16dp"
-        android:src="@drawable/ic_quit_black_24dp" />
+        android:src="@drawable/ic_quit_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Floating Action Button to refresh the news -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="28dp"
         android:elevation="16dp"
-        android:src="@drawable/ic_refresh_black_24dp" />
+        android:src="@drawable/ic_refresh_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
