@@ -25,7 +25,13 @@
 <!-- /TOC -->
 
 
+
+
 Aplicatia are o activitate principala care contine trei fragmente distincte, fiecare dintre ele preluand o serie de informatii dintr-un anumit API si afisand-ul intr-un TextView. Componentele sunt urmatoarele: 
+
+![alt text](images/screenshot_chuck.jpg)
+![alt text](images/screenshot_cocktails.jpg)
+![alt text](images/screenshot_jokes.jpg)
 
 
 

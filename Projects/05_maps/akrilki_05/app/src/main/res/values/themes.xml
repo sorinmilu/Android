@@ -11,13 +11,15 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.Akrilki_05.NoActionBar">
+    <!-- <style name="Theme.Akrilki_05.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
+    </style> -->
 
     <style name="Theme.Akrilki_05.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

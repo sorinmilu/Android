@@ -48,17 +48,25 @@ Stergere dispozitiv virtual
 Pornire dispozitiv virtual
 
     emulator -list-avds
-    emulator -avd <AVD_name>
-    emulator -avd <AVD_name> -no-snapshot-save
+    emulator -avd <AVD_name> (pornește dispozitivul pe baza unui snapshot preexistent - dacă există)
+    emulator -avd <AVD_name> -no-snapshot-save (pornește dispozitivul în cold boot)
 
 
 Instalare    
 
+    adb devices (listeaza toate dispozitivele pornite/conectate)
+
     adb -s emulator-5554 install  app/build/outputs/apk/debug/app-debug.apk
+
+
+Dezinstalare
+
+    aapt dump badging apk_name.apk | findstr package (putem afla numele pachetului daca nu il cunoastem)
 
     adb shell ps | findstr akrilki 
 
     adb uninstall ro.makore.akrilki_032
+
 
 # Build, clean
 

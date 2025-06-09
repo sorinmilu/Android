@@ -79,8 +79,8 @@ public class CocktailViewModel extends ViewModel {
                         String measureKey = "strMeasure" + i;
                         String ingredient = cocktail.optString(ingredientKey, null);
                         String measure = cocktail.optString(measureKey, null);
-                        Log.i("CocktailViewModel ingredient", ingredient);
-                        Log.i("CocktailViewModel measure", measure);
+                        Log.i("CocktailViewModel", "ingredient: " + ingredient);
+                        Log.i("CocktailViewModel", "measure: " +  measure);
                         if (!ingredient.equals("null") && !ingredient.isEmpty()) {
                             ingredients.append(measure != null ? measure : "")
                                     .append(ingredient)

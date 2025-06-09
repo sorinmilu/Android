@@ -4,11 +4,13 @@
 
 - [Aplicatie care preia un feed de stiri si il afiseaza in doua activitati](#aplicatie-care-preia-un-feed-de-stiri-si-il-afiseaza-in-doua-activitati)
   - [newsAPI](#newsapi)
+  - [Screenshots](#screenshots)
   - [Concepte importante](#concepte-importante)
     - [RecyclerView](#recyclerview)
     - [Parcelable](#parcelable)
     - [Structura impartita pe componente](#structura-impartita-pe-componente)
   - [Structura aplicatiei](#structura-aplicatiei)
+    - [JSON-ul returnat de API](#json-ul-returnat-de-api)
     - [Structura requestului](#structura-requestului)
     - [ro.makore.akrilki\_06.api - clasa NewsAPI](#romakoreakrilki_06api---clasa-newsapi)
     - [ro.makore.akrilki\_06.model NewsItem](#romakoreakrilki_06model-newsitem)
@@ -21,15 +23,13 @@
     - [activity\_main.xml](#activity_mainxml)
 
 <!-- /TOC -->
-<!-- /TOC -->tivity](#mainactivity)
-
 <!-- /TOC -->
-<!-- /TOC -->Structura unui element de tip stire
+
 
 
 ## newsAPI
 
-Aplicația preia un feed de știri JSON de la https://www.newsapi.ai/. Pentru replicarea funcționaliății trebuie să vă înregistrați pe site-ul https://www.newsapi.ai/ și să obțineți o cheie API. Cheia API se pozitioneaza într-un fișier numit api_key.json în directorul app/src/main/assets, unde există deja request_body.json
+Aplicația preia un feed de știri JSON de la https://www.newsapi.ai/. Pentru replicarea funcționalității trebuie să vă înregistrați pe site-ul https://www.newsapi.ai/ și să obțineți o cheie API. Cheia API se pozitioneaza într-un fișier numit api_key.json în directorul app/src/main/assets, unde există deja request_body.json
 
 Conținutul fișierului este astfel: 
 
@@ -38,6 +38,12 @@ Conținutul fișierului este astfel:
 "apiKey": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 }
 ```
+
+## Screenshots
+
+![alt text](images/loading.jpg)
+![alt text](images/mainview.jpg)
+![alt text](images/newsdetail.jpg)
 
 
 ## Concepte importante
@@ -68,45 +74,61 @@ Fiecare dintre aceste operatii a fost implementata intr-o clasa separata.
 
 ```sh
  akrilki_06
-    ├── app
-    │   ├── build.gradle
-    │   └── src
-    │       └── main
-    │           ├── AndroidManifest.xml
-    │           ├── assets
-    │           │   └── request_body.json
-    │           ├── java
-    │           │   └── ro
-    │           │       └── makore
-    │           │           └── akrilki_06
-    │           │               ├── MainActivity.java
-    │           │               ├── NewsDetailActivity.java
-    │           │               ├── adapter
-    │           │               │   └── NewsAdapter.java
-    │           │               ├── api
-    │           │               │   └── NewsAPI.java
-    │           │               ├── model
-    │           │               │   └── NewsItem.java
-    │           │               └── parser
-    │           │                   └── NewsParser.java
-    │           └── res
-    │               ├── drawable
-<!-- TOC -->
+ │   build.gradle
+│   gradle.properties
+│   settings.gradle
+│
+├───app
+│   │   build.gradle
+│   │
+│   └───src
+│       └───main
+│           │   AndroidManifest.xml
+│           │
+│           ├───assets
+│           │       api_key.json
+│           │       request_body.json
+│           │
+│           ├───java
+│           │   └───ro
+│           │       └───makore
+│           │           └───akrilki_06
+│           │               │   MainActivity.java
+│           │               │   NewsDetailActivity.java
+│           │               │
+│           │               ├───adapter
+│           │               │       NewsAdapter.java
+│           │               │
+│           │               ├───api
+│           │               │       NewsAPI.java
+│           │               │
+│           │               ├───model
+│           │               │       NewsItem.java
+│           │               │
+│           │               └───parser
+│           │                       NewsParser.java
+│           │
+│           └───res
+│               ├───drawable
+│               │       ic_chuck_black_24dp.xml
+│               │       ic_launcher_6.png
+│               │       ic_launcher_round_6.png
+│               │       ic_quit_black_24dp.xml
+│               │       ic_refresh_black_24dp.xml
+│               │
+│               ├───layout
+│               │       activity_main.xml
+│               │       activity_news_detail.xml
+│               │       item_news.xml
+│               │
+│               └───values
+│                       colors.xml
+│                       strings.xml
+│                       themes.xml
+│
+```
 
-- [Aplicatie care preia un feed de stiri si il afiseaza in doua activitati](#aplicatie-care-preia-un-feed-de-stiri-si-il-afiseaza-in-doua-activitati)
-        - [](#)
-    - [newsAPI](#newsapi)
-    - [Concepte importante](#concepte-importante)
-        - [RecyclerView](#recyclerview)
-        - [Parcelable](#parcelable)
-        - [Structura impartita pe componente](#structura-impartita-pe-componente)
-    - [Structura aplicatiei](#structura-aplicatiei)
-        - [Structura requestului](#structura-requestului)
-        - [ro.makore.akrilki_06.api - clasa NewsAPI](#romakoreakrilki_06api---clasa-newsapi)
-        - [ro.makore.akrilki_06.model NewsItem](#romakoreakrilki_06model-newsitem)
-        - [ro.makore.akrilki_06.parser NewsParser](#romakoreakrilki_06parser-newsparser)
-
-<!-- /TOC -->
+### JSON-ul returnat de API
 
 ```json
 {
@@ -264,7 +286,7 @@ Fiecare dintre aceste operatii a fost implementata intr-o clasa separata.
 
 ### Structura requestului
 
-NewsAPI
+Pentru a permite modificarea ușoară a parametrilor solicitarii către api-ul newsapi, elementele acesteia sunt plasate într-un fișier json, numit assets/requests_body.json. La acesta se va adăuga intrarea apikey din fisierul api_key.json. Intr-o versiune avansată a aplicației, acest json poate fi modificat într-un element de interfață.  
 
 ```json
 {
@@ -1031,4 +1053,12 @@ Metoda onResourceReady va returna tot false ceea ce permite Glide să continue o
 ## Layouturi
 
 ### activity_main.xml
+
+Layoutul principal care se încarcă odată cu pornirea aplicației. Conține un layout de tip constraintlayout în interiorul căruia se găsesc următoarele elemente: 
+
+ - RecyclerView - care conține lista de știri 
+ - ProgressBar - Care afișează 
+ - TextView
+ - FloatingActionButton (quit)
+ - FloatingActionButton (refresh)
 

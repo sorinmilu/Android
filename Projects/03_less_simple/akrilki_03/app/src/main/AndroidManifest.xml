@@ -5,6 +5,8 @@
 
     <application
         android:label="Alkrilki03"
+        android:icon="@drawable/ic_launcher_3"
+        android:roundIcon="@drawable/ic_launcher_round_3"
         android:theme="@style/Theme.Material3.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity

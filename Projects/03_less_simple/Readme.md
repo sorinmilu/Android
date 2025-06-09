@@ -19,13 +19,15 @@
     - [build.gradle](#buildgradle)
     - [settings.gradle](#settingsgradle)
 
-<!-- /TOC -->ia glume in format json si le afiseaza in activitatea principala. Exista un buton "Refresh joke" care preia o alta gluma si un buton de "Quit" care paraseste aplicatia. 
+<!-- /TOC -->
+
+Aplicația preia un feed cu glume in format json si le afiseaza in activitatea principala. Exista un buton "Refresh joke" care preia o alta gluma si un buton de "Quit" care paraseste aplicatia. 
 
 Aplicatia nu reface apelul API la rotirea ecranului datorita utilizarii unui ViewModel
 
 ViewModel este o componentă parte din arhitectura recomandată pentru aplicații, care are rolul de a stoca și gestiona datele legate de interfața utilizatorului (UI) într-un mod care să persiste în timpul schimbărilor de configurație, cum ar fi rotația ecranului
 
-![alt text](images/application_screenshot.png)
+![alt text](images/application_screenshot.jpg)
 
 ## Compilarea aplicatiei
 
