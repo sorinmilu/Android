@@ -180,9 +180,10 @@ Descarcati versiunea pentru windows. Vi se va solicita acceptarea unei licente.
 
 Extrageti fisierele din arhiva respectiva intr-un director care va deveni spatiul principal in care veti pozitiona toate instrumentele de dezvoltare. De exemplu, C:\Users\MYUSER\Android
 
-Va rezulta un director C:\Users\MYUSER\Android\cmdline-tools care contine, printre altele, un subdirector "bin"
+Va rezulta un director C:\Users\MYUSER\Android\cmdline-tools care contine, printre altele, un subdirector "bin", un subdirector "lib",  
 
-Mutati continutul acestui director intrpun subdirector "latest", astfel incat instrumentele sa fie plasate in C:\Users\MYUSER\Android\cmdline-tools\latest
+Mutati continutul acestui director intr-un subdirector "latest" (cel putin directoarele bin si lib), astfel incat sa obtineti C:\Users\MYUSER\Android\cmdline-tools\latest\bin si C:\Users\MYUSER\Android\cmdline-tools\latest\lib 
+
 
 ## Adaugati directorul "bin" al cmdline-tools la PATH
 
