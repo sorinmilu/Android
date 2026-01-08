@@ -44,4 +44,11 @@ dependencies {
     
     // Google Play Services for GPS
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+    
+    // MPAndroidChart for temperature graphs
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    
+    // Glide for loading weather icons
+    implementation 'com.bumptech.glide:glide:4.13.0'
+    implementation 'com.bumptech.glide:okhttp3-integration:4.13.0'
 }

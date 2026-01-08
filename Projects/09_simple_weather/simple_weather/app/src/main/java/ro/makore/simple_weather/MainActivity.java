@@ -6,6 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -21,6 +25,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +38,17 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.Transformer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
@@ -802,6 +819,130 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     
+    // ========== CHART SETUP (INLINE - like original app but all in one place) ==========
+    
+    private void setupTemperatureChart(LineChart lineChart, FrameLayout chartFrame, List<WeatherItem> hourlyData) {
+        if (hourlyData == null || hourlyData.isEmpty()) {
+            return;
+        }
+        
+        // Prepare data for chart
+        List<Entry> entries = new ArrayList<>();
+        List<String> iconUrls = new ArrayList<>();
+        
+        for (int i = 0; i < hourlyData.size(); i++) {
+            WeatherItem item = hourlyData.get(i);
+            entries.add(new Entry(i, (float) item.temperature));
+            iconUrls.add(item.iconUrl != null ? item.iconUrl : "");
+        }
+        
+        // Create dataset with fill under the line
+        LineDataSet dataSet = new LineDataSet(entries, "Temperature");
+        dataSet.setColor(Color.parseColor("#2196F3"));
+        dataSet.setLineWidth(3f);
+        dataSet.setDrawCircles(false);
+        dataSet.setDrawValues(true);
+        dataSet.setValueTextSize(12f);
+        dataSet.setValueTextColor(Color.BLACK);
+        
+        // Format temperature values to show 1 decimal
+        dataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format(Locale.US, "%.1f°", value);
+            }
+        });
+        
+        // Fill under line
+        dataSet.setDrawFilled(true);
+        dataSet.setFillColor(Color.parseColor("#8CBBF1"));
+        dataSet.setFillAlpha(100);
+        
+        // Create LineData and set to chart
+        LineData lineData = new LineData(dataSet);
+        lineChart.setData(lineData);
+        
+        // Disable axes
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setEnabled(false);
+        
+        YAxis leftAxis = lineChart.getAxisLeft();
+        leftAxis.setEnabled(false);
+        
+        YAxis rightAxis = lineChart.getAxisRight();
+        rightAxis.setEnabled(false);
+        
+        // Configure chart
+        lineChart.getDescription().setEnabled(false);
+        lineChart.getLegend().setEnabled(false);
+        lineChart.setTouchEnabled(false);
+        lineChart.setDragEnabled(false);
+        lineChart.setScaleEnabled(false);
+        lineChart.setPinchZoom(false);
+        lineChart.setDrawGridBackground(false);
+        lineChart.setBackgroundColor(Color.TRANSPARENT);
+        lineChart.setExtraOffsets(20f, 20f, 20f, 60f); // Bottom padding for icons
+        
+        // Refresh chart and overlay icons
+        lineChart.invalidate();
+        lineChart.postDelayed(() -> overlayIconsOnChart(lineChart, chartFrame, entries, iconUrls), 100);
+    }
+    
+    private void overlayIconsOnChart(LineChart lineChart, FrameLayout chartFrame, 
+                                      List<Entry> entries, List<String> iconUrls) {
+        // Clear previous icons
+        for (int i = chartFrame.getChildCount() - 1; i > 0; i--) {
+            View child = chartFrame.getChildAt(i);
+            if (child instanceof ImageView) {
+                chartFrame.removeView(child);
+            }
+        }
+        
+        if (entries.isEmpty() || iconUrls.isEmpty()) {
+            return;
+        }
+        
+        Transformer transformer = lineChart.getTransformer(YAxis.AxisDependency.LEFT);
+        int iconSize = 60; // 60dp icon size
+        int iconSpacing = 10;
+        
+        // Overlay icons at each data point
+        for (int i = 0; i < entries.size() && i < iconUrls.size(); i++) {
+            Entry entry = entries.get(i);
+            String iconUrl = iconUrls.get(i);
+            
+            if (iconUrl == null || iconUrl.isEmpty()) {
+                continue;
+            }
+            
+            // Transform entry X coordinate to pixel position
+            float[] point = new float[] { entry.getX(), entry.getY() };
+            transformer.pointValuesToPixel(point);
+            
+            float xPos = point[0];
+            float yPos = lineChart.getHeight() - iconSize - iconSpacing;
+            
+            // Ensure icons are within bounds
+            if (yPos + iconSize > chartFrame.getHeight()) {
+                yPos = chartFrame.getHeight() - iconSize - iconSpacing;
+            }
+            
+            // Create ImageView for icon
+            ImageView iconView = new ImageView(MainActivity.this);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(iconSize, iconSize);
+            params.leftMargin = (int) (xPos - iconSize / 2f);
+            params.topMargin = (int) yPos;
+            iconView.setLayoutParams(params);
+            
+            // Load icon with Glide
+            Glide.with(MainActivity.this)
+                .load(iconUrl)
+                .into(iconView);
+            
+            chartFrame.addView(iconView);
+        }
+    }
+    
     // ========== ADAPTER (INLINE - NO SEPARATE ADAPTER PACKAGE) ==========
     
     private class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
@@ -824,10 +965,12 @@ public class MainActivity extends AppCompatActivity {
             DailyWeather daily = dailyList.get(position);
             
             holder.dateText.setText(daily.date);
-            holder.tempText.setText(String.format(Locale.US, "%.1f°C", daily.avgTemp));
             holder.minMaxText.setText(String.format(Locale.US, "%.1f / %.1f°C", 
                 daily.minTemp, daily.maxTemp));
             holder.itemCountText.setText(daily.items.size() + " entries");
+            
+            // Setup temperature chart with icons
+            setupTemperatureChart(holder.temperatureChart, holder.chartFrame, daily.items);
             
             holder.itemView.setOnClickListener(v -> {
                 if (!daily.items.isEmpty()) {
@@ -845,16 +988,18 @@ public class MainActivity extends AppCompatActivity {
         
         class ViewHolder extends RecyclerView.ViewHolder {
             TextView dateText;
-            TextView tempText;
             TextView minMaxText;
             TextView itemCountText;
+            FrameLayout chartFrame;
+            com.github.mikephil.charting.charts.LineChart temperatureChart;
             
             ViewHolder(View itemView) {
                 super(itemView);
                 dateText = itemView.findViewById(R.id.dateText);
-                tempText = itemView.findViewById(R.id.tempText);
                 minMaxText = itemView.findViewById(R.id.minMaxText);
                 itemCountText = itemView.findViewById(R.id.itemCountText);
+                chartFrame = itemView.findViewById(R.id.chartFrame);
+                temperatureChart = itemView.findViewById(R.id.temperatureChart);
             }
         }
     }
