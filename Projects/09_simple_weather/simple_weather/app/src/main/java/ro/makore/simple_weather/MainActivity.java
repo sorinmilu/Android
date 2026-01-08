@@ -139,16 +139,28 @@ public class MainActivity extends AppCompatActivity {
                      "&appid=" + apiKey + "&units=metric";
         
         Log.d(TAG, "Fetching weather for: " + cityName);
+        Log.d(TAG, "API URL: " + url.replace(apiKey, "***"));
         
         Request request = new Request.Builder().url(url).get().build();
         
         try (Response response = client.newCall(request).execute()) {
-            String body = response.body().string();
+            int code = response.code();
+            String body = response.body() != null ? response.body().string() : "";
             
-            if (!response.isSuccessful()) {
-                throw new IOException("API Error: " + response.code());
+            Log.d(TAG, "API Response code: " + code);
+            
+            if (code == 429) {
+                Log.e(TAG, "Rate limit exceeded. Response: " + body);
+                throw new IOException("API Error: 429 - Too many requests. Wait a few minutes.");
+            } else if (code == 401) {
+                Log.e(TAG, "Unauthorized. Check API key. Response: " + body);
+                throw new IOException("API Error: 401 - Invalid API key");
+            } else if (!response.isSuccessful()) {
+                Log.e(TAG, "API Error " + code + ": " + body);
+                throw new IOException("API Error: " + code + " - " + body);
             }
             
+            Log.d(TAG, "API Response received successfully");
             return body;
         }
     }
