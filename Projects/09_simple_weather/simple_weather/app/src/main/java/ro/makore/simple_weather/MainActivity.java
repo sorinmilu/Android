@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Editable;
@@ -325,6 +326,15 @@ public class MainActivity extends AppCompatActivity {
         }
         
         getGPSLocation();
+    }
+    
+    private void loadDefaultCity() {
+        Log.d(TAG, "Loading default city: " + currentCity);
+        runOnUiThread(() -> {
+            if (currentCity != null && !currentCity.isEmpty()) {
+                loadWeather(currentCity);
+            }
+        });
     }
     
     private void getGPSLocation() {
