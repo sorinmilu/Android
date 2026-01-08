@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cityText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="City, Country"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/dateTimeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date Time"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:padding="4dp" />
+
+        <TextView
+            android:id="@+id/tempText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="20.0°C"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="16dp" />
+
+        <TextView
+            android:id="@+id/feelsLikeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Feels like: 18.0°C"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:padding="4dp" />
+
+        <TextView
+            android:id="@+id/descText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clear sky"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:padding="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/humidityText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Humidity: 60%"
+            android:textSize="16sp"
+            android:padding="4dp" />
+
+        <TextView
+            android:id="@+id/pressureText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pressure: 1013 hPa"
+            android:textSize="16sp"
+            android:padding="4dp" />
+
+        <TextView
+            android:id="@+id/windText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wind: 5.0 m/s"
+            android:textSize="16sp"
+            android:padding="4dp" />
+
+        <TextView
+            android:id="@+id/visibilityText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Visibility: 10.0 km"
+            android:textSize="16sp"
+            android:padding="4dp" />
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
+</ScrollView>
