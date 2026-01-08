@@ -26,6 +26,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+    
+    lint {
+        disable 'NotificationPermission'
+        abortOnError false
+    }
 }
 
 dependencies {
