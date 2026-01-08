@@ -822,9 +822,14 @@ public class MainActivity extends AppCompatActivity {
     // ========== CHART SETUP (INLINE - like original app but all in one place) ==========
     
     private void setupTemperatureChart(LineChart lineChart, FrameLayout chartFrame, List<WeatherItem> hourlyData) {
+        Log.d(TAG, "setupTemperatureChart called");
+        
         if (hourlyData == null || hourlyData.isEmpty()) {
+            Log.w(TAG, "hourlyData is null or empty");
             return;
         }
+        
+        Log.d(TAG, "Setting up chart with " + hourlyData.size() + " items");
         
         // Prepare data for chart
         List<Entry> entries = new ArrayList<>();
@@ -835,6 +840,8 @@ public class MainActivity extends AppCompatActivity {
             entries.add(new Entry(i, (float) item.temperature));
             iconUrls.add(item.iconUrl != null ? item.iconUrl : "");
         }
+        
+        Log.d(TAG, "Created " + entries.size() + " entries");
         
         // Create dataset with fill under the line
         LineDataSet dataSet = new LineDataSet(entries, "Temperature");
@@ -849,18 +856,20 @@ public class MainActivity extends AppCompatActivity {
         dataSet.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return String.format(Locale.US, "%.1f°", value);
+                return String.format(Locale.US, "%.0f°", value);
             }
         });
         
         // Fill under line
         dataSet.setDrawFilled(true);
-        dataSet.setFillColor(Color.parseColor("#8CBBF1"));
-        dataSet.setFillAlpha(100);
+        dataSet.setFillColor(Color.parseColor("#2196F3"));
+        dataSet.setFillAlpha(128);
         
         // Create LineData and set to chart
         LineData lineData = new LineData(dataSet);
         lineChart.setData(lineData);
+        
+        Log.d(TAG, "LineData set to chart");
         
         // Disable axes
         XAxis xAxis = lineChart.getXAxis();
@@ -883,9 +892,14 @@ public class MainActivity extends AppCompatActivity {
         lineChart.setBackgroundColor(Color.TRANSPARENT);
         lineChart.setExtraOffsets(20f, 20f, 20f, 60f); // Bottom padding for icons
         
+        Log.d(TAG, "Chart configured, calling invalidate");
+        
         // Refresh chart and overlay icons
         lineChart.invalidate();
-        lineChart.postDelayed(() -> overlayIconsOnChart(lineChart, chartFrame, entries, iconUrls), 100);
+        lineChart.postDelayed(() -> {
+            Log.d(TAG, "Calling overlayIconsOnChart");
+            overlayIconsOnChart(lineChart, chartFrame, entries, iconUrls);
+        }, 100);
     }
     
     private void overlayIconsOnChart(LineChart lineChart, FrameLayout chartFrame, 
@@ -969,8 +983,16 @@ public class MainActivity extends AppCompatActivity {
                 daily.minTemp, daily.maxTemp));
             holder.itemCountText.setText(daily.items.size() + " entries");
             
+            Log.d(TAG, "onBindViewHolder position=" + position + ", items=" + daily.items.size());
+            Log.d(TAG, "Chart view: " + holder.temperatureChart);
+            Log.d(TAG, "Frame view: " + holder.chartFrame);
+            
             // Setup temperature chart with icons
-            setupTemperatureChart(holder.temperatureChart, holder.chartFrame, daily.items);
+            if (holder.temperatureChart != null && holder.chartFrame != null) {
+                setupTemperatureChart(holder.temperatureChart, holder.chartFrame, daily.items);
+            } else {
+                Log.e(TAG, "Chart or frame is NULL!");
+            }
             
             holder.itemView.setOnClickListener(v -> {
                 if (!daily.items.isEmpty()) {
