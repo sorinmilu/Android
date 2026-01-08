@@ -6,14 +6,35 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/cityName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bucharest"
+        android:text="Simple Weather"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
         android:padding="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <Spinner
+            android:id="@+id/citySpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="8dp" />
+
+        <Button
+            android:id="@+id/btnAddCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textSize="20sp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnRefresh"
