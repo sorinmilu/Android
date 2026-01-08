@@ -1,0 +1,276 @@
+@startuml 09_simple_weather Class Diagram
+title 09_simple_weather - Class Diagram (God Object / All-in-One)
+
+package "com.example.simpleweather" {
+    class MainActivity {
+        {field} **--- FIELDS (State Management) ---**
+        - RecyclerView recyclerView
+        - WeatherAdapter adapter
+        - TextView tvCurrentCity
+        - SwipeRefreshLayout swipeRefresh
+        - FloatingActionButton fabAddCity
+        - OkHttpClient client
+        - Gson gson
+        - FusedLocationProviderClient fusedLocationClient
+        - SharedPreferences prefs
+        - Handler gpsTimeoutHandler
+        - List<String> cityList
+        - String currentCity
+        - String API_KEY
+        
+        {method} **--- LIFECYCLE ---**
+        + onCreate(Bundle)
+        
+        {method} **--- PERSISTENCE (40 lines) ---**
+        - loadCities(): List<String>
+        - saveCities()
+        - loadCurrentCity(): String
+        - saveCurrentCity(String)
+        
+        {method} **--- UI SETUP (50 lines) ---**
+        - setupRecyclerView()
+        - setupSwipeRefresh()
+        - setupFAB()
+        - updateCityDisplay()
+        
+        {method} **--- ADD CITY DIALOG (100 lines) ---**
+        - showAddCityDialog()
+        - debounceValidateCity(String)
+        - validateCityAsync(String, callback)
+        
+        {method} **--- GPS LOCATION (200 lines) ---**
+        - requestGPSLocation()
+        - checkLocationPermissions(): boolean
+        - requestLocationPermissions()
+        - getLastKnownLocation()
+        - requestNewLocationData()
+        - getCityFromLocation(Location): String
+        - handleGPSResult(String)
+        - handleGPSError()
+        - cancelGPSTimeout()
+        
+        {method} **--- API CALLS (80 lines) ---**
+        - loadWeatherForecast(String)
+        - makeAPIRequest(String): String
+        - handleWeatherResponse(String)
+        
+        {method} **--- JSON PARSING (120 lines) ---**
+        - parseWeatherJSON(String): List<WeatherItem>
+        - extractWeatherItem(JsonObject): WeatherItem
+        - groupWeatherByDay(List<WeatherItem>): List<DailyWeather>
+        - formatDate(Date): String
+        
+        {method} **--- PERMISSION HANDLING ---**
+        + onRequestPermissionsResult(int, String[], int[])
+        
+        {method} **--- ACTIVITY RESULT ---**
+        + onActivityResult(int, int, Intent)
+        
+        ==
+        
+        **Inner Classes:**
+        --
+        {static} + class WeatherItem implements Parcelable
+        {static} + class DailyWeather
+        {static} + class WeatherAdapter extends RecyclerView.Adapter
+    }
+    
+    class MainActivity.WeatherItem {
+        {field} **--- WEATHER DATA ---**
+        + String cityName
+        + String country
+        + String description
+        + String iconUrl
+        + double temperature
+        + double feelsLike
+        + double humidity
+        + double pressure
+        + double windSpeed
+        + double visibility
+        + String dateTime
+        
+        {method} **--- CONSTRUCTORS ---**
+        + WeatherItem()
+        + WeatherItem(Parcel)
+        
+        {method} **--- PARCELABLE ---**
+        + writeToParcel(Parcel, int)
+        + describeContents(): int
+        {static} + CREATOR: Parcelable.Creator
+        
+        {method} **--- GETTERS/SETTERS (22) ---**
+        + getCityName(): String
+        + setCityName(String)
+        + getTemperature(): double
+        + setTemperature(double)
+        ... 18 more ...
+    }
+    
+    class MainActivity.DailyWeather {
+        {field} **--- DAILY GROUPING ---**
+        + String date
+        + List<WeatherItem> items
+        + double avgTemp
+        + double minTemp
+        + double maxTemp
+        
+        {method} **--- CONSTRUCTOR ---**
+        + DailyWeather()
+        
+        {method} **--- CALCULATIONS ---**
+        + calculateAverages()
+        
+        {method} **--- GETTERS/SETTERS ---**
+        + getDate(): String
+        + setDate(String)
+        + getItems(): List<WeatherItem>
+        + setItems(List<WeatherItem>)
+        + getAvgTemp(): double
+        + getMinTemp(): double
+        + getMaxTemp(): double
+    }
+    
+    class MainActivity.WeatherAdapter {
+        {field} **--- ADAPTER STATE ---**
+        - List<DailyWeather> dailyList
+        - Context context
+        
+        {method} **--- CONSTRUCTOR ---**
+        + WeatherAdapter(Context, List<DailyWeather>)
+        
+        {method} **--- RECYCLERVIEW OVERRIDES ---**
+        + onCreateViewHolder(ViewGroup, int): ViewHolder
+        + onBindViewHolder(ViewHolder, int)
+        + getItemCount(): int
+        
+        {method} **--- CHART SETUP (100 lines) ---**
+        - setupTemperatureChart(LineChart, List<WeatherItem>)
+        - overlayWeatherIcons(FrameLayout, List<WeatherItem>, List<Entry>)
+        
+        ==
+        
+        **Inner Classes:**
+        --
+        {static} + class ViewHolder extends RecyclerView.ViewHolder
+    }
+    
+    class MainActivity.WeatherAdapter.ViewHolder {
+        {field} **--- VIEW BINDINGS ---**
+        + TextView tvDate
+        + TextView tvMinMax
+        + LineChart temperatureChart
+        + FrameLayout chartFrame
+        
+        {method} **--- CONSTRUCTOR ---**
+        + ViewHolder(View)
+    }
+}
+
+package "activity" {
+    class WeatherDetailActivity {
+        {field} **--- DETAIL VIEW ---**
+        - WeatherItem weatherItem
+        - TextView tvCity
+        - TextView tvCountry
+        - TextView tvDescription
+        - TextView tvTemp
+        - TextView tvFeelsLike
+        - TextView tvHumidity
+        - TextView tvPressure
+        - TextView tvWindSpeed
+        - TextView tvVisibility
+        - TextView tvDateTime
+        - ImageView ivWeatherIcon
+        
+        {method} **--- LIFECYCLE ---**
+        + onCreate(Bundle)
+        
+        {method} **--- DATA EXTRACTION ---**
+        - extractWeatherItem(): WeatherItem
+        
+        {method} **--- UI UPDATES ---**
+        - displayWeatherDetails(WeatherItem)
+        - loadWeatherIcon(String)
+    }
+}
+
+' Relationships
+MainActivity +-- MainActivity.WeatherItem: contains
+MainActivity +-- MainActivity.DailyWeather: contains
+MainActivity +-- MainActivity.WeatherAdapter: contains
+MainActivity.WeatherAdapter +-- MainActivity.WeatherAdapter.ViewHolder: contains
+
+MainActivity --> "*" MainActivity.DailyWeather: creates
+MainActivity.DailyWeather o-- "*" MainActivity.WeatherItem: aggregates
+
+MainActivity.WeatherAdapter --> "*" MainActivity.DailyWeather: displays
+
+WeatherDetailActivity --> MainActivity.WeatherItem: receives via Intent
+
+MainActivity.WeatherItem ..|> Parcelable: implements
+
+' External Dependencies (shown as interfaces/abstractions)
+MainActivity ..> "OkHttpClient": uses inline
+MainActivity ..> "Gson": uses inline
+MainActivity ..> "FusedLocationProviderClient": uses inline
+MainActivity ..> "SharedPreferences": uses inline
+MainActivity ..> "Geocoder": uses inline
+
+note top of MainActivity
+    **GOD OBJECT PATTERN**
+    - ALL logic in ONE class
+    - No separation of concerns
+    - 1039 lines in MainActivity.java
+    - Inline implementations
+    
+    **ADVANTAGES:**
+    ✓ Simple to understand
+    ✓ No dependency injection
+    ✓ Fast development
+    ✓ Easy debugging (one file)
+    
+    **DISADVANTAGES:**
+    ✗ Poor maintainability
+    ✗ Difficult testing
+    ✗ Code reuse limited
+    ✗ Violates SRP
+end note
+
+note right of MainActivity.WeatherItem
+    **Inner Static Class**
+    - Encapsulated within MainActivity
+    - Implements Parcelable for Intent passing
+    - 140 lines (vs 120 in 08_weather)
+    - Additional getters/setters
+end note
+
+note right of MainActivity.DailyWeather
+    **Inner Static Class**
+    - Aggregates WeatherItem list
+    - Calculates daily averages
+    - 60 lines (vs 80 in 08_weather)
+    - Simplified logic
+end note
+
+note right of MainActivity.WeatherAdapter
+    **Inner Class**
+    - Access to MainActivity context
+    - Inline chart setup
+    - 200 lines
+    - ViewHolder pattern inside
+end note
+
+note bottom of WeatherDetailActivity
+    **Files: 2 classes**
+    **Packages: 2**
+    **Total Lines: ~1091**
+    **Pattern: God Object**
+    
+    **COMPARISON:**
+    08_weather: 13 classes, 7 packages
+    09_simple: 2 classes, 2 packages
+    
+    Reduction: 85% fewer files!
+end note
+
+@enduml

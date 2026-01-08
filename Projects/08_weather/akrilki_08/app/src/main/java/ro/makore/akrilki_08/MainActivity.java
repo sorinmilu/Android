@@ -52,9 +52,12 @@ public class MainActivity extends AppCompatActivity {
     private LocationSpinnerAdapter locationAdapter;
     private String currentSelectedLocation;
     private String currentGpsLocation; // GPS-based current location
+    private boolean isInitialLoad = true; // Flag to track first load
+    private boolean gpsCompleted = false; // Flag to track GPS completion
 
     // Default city for weather forecast
     private static final String DEFAULT_CITY = "Bucharest";
+    private static final long GPS_TIMEOUT_MS = 10000; // 10 seconds timeout for GPS
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +93,17 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         loadingText = findViewById(R.id.loadingText);
 
-        // Get GPS location and update spinner
-        getGpsLocation();
+        // Show loading immediately
+        progressBar.setVisibility(View.VISIBLE);
+        loadingText.setVisibility(View.VISIBLE);
+        loadingText.setText("Getting your location...");
+        recyclerView.setVisibility(View.GONE);
 
-        // Load weather for default/selected location
-        refreshWeatherData();
+        // Get GPS location FIRST (with timeout fallback)
+        getGpsLocationWithTimeout();
+
+        // DO NOT load weather here - wait for GPS!
+        // refreshWeatherData(); // REMOVED - This was causing the double API call
     }
 
     private void setupLocationSpinner() {
@@ -142,6 +151,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void getGpsLocationWithTimeout() {
+        // Start timeout handler
+        new android.os.Handler(getMainLooper()).postDelayed(() -> {
+            if (!gpsCompleted) {
+                Log.w("WEATHER08", "GPS timeout - falling back to default city");
+                handleGpsFailure("GPS timeout");
+            }
+        }, GPS_TIMEOUT_MS);
+
+        // Request GPS location
+        getGpsLocation();
+    }
+
     private void getGpsLocation() {
         // Check location permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -157,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         locationService.getCurrentLocationName(new LocationService.LocationCallback() {
             @Override
             public void onLocationReceived(String cityName) {
+                gpsCompleted = true;
                 currentGpsLocation = cityName;
                 locationManager.setCurrentLocation(cityName);
                 
@@ -175,14 +198,50 @@ public class MainActivity extends AppCompatActivity {
                     locationSpinner.setAdapter(locationAdapter);
                     locationSpinner.setSelection(0); // Select current location
                     currentSelectedLocation = cityName;
-                    refreshWeatherData();
+                    
+                    // ONLY load weather on initial load (fixes double API call)
+                    if (isInitialLoad) {
+                        isInitialLoad = false;
+                        loadingText.setText("Loading weather for " + cityName + "...");
+                        refreshWeatherData();
+                    }
                 });
             }
 
             @Override
             public void onLocationError(String error) {
                 Log.w("WEATHER08", "GPS location error: " + error);
-                // Continue without GPS location
+                handleGpsFailure(error);
+            }
+        });
+    }
+
+    private void handleGpsFailure(String error) {
+        gpsCompleted = true;
+        
+        runOnUiThread(() -> {
+            // Only load default city on initial load
+            if (isInitialLoad) {
+                isInitialLoad = false;
+                Log.i("WEATHER08", "GPS failed, using default city: " + DEFAULT_CITY);
+                
+                // Set default city as selected
+                List<String> locations = locationManager.getSavedLocations();
+                if (locations.isEmpty() || !locations.contains(DEFAULT_CITY)) {
+                    locationManager.addLocation(DEFAULT_CITY);
+                    locations = locationManager.getSavedLocations();
+                }
+                
+                int defaultIndex = locations.indexOf(DEFAULT_CITY);
+                if (defaultIndex >= 0) {
+                    locationAdapter = new LocationSpinnerAdapter(MainActivity.this, locations, null);
+                    locationSpinner.setAdapter(locationAdapter);
+                    locationSpinner.setSelection(defaultIndex);
+                    currentSelectedLocation = DEFAULT_CITY;
+                }
+                
+                loadingText.setText("Loading weather for " + DEFAULT_CITY + "...");
+                refreshWeatherData();
             }
         });
     }
@@ -192,9 +251,11 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getGpsLocation();
+                // Permission granted - retry GPS
+                getGpsLocationWithTimeout();
             } else {
-                Toast.makeText(this, "Location permission denied. GPS location will not be available.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Location permission denied. Using default city.", Toast.LENGTH_SHORT).show();
+                handleGpsFailure("Permission denied");
             }
         }
     }

@@ -1,0 +1,130 @@
+@startuml 08_weather Startup Sequence
+title 08_weather - Startup Sequence (Clean Architecture)
+
+actor User
+participant MainActivity
+participant WeatherRepository
+participant GPSLocationProvider
+participant WeatherAPI
+participant WeatherParser
+participant RecyclerView
+
+User -> MainActivity: Launch app
+activate MainActivity
+
+MainActivity -> MainActivity: onCreate()
+MainActivity -> MainActivity: setContentView()
+
+MainActivity -> WeatherRepository: getInstance(context)
+activate WeatherRepository
+WeatherRepository --> MainActivity: repository
+deactivate WeatherRepository
+
+MainActivity -> WeatherRepository: loadCities()
+activate WeatherRepository
+WeatherRepository -> WeatherRepository: SharedPreferences.getString()
+WeatherRepository -> WeatherRepository: Gson.fromJson()
+WeatherRepository --> MainActivity: List<String> cities
+deactivate WeatherRepository
+
+MainActivity -> WeatherRepository: getCurrentCity()
+activate WeatherRepository
+WeatherRepository --> MainActivity: "Bucharest"
+deactivate WeatherRepository
+
+MainActivity -> GPSLocationProvider: new GPSLocationProvider(context, listener)
+activate GPSLocationProvider
+GPSLocationProvider -> GPSLocationProvider: FusedLocationProviderClient.create()
+GPSLocationProvider --> MainActivity: gpsProvider
+deactivate GPSLocationProvider
+
+MainActivity -> WeatherAPI: new WeatherAPI(context)
+activate WeatherAPI
+WeatherAPI -> WeatherAPI: readAPIKey()
+WeatherAPI --> MainActivity: api
+deactivate WeatherAPI
+
+note over MainActivity: LOADS WEATHER IMMEDIATELY\n(before GPS result)
+MainActivity -> MainActivity: loadWeather("Bucharest")
+
+MainActivity -> WeatherAPI: fetchForecast("Bucharest")
+activate WeatherAPI
+WeatherAPI -> WeatherAPI: OkHttpClient.newCall()
+WeatherAPI -> WeatherAPI: execute() [BLOCKING]
+WeatherAPI --> MainActivity: JSON string
+deactivate WeatherAPI
+
+MainActivity -> WeatherParser: parseWeatherList(json)
+activate WeatherParser
+WeatherParser -> WeatherParser: Gson.fromJson()
+WeatherParser -> WeatherParser: parseWeatherItem() [×40]
+WeatherParser --> MainActivity: List<WeatherItem>
+deactivate WeatherParser
+
+MainActivity -> WeatherParser: groupByDay(items)
+activate WeatherParser
+WeatherParser -> WeatherParser: HashMap grouping
+WeatherParser -> WeatherParser: calculateAverages()
+WeatherParser --> MainActivity: List<DailyWeather>
+deactivate WeatherParser
+
+MainActivity -> MainActivity: new WeatherAdapter(dailyList)
+MainActivity -> RecyclerView: setAdapter(adapter)
+activate RecyclerView
+RecyclerView --> User: Display weather for Bucharest
+deactivate RecyclerView
+
+note over MainActivity: Weather displayed for DEFAULT city
+
+par GPS Request (Parallel)
+    MainActivity -> GPSLocationProvider: requestLocation()
+    activate GPSLocationProvider
+    
+    GPSLocationProvider -> GPSLocationProvider: checkPermission()
+    
+    alt Permission Granted
+        GPSLocationProvider -> GPSLocationProvider: FusedLocationClient.getLastLocation()
+        
+        alt Location != null
+            GPSLocationProvider -> GPSLocationProvider: Geocoder.getFromLocation()
+            GPSLocationProvider -> MainActivity: onLocationFound("Mountain View")
+            deactivate GPSLocationProvider
+            
+            note over MainActivity: GPS result arrives LATE
+            MainActivity -> WeatherAPI: fetchForecast("Mountain View")
+            activate WeatherAPI
+            WeatherAPI --> MainActivity: JSON
+            deactivate WeatherAPI
+            
+            MainActivity -> WeatherParser: parseWeatherList(json)
+            activate WeatherParser
+            WeatherParser --> MainActivity: List<DailyWeather>
+            deactivate WeatherParser
+            
+            MainActivity -> RecyclerView: setAdapter(new adapter)
+            activate RecyclerView
+            RecyclerView --> User: Display weather for Mountain View
+            deactivate RecyclerView
+            
+            note right: 2nd API CALL - WASTED!\nUser already saw Bucharest
+        else Location == null
+            GPSLocationProvider -> MainActivity: onLocationError("Location null")
+            deactivate GPSLocationProvider
+        end
+    else Permission Denied
+        GPSLocationProvider -> User: Show permission dialog
+        User -> GPSLocationProvider: Deny
+        GPSLocationProvider -> MainActivity: onLocationError("Permission denied")
+        deactivate GPSLocationProvider
+    end
+end
+
+note over MainActivity, RecyclerView
+    **PROBLEM:**
+    - Loads weather TWICE (Bucharest + GPS city)
+    - User sees wrong city first
+    - Wastes API calls
+    - Complex flow across 8 classes
+end note
+
+@enduml

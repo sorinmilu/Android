@@ -1,0 +1,177 @@
+@startuml 09_simple_weather Startup Sequence
+title 09_simple_weather - Startup Sequence (GPS-First Priority)
+
+actor User
+participant MainActivity
+
+User -> MainActivity: Launch app
+activate MainActivity
+
+MainActivity -> MainActivity: onCreate()
+MainActivity -> MainActivity: setContentView()
+MainActivity -> MainActivity: findViewById() ×3
+
+MainActivity -> MainActivity: RecyclerView.setLayoutManager()
+
+MainActivity -> MainActivity: fusedLocationClient = LocationServices.get()
+
+MainActivity -> MainActivity: loadCities()
+note right
+    Inline SharedPreferences:
+    - getSharedPreferences()
+    - getString("cities")
+    - Gson.fromJson()
+    - Default: ["Bucharest"]
+end note
+
+MainActivity -> MainActivity: setupCitySpinner()
+note right
+    Inline Spinner setup:
+    - new ArrayAdapter(cities)
+    - setAdapter()
+    - setOnItemSelectedListener()
+end note
+
+MainActivity -> MainActivity: Setup button listeners
+note right
+    btnRefresh -> loadWeather()
+    btnAddCity -> showAddCityDialog()
+end note
+
+note over MainActivity: **NO WEATHER LOAD HERE**\nWait for GPS first!
+
+MainActivity -> MainActivity: requestGPSLocation()
+
+alt Permission Granted
+    MainActivity -> MainActivity: getGPSLocation()
+    
+    MainActivity -> MainActivity: Handler.postDelayed(timeout, 10s)
+    note right: 10 second timeout
+    
+    MainActivity -> MainActivity: fusedLocationClient.getLastLocation()
+    
+    alt Location != null (Success Path)
+        MainActivity -> MainActivity: new Thread() [Background]
+        
+        MainActivity -> MainActivity: Geocoder.getFromLocation(lat, lon)
+        note right
+            Inline Geocoding:
+            - Try getLocality() -> "Mountain View"
+            - Fallback: getAdminArea()
+            - Fallback: getCountryName()
+        end note
+        
+        alt City Name Found
+            MainActivity -> MainActivity: Handler.removeCallbacks(timeout)
+            note right: Cancel timeout - SUCCESS!
+            
+            MainActivity -> MainActivity: runOnUiThread()
+            
+            alt City not in list
+                MainActivity -> MainActivity: cities.add(0, "Mountain View")
+                MainActivity -> MainActivity: saveCities()
+                note right
+                    Inline save:
+                    - Gson.toJson(cities)
+                    - prefs.edit().putString()
+                end note
+            end
+            
+            MainActivity -> MainActivity: currentCity = "Mountain View"
+            MainActivity -> MainActivity: saveCities()
+            MainActivity -> MainActivity: updateSpinner()
+            
+            note over MainActivity: **FIRST WEATHER LOAD**\nOnly 1 API call!
+            
+            MainActivity -> MainActivity: loadWeather("Mountain View")
+            
+            MainActivity -> MainActivity: new Thread() [Background]
+            
+            MainActivity -> MainActivity: fetchWeatherFromAPI("Mountain View")
+            note right
+                Inline OkHttp:
+                - new OkHttpClient()
+                - readAPIKey() [org.json]
+                - URLEncoder.encode()
+                - execute() [BLOCKING]
+                - Error handling (429, 401)
+            end note
+            
+            MainActivity -> MainActivity: parseWeatherJSON(json)
+            note right
+                Inline Gson parsing:
+                - Gson.fromJson()
+                - Loop 40 items
+                - HashMap<day, DailyWeather>
+                - calculateAverages()
+            end note
+            
+            MainActivity -> MainActivity: runOnUiThread()
+            
+            MainActivity -> MainActivity: new WeatherAdapter(dailyList)
+            note right: Inner class adapter
+            
+            MainActivity -> MainActivity: RecyclerView.setAdapter()
+            
+            MainActivity --> User: Display weather for Mountain View
+            
+            MainActivity -> User: Toast("Current location: Mountain View")
+            
+        else City Name == null
+            MainActivity -> MainActivity: Handler.removeCallbacks(timeout)
+            MainActivity -> MainActivity: loadDefaultCity()
+            note right: Fallback to saved city
+        end
+        
+    else Location == null
+        MainActivity -> MainActivity: requestCurrentLocation()
+        note right
+            Fresh GPS request:
+            - LocationRequest.create()
+            - PRIORITY_HIGH_ACCURACY
+            - setNumUpdates(1)
+            - 8 second timeout
+        end note
+        
+        alt Fresh Location Success
+            MainActivity -> MainActivity: Same geocoding flow
+            MainActivity --> User: Display weather for GPS city
+        else Fresh Location Timeout
+            MainActivity -> MainActivity: loadDefaultCity()
+            MainActivity --> User: Display weather for Bucharest
+        end
+    end
+    
+else Permission Denied
+    MainActivity -> User: Show permission dialog
+    User -> MainActivity: Deny
+    
+    MainActivity -> MainActivity: onRequestPermissionsResult()
+    MainActivity -> MainActivity: loadDefaultCity()
+    
+    MainActivity -> MainActivity: loadWeather("Bucharest")
+    MainActivity -> MainActivity: fetchWeatherFromAPI()
+    MainActivity -> MainActivity: parseWeatherJSON()
+    MainActivity --> User: Display weather for Bucharest
+end
+
+note over MainActivity
+    **GPS Timeout Path (10s)**
+    If GPS takes too long:
+    - Handler timeout fires
+    - loadDefaultCity() called
+    - Load weather for saved city
+end note
+
+deactivate MainActivity
+
+note over User, MainActivity
+    **BENEFITS:**
+    - Only 1 API call at startup
+    - GPS city displayed (if available)
+    - Fallback to default (if GPS fails)
+    - All logic in 1 file (easy to trace)
+    - Linear flow (no callback hell)
+end note
+
+@enduml

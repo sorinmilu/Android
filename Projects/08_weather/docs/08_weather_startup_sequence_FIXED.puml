@@ -1,0 +1,183 @@
+@startuml 08_weather Startup Sequence (FIXED)
+title 08_weather - Startup Sequence After GPS-First Fix
+
+actor User
+participant MainActivity
+participant WeatherRepository
+participant LocationService
+participant WeatherAPI
+participant WeatherParser
+participant RecyclerView
+
+User -> MainActivity: Launch app
+activate MainActivity
+
+MainActivity -> MainActivity: onCreate()
+MainActivity -> MainActivity: setContentView()
+
+MainActivity -> WeatherRepository: getInstance(context)
+activate WeatherRepository
+WeatherRepository --> MainActivity: repository
+deactivate WeatherRepository
+
+MainActivity -> WeatherRepository: loadCities()
+activate WeatherRepository
+WeatherRepository -> WeatherRepository: SharedPreferences.getString()
+WeatherRepository -> WeatherRepository: Gson.fromJson()
+WeatherRepository --> MainActivity: List<String> cities
+deactivate WeatherRepository
+
+MainActivity -> LocationService: new LocationService(context)
+activate LocationService
+LocationService -> LocationService: FusedLocationProviderClient.create()
+LocationService --> MainActivity: locationService
+deactivate LocationService
+
+MainActivity -> WeatherAPI: new WeatherAPI(context)
+activate WeatherAPI
+WeatherAPI -> WeatherAPI: readAPIKey()
+WeatherAPI --> MainActivity: api
+deactivate WeatherAPI
+
+note over MainActivity: Show loading: "Getting your location..."
+MainActivity -> MainActivity: setLoadingText("Getting your location...")
+
+MainActivity -> MainActivity: getGpsLocationWithTimeout()
+
+alt Timeout Handler Set
+    MainActivity -> MainActivity: Handler.postDelayed(10s)
+    note right: Fallback if GPS takes > 10s
+end
+
+MainActivity -> LocationService: getCurrentLocationName(callback)
+activate LocationService
+
+note over MainActivity: ✅ WAIT FOR GPS\n(NO immediate weather load)
+
+LocationService -> LocationService: checkPermission()
+
+alt Permission Granted
+    LocationService -> LocationService: getCurrentLocation()
+    
+    alt GPS Success (< 10s)
+        LocationService -> LocationService: Geocoder.getFromLocation()
+        LocationService -> MainActivity: onLocationReceived("Mountain View")
+        deactivate LocationService
+        
+        MainActivity -> MainActivity: gpsCompleted = true
+        MainActivity -> MainActivity: cancelTimeout()
+        
+        note over MainActivity: First load check
+        
+        alt isInitialLoad == true
+            MainActivity -> MainActivity: isInitialLoad = false
+            MainActivity -> MainActivity: setLoadingText("Loading weather for Mountain View...")
+            MainActivity -> MainActivity: currentSelectedLocation = "Mountain View"
+            
+            MainActivity -> WeatherAPI: fetchForecast("Mountain View")
+            activate WeatherAPI
+            WeatherAPI -> WeatherAPI: OkHttpClient.newCall()
+            WeatherAPI -> WeatherAPI: execute() [BLOCKING]
+            WeatherAPI --> MainActivity: JSON string
+            deactivate WeatherAPI
+            
+            MainActivity -> WeatherParser: parseWeatherList(json)
+            activate WeatherParser
+            WeatherParser -> WeatherParser: Gson.fromJson()
+            WeatherParser -> WeatherParser: parseWeatherItem() [×40]
+            WeatherParser --> MainActivity: List<WeatherItem>
+            deactivate WeatherParser
+            
+            MainActivity -> WeatherParser: groupByDay(items)
+            activate WeatherParser
+            WeatherParser -> WeatherParser: HashMap grouping
+            WeatherParser -> WeatherParser: calculateAverages()
+            WeatherParser --> MainActivity: List<DailyWeather>
+            deactivate WeatherParser
+            
+            MainActivity -> MainActivity: new DailyWeatherAdapter(dailyList)
+            MainActivity -> RecyclerView: setAdapter(adapter)
+            activate RecyclerView
+            RecyclerView --> User: Display weather for Mountain View
+            deactivate RecyclerView
+            
+            note right: ✅ ONLY 1 API CALL\n✅ Correct city shown\n✅ No screen refresh
+        end
+        
+    else GPS Timeout (> 10s)
+        note over MainActivity: Timeout fires after 10s
+        MainActivity -> MainActivity: handleGpsFailure("GPS timeout")
+        
+        alt isInitialLoad == true
+            MainActivity -> MainActivity: isInitialLoad = false
+            MainActivity -> MainActivity: setLoadingText("Loading weather for Bucharest...")
+            MainActivity -> MainActivity: currentSelectedLocation = "Bucharest"
+            
+            MainActivity -> WeatherAPI: fetchForecast("Bucharest")
+            activate WeatherAPI
+            WeatherAPI --> MainActivity: JSON
+            deactivate WeatherAPI
+            
+            MainActivity -> WeatherParser: parseWeatherList(json)
+            activate WeatherParser
+            WeatherParser --> MainActivity: List<DailyWeather>
+            deactivate WeatherParser
+            
+            MainActivity -> RecyclerView: setAdapter(adapter)
+            activate RecyclerView
+            RecyclerView --> User: Display weather for Bucharest (fallback)
+            deactivate RecyclerView
+            
+            note right: ✅ ONLY 1 API CALL\n✅ Fallback to default\n✅ No double-loading
+        end
+    end
+    
+else Permission Denied
+    LocationService -> User: Show permission dialog
+    User -> LocationService: Deny
+    LocationService -> MainActivity: onLocationError("Permission denied")
+    deactivate LocationService
+    
+    MainActivity -> MainActivity: handleGpsFailure("Permission denied")
+    
+    alt isInitialLoad == true
+        MainActivity -> MainActivity: isInitialLoad = false
+        MainActivity -> MainActivity: setLoadingText("Loading weather for Bucharest...")
+        
+        MainActivity -> WeatherAPI: fetchForecast("Bucharest")
+        activate WeatherAPI
+        WeatherAPI --> MainActivity: JSON
+        deactivate WeatherAPI
+        
+        MainActivity -> WeatherParser: parseWeatherList(json)
+        activate WeatherParser
+        WeatherParser --> MainActivity: List<DailyWeather>
+        deactivate WeatherParser
+        
+        MainActivity -> RecyclerView: setAdapter(adapter)
+        activate RecyclerView
+        RecyclerView --> User: Display weather for Bucharest (fallback)
+        deactivate RecyclerView
+        
+        note right: ✅ ONLY 1 API CALL\n✅ Graceful degradation\n✅ App still works
+    end
+end
+
+note over MainActivity, RecyclerView
+    **SOLUTION:**
+    ✅ Loads weather ONCE (GPS city or fallback)
+    ✅ User sees correct city from start
+    ✅ No wasted API calls (50% reduction)
+    ✅ 10-second timeout for reliability
+    ✅ Graceful permission denial handling
+    ✅ Clear user feedback ("Getting your location...")
+    
+    **KEY CHANGES:**
+    • Added isInitialLoad flag (prevents double-load)
+    • Added gpsCompleted flag (prevents race conditions)
+    • Added 10s timeout with fallback
+    • Removed immediate refreshWeatherData() in onCreate()
+    • GPS callback only loads if isInitialLoad == true
+end note
+
+@enduml

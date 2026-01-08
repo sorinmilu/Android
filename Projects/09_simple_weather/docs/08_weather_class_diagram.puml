@@ -1,0 +1,213 @@
+@startuml 08_weather Class Diagram
+title 08_weather - Class Diagram (Clean Architecture / Separation of Concerns)
+
+package "activity" {
+    class MainActivity {
+        - WeatherRepository repository
+        - WeatherAPI api
+        - WeatherParser parser
+        - GPSLocationProvider gpsProvider
+        - WeatherAdapter adapter
+        - RecyclerView recyclerView
+        - TextView loadingView
+        --
+        + onCreate(Bundle)
+        - loadWeather(String city)
+        - onLocationFound(String city)
+        - onLocationError(String error)
+    }
+    
+    class WeatherDetailActivity {
+        - ActivityWeatherDetailBinding binding
+        - WeatherItem item
+        --
+        + onCreate(Bundle)
+        - displayWeatherItem(WeatherItem)
+    }
+}
+
+package "adapter" {
+    class WeatherAdapter {
+        - List<DailyWeather> dailyList
+        - Context context
+        --
+        + onCreateViewHolder(ViewGroup, int): ViewHolder
+        + onBindViewHolder(ViewHolder, int)
+        + getItemCount(): int
+        --
+        {static} class ViewHolder {
+            + TextView dateText
+            + TextView minMaxText
+            + LineChart temperatureChart
+            + FrameLayout chartFrame
+        }
+    }
+}
+
+package "model" {
+    class WeatherItem {
+        - String cityName
+        - String country
+        - String description
+        - String iconUrl
+        - double temperature
+        - double feelsLike
+        - double humidity
+        - double pressure
+        - double windSpeed
+        - double visibility
+        - String dateTime
+        --
+        + getCityName(): String
+        + setCityName(String)
+        + getTemperature(): double
+        + setTemperature(double)
+        {static} ... 20 more getters/setters
+        --
+        + writeToParcel(Parcel, int)
+        + createFromParcel(Parcel): WeatherItem
+    }
+    
+    class DailyWeather {
+        - String date
+        - List<WeatherItem> items
+        - double avgTemp
+        - double minTemp
+        - double maxTemp
+        --
+        + getDate(): String
+        + setDate(String)
+        + getItems(): List<WeatherItem>
+        + setItems(List<WeatherItem>)
+        + calculateAverages()
+    }
+}
+
+package "api" {
+    class WeatherAPI {
+        - {static} String BASE_URL
+        - OkHttpClient client
+        - String apiKey
+        - Context context
+        --
+        + WeatherAPI(Context)
+        - readAPIKey(): String
+        + fetchForecast(String city): String
+        + validateCity(String city): boolean
+    }
+}
+
+package "parser" {
+    class WeatherParser {
+        - Gson gson
+        --
+        + WeatherParser()
+        + parseWeatherList(String json): List<WeatherItem>
+        - parseWeatherItem(JsonObject): WeatherItem
+        + groupByDay(List<WeatherItem>): List<DailyWeather>
+        - formatDate(Date): String
+    }
+}
+
+package "util" {
+    class WeatherRepository {
+        - {static} WeatherRepository instance
+        - SharedPreferences prefs
+        - Gson gson
+        --
+        - WeatherRepository(Context)
+        + {static} getInstance(Context): WeatherRepository
+        + loadCities(): List<String>
+        + saveCities(List<String>)
+        + getCurrentCity(): String
+        + setCurrentCity(String)
+    }
+    
+    class ChartHelper {
+        --
+        + {static} setupTemperatureChart(LineChart, List<WeatherItem>)
+        + {static} overlayIcons(FrameLayout, LineChart, List<Entry>, List<String>)
+        - {static} createDataSet(List<Entry>): LineDataSet
+        - {static} configureChart(LineChart)
+    }
+}
+
+package "location" {
+    class GPSLocationProvider {
+        - FusedLocationProviderClient fusedClient
+        - LocationCallback locationCallback
+        - LocationListener listener
+        - Context context
+        - Handler timeoutHandler
+        --
+        + GPSLocationProvider(Context, LocationListener)
+        + requestLocation(Activity)
+        - getLastLocation()
+        - requestFreshLocation()
+        - processLocation(Location)
+        - setupLocationCallback()
+        --
+        interface LocationListener {
+            + onLocationFound(String city)
+            + onLocationError(String error)
+        }
+    }
+}
+
+' Relationships
+MainActivity --> WeatherRepository: uses
+MainActivity --> WeatherAPI: uses
+MainActivity --> WeatherParser: uses
+MainActivity --> GPSLocationProvider: uses
+MainActivity --> WeatherAdapter: creates
+MainActivity ..|> GPSLocationProvider.LocationListener: implements
+
+WeatherDetailActivity --> WeatherItem: displays
+
+WeatherAdapter --> DailyWeather: holds List<>
+WeatherAdapter ..> ChartHelper: uses static methods
+
+WeatherAPI --> "1" OkHttpClient: owns
+WeatherParser --> "1" Gson: owns
+WeatherRepository --> "1" SharedPreferences: owns
+WeatherRepository --> "1" Gson: owns
+
+GPSLocationProvider --> "1" FusedLocationProviderClient: owns
+GPSLocationProvider --> GPSLocationProvider.LocationListener: callbacks to
+
+WeatherParser ..> WeatherItem: creates
+WeatherParser ..> DailyWeather: creates
+
+DailyWeather o-- "*" WeatherItem: contains
+
+WeatherItem ..|> Parcelable: implements
+
+note right of MainActivity
+    **Entry point**
+    - Coordinates all components
+    - Dependency injection
+    - Handles UI updates
+end note
+
+note right of WeatherRepository
+    **Singleton pattern**
+    - Single source of truth
+    - Persistent storage
+    - Thread-safe
+end note
+
+note right of GPSLocationProvider
+    **Observer pattern**
+    - Callback interface
+    - Async location updates
+    - Timeout handling
+end note
+
+note bottom of WeatherAPI
+    **Files: 13 classes**
+    **Packages: 7**
+    **Total Lines: ~2535**
+    **Pattern: Clean Architecture**
+end note
+
+@enduml
