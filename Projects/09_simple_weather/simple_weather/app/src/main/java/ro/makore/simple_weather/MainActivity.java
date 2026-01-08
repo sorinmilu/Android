@@ -38,6 +38,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 /**
  * MINIMAL WEATHER APP - EVERYTHING IN ONE FILE
  * This is what happens when you put EVERYTHING in MainActivity.
@@ -170,12 +174,34 @@ public class MainActivity extends AppCompatActivity {
             InputStream is = getAssets().open("api_key.json");
             int size = is.available();
             byte[] buffer = new byte[size];
-            is.read(buffer);
+            int bytesRead = is.read(buffer);
             is.close();
             
-            String json = new String(buffer, StandardCharsets.UTF_8);
-            JsonObject obj = new Gson().fromJson(json, JsonObject.class);
-            return obj.get("apiKey").getAsString().trim();
+            if (bytesRead != size) {
+                Log.w(TAG, "Warning: Expected to read " + size + " bytes but read " + bytesRead);
+            }
+            
+            String content = new String(buffer, 0, bytesRead, "UTF-8");
+            // Remove any BOM if present
+            if (content.length() > 0 && content.charAt(0) == '\uFEFF') {
+                content = content.substring(1);
+            }
+            
+            Log.d(TAG, "Raw API key JSON: " + content);
+            
+            // Use org.json.JSONObject instead of Gson
+            org.json.JSONObject apiKeyObject = new org.json.JSONObject(content);
+            String apiKey = apiKeyObject.getString("apiKey");
+            
+            // Trim whitespace from API key
+            if (apiKey != null) {
+                apiKey = apiKey.trim();
+            }
+            
+            Log.d(TAG, "API Key length: " + apiKey.length());
+            Log.d(TAG, "API Key (first 4 chars): " + (apiKey.length() > 4 ? apiKey.substring(0, 4) + "..." : apiKey));
+            
+            return apiKey;
         } catch (Exception e) {
             Log.e(TAG, "Failed to read API key", e);
             throw new Exception("Failed to read API key from assets");
