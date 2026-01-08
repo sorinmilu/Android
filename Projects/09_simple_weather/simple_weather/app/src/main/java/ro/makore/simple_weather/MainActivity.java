@@ -380,9 +380,13 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         
+        Log.d(TAG, "Requesting fresh GPS location...");
+        
         com.google.android.gms.location.LocationRequest locationRequest = 
             com.google.android.gms.location.LocationRequest.create();
         locationRequest.setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000); // 5 seconds
+        locationRequest.setFastestInterval(2000); // 2 seconds
         locationRequest.setNumUpdates(1);
         
         fusedLocationClient.requestLocationUpdates(locationRequest, 
@@ -391,6 +395,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onLocationResult(com.google.android.gms.location.LocationResult locationResult) {
                     if (locationResult != null && locationResult.getLastLocation() != null) {
                         android.location.Location loc = locationResult.getLastLocation();
+                        
+                        Log.d(TAG, "Got location: lat=" + loc.getLatitude() + ", lon=" + loc.getLongitude());
                         
                         // Process this location same as getLastLocation
                         new Thread(() -> {
@@ -403,11 +409,15 @@ public class MainActivity extends AppCompatActivity {
                                     Address address = addresses.get(0);
                                     String cityName = address.getLocality();
                                     
+                                    Log.d(TAG, "Geocoded locality: " + cityName);
+                                    
                                     if (cityName == null || cityName.isEmpty()) {
                                         cityName = address.getAdminArea();
+                                        Log.d(TAG, "Using adminArea: " + cityName);
                                     }
                                     if (cityName == null || cityName.isEmpty()) {
                                         cityName = address.getCountryName();
+                                        Log.d(TAG, "Using country: " + cityName);
                                     }
                                     
                                     if (cityName != null && !cityName.isEmpty()) {
@@ -427,12 +437,18 @@ public class MainActivity extends AppCompatActivity {
                                             
                                             Toast.makeText(MainActivity.this, "Current location: " + finalCity, Toast.LENGTH_SHORT).show();
                                         });
+                                    } else {
+                                        Log.w(TAG, "Could not determine city name from location");
                                     }
+                                } else {
+                                    Log.w(TAG, "Geocoder returned no addresses");
                                 }
                             } catch (Exception e) {
                                 Log.e(TAG, "Geocoding error", e);
                             }
                         }).start();
+                    } else {
+                        Log.w(TAG, "LocationResult is null or has no location");
                     }
                 }
             }, null);
@@ -443,7 +459,11 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted - now get GPS location
+                Toast.makeText(this, "Getting your location...", Toast.LENGTH_SHORT).show();
                 getGPSLocation();
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
