@@ -103,13 +103,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnRefresh).setOnClickListener(v -> loadWeather(currentCity));
         findViewById(R.id.btnAddCity).setOnClickListener(v -> showAddCityDialog());
         
-        // Get GPS location
+        // Get GPS location - this will load weather when ready
+        // If GPS fails or permission denied, fallback to default city
         requestGPSLocation();
         
-        // Load weather for current city
-        if (currentCity != null) {
-            loadWeather(currentCity);
-        }
+        // DO NOT load weather here - wait for GPS first!
     }
     
     // ========== PERSISTENCE (INLINE - using SharedPreferences directly) ==========
@@ -318,9 +316,21 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         
+        // Set a timeout for GPS - if it takes too long, fallback to default
+        final Handler timeoutHandler = new Handler();
+        final Runnable timeoutRunnable = () -> {
+            Log.w(TAG, "GPS timeout, using default city");
+            loadDefaultCity();
+        };
+        
+        // 10 second timeout
+        timeoutHandler.postDelayed(timeoutRunnable, 10000);
+        
         fusedLocationClient.getLastLocation()
             .addOnSuccessListener(this, location -> {
                 if (location != null) {
+                    Log.d(TAG, "Got last location: lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
+                    
                     // Get city name from coordinates
                     new Thread(() -> {
                         try {
@@ -332,16 +342,22 @@ public class MainActivity extends AppCompatActivity {
                                 Address address = addresses.get(0);
                                 String cityName = address.getLocality();
                                 
+                                Log.d(TAG, "Geocoded locality: " + cityName);
+                                
                                 if (cityName == null || cityName.isEmpty()) {
                                     cityName = address.getAdminArea();
+                                    Log.d(TAG, "Using adminArea: " + cityName);
                                 }
                                 if (cityName == null || cityName.isEmpty()) {
                                     cityName = address.getCountryName();
+                                    Log.d(TAG, "Using country: " + cityName);
                                 }
                                 
                                 if (cityName != null && !cityName.isEmpty()) {
                                     final String finalCity = cityName;
                                     runOnUiThread(() -> {
+                                        timeoutHandler.removeCallbacks(timeoutRunnable);
+                                        
                                         Log.d(TAG, "GPS location: " + finalCity);
                                         
                                         // Add city if not already in list
@@ -357,10 +373,26 @@ public class MainActivity extends AppCompatActivity {
                                         
                                         Toast.makeText(this, "Current location: " + finalCity, Toast.LENGTH_SHORT).show();
                                     });
+                                } else {
+                                    Log.w(TAG, "Could not determine city name, using default");
+                                    runOnUiThread(() -> {
+                                        timeoutHandler.removeCallbacks(timeoutRunnable);
+                                        loadDefaultCity();
+                                    });
                                 }
+                            } else {
+                                Log.w(TAG, "Geocoder returned no addresses, using default");
+                                runOnUiThread(() -> {
+                                    timeoutHandler.removeCallbacks(timeoutRunnable);
+                                    loadDefaultCity();
+                                });
                             }
                         } catch (Exception e) {
-                            Log.e(TAG, "Geocoding error", e);
+                            Log.e(TAG, "Geocoding error, using default", e);
+                            runOnUiThread(() -> {
+                                timeoutHandler.removeCallbacks(timeoutRunnable);
+                                loadDefaultCity();
+                            });
                         }
                     }).start();
                 } else {
@@ -370,7 +402,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             })
             .addOnFailureListener(e -> {
-                Log.e(TAG, "Failed to get location", e);
+                timeoutHandler.removeCallbacks(timeoutRunnable);
+                Log.e(TAG, "Failed to get location, using default", e);
+                loadDefaultCity();
             });
     }
     
@@ -381,6 +415,16 @@ public class MainActivity extends AppCompatActivity {
         }
         
         Log.d(TAG, "Requesting fresh GPS location...");
+        
+        // Set a timeout for fresh GPS request
+        final Handler timeoutHandler = new Handler();
+        final Runnable timeoutRunnable = () -> {
+            Log.w(TAG, "Fresh GPS request timeout, using default city");
+            loadDefaultCity();
+        };
+        
+        // 8 second timeout for fresh location
+        timeoutHandler.postDelayed(timeoutRunnable, 8000);
         
         com.google.android.gms.location.LocationRequest locationRequest = 
             com.google.android.gms.location.LocationRequest.create();
@@ -423,6 +467,8 @@ public class MainActivity extends AppCompatActivity {
                                     if (cityName != null && !cityName.isEmpty()) {
                                         final String finalCity = cityName;
                                         runOnUiThread(() -> {
+                                            timeoutHandler.removeCallbacks(timeoutRunnable);
+                                            
                                             Log.d(TAG, "Current GPS location: " + finalCity);
                                             
                                             if (!cities.contains(finalCity)) {
@@ -439,16 +485,30 @@ public class MainActivity extends AppCompatActivity {
                                         });
                                     } else {
                                         Log.w(TAG, "Could not determine city name from location");
+                                        runOnUiThread(() -> {
+                                            timeoutHandler.removeCallbacks(timeoutRunnable);
+                                            loadDefaultCity();
+                                        });
                                     }
                                 } else {
                                     Log.w(TAG, "Geocoder returned no addresses");
+                                    runOnUiThread(() -> {
+                                        timeoutHandler.removeCallbacks(timeoutRunnable);
+                                        loadDefaultCity();
+                                    });
                                 }
                             } catch (Exception e) {
                                 Log.e(TAG, "Geocoding error", e);
+                                runOnUiThread(() -> {
+                                    timeoutHandler.removeCallbacks(timeoutRunnable);
+                                    loadDefaultCity();
+                                });
                             }
                         }).start();
                     } else {
                         Log.w(TAG, "LocationResult is null or has no location");
+                        timeoutHandler.removeCallbacks(timeoutRunnable);
+                        loadDefaultCity();
                     }
                 }
             }, null);
@@ -464,6 +524,8 @@ public class MainActivity extends AppCompatActivity {
                 getGPSLocation();
             } else {
                 Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+                // Permission denied, fallback to default city
+                loadDefaultCity();
             }
         }
     }
