@@ -1,5 +1,20 @@
-package ro.makore.akrilki_08;
+# MainActivity.java — structured annotated reference
 
+This document reproduces `MainActivity.java`'s code in exact form in separate, sensible code blocks (package, grouped imports, class fields, methods). Each code block is preceded by a short Markdown explanation describing what the code below implements.
+
+## Package declaration
+
+The package declaration places the class in the application's namespace.
+
+```java
+package ro.makore.akrilki_08;
+```
+
+## Android framework imports
+
+These imports bring in core Android classes used for permissions, UI widgets and lifecycle management.
+
+```java
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -7,20 +22,38 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+```
 
+## AndroidX, UI and Recycler imports
+
+Support libraries and RecyclerView-related classes used for the activity and list display.
+
+```java
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+```
 
+## Misc Android imports
+
+Utilities for logging, view, and simple widgets used across the activity.
+
+```java
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.AdapterView;
+```
 
+## App-specific imports
+
+Application model, parser, networking, adapters and utilities referenced by the activity.
+
+```java
 import ro.makore.akrilki_08.model.WeatherItem;
 import ro.makore.akrilki_08.model.DailyWeatherItem;
 import ro.makore.akrilki_08.parser.WeatherParser;
@@ -31,13 +64,26 @@ import ro.makore.akrilki_08.adapter.LocationSpinnerAdapter;
 import ro.makore.akrilki_08.util.LocationManager;
 import ro.makore.akrilki_08.util.LocationService;
 import ro.makore.akrilki_08.dialog.AddLocationDialog;
+```
+
+## Third-party and Java imports
+
+Third-party libs and Java standard library imports used in the activity.
+
+```java
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+```
 
+## Class declaration and fields
+
+Below is the class signature and all member fields. These are declared at the top of the file and used by methods throughout the activity.
+
+```java
 public class MainActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
@@ -55,7 +101,13 @@ public class MainActivity extends AppCompatActivity {
 
     // Default city for weather forecast
     private static final String DEFAULT_CITY = "Bucharest";
+```
 
+## onCreate(Bundle)
+
+`onCreate` wires up the UI, initializes helpers, sets listeners and triggers initial GPS lookup and data load.
+
+```java
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +148,13 @@ public class MainActivity extends AppCompatActivity {
         // Load weather for default/selected location
         refreshWeatherData();
     }
+```
 
+## setupLocationSpinner()
+
+Creates and configures the `Spinner` adapter, ensures a default city exists, and chooses the initial selection (preferring stored GPS location when available). It also registers the item selection listener.
+
+```java
     private void setupLocationSpinner() {
         List<String> locations = locationManager.getSavedLocations();
 
@@ -141,7 +199,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+```
 
+## getGpsLocation()
+
+Performs runtime permission checks for location, then requests a city name from `LocationService`. When a city is received it persists it, ensures it appears first in the spinner and triggers a refresh.
+
+```java
     private void getGpsLocation() {
         // Check location permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -186,7 +250,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+```
 
+## onRequestPermissionsResult(...)
+
+Handles the result of the runtime location permission dialog; if granted, retries GPS lookup, otherwise shows a Toast.
+
+```java
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -198,7 +268,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+```
 
+## showAddLocationDialog()
+
+Opens `AddLocationDialog`. The provided callback updates the spinner and selects the newly added location, then triggers a data refresh.
+
+```java
     private void showAddLocationDialog() {
         AddLocationDialog dialog = new AddLocationDialog(this, locationManager, locationName -> {
             // Location added, refresh spinner
@@ -216,7 +292,13 @@ public class MainActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+```
 
+## refreshWeatherData()
+
+Performs the network call to fetch weather for the selected city off the UI thread, parses results with `WeatherParser`, and updates the `RecyclerView`. Errors are shown in the `loadingText`.
+
+```java
     private void refreshWeatherData() {
         
         // Show loading indicators
@@ -281,4 +363,6 @@ public class MainActivity extends AppCompatActivity {
     }
     
 }
+```
 
+File updated at: `Projects/08_weather/docs/MainActivity.java.md` — I preserved the original code exactly and added descriptive sections above each code block. Let me know if you want the same format for other files.

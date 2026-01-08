@@ -4,30 +4,33 @@ Aplicația preia date meteorologice de la OpenWeatherMap API și le afișează o
 
 <!-- TOC -->
 
-- [Aplicație care preia date meteorologice și le afișează cu grafice](#aplicație-care-preia-date-meteorologice-și-le-afișează-cu-grafice)
-  - [OpenWeatherMap API](#openweathermap-api)
-  - [Concepte importante](#concepte-importante)
-    - [RecyclerView](#recyclerview)
-    - [Parcelable](#parcelable)
-    - [MPAndroidChart](#mpandroidchart)
-    - [GPS și Geocoding](#gps-și-geocoding)
-    - [Structura împărțită pe componente](#structura-împărțită-pe-componente)
-  - [Structura aplicației](#structura-aplicatiei)
-    - [JSON-ul returnat de API](#json-ul-returnat-de-api)
-    - [ro.makore.akrilki\_08.api - clasa WeatherAPI](#romakoreakrilki_08api---clasa-weatherapi)
-    - [ro.makore.akrilki\_08.parser - clasa WeatherParser](#romakoreakrilki_08parser---clasa-weatherparser)
-    - [ro.makore.akrilki\_08.model - clasele WeatherItem și DailyWeatherItem](#romakoreakrilki_08model---clasele-weatheritem-și-dailyweatheritem)
-    - [ro.makore.akrilki\_08.adapter - clasele DailyWeatherAdapter și LocationSpinnerAdapter](#romakoreakrilki_08adapter---clasele-dailyweatheradapter-și-locationspinneradapter)
-    - [ro.makore.akrilki\_08.util - clasele LocationManager și LocationService](#romakoreakrilki_08util---clasele-locationmanager-și-locationservice)
-    - [ro.makore.akrilki\_08.dialog - clasa AddLocationDialog](#romakoreakrilki_08dialog---clasa-addlocationdialog)
-  - [Activități](#activități)
-    - [MainActivity](#mainactivity)
-    - [WeatherDetailActivity](#weatherdetailactivity)
-  - [Layouturi](#layouturi)
-    - [activity\_main.xml](#activity_mainxml)
-    - [app\_bar\_main.xml](#app_bar_mainxml)
-    - [item\_daily\_weather.xml](#item_daily_weatherxml)
-    - [dialog\_add\_location.xml](#dialog_add_locationxml)
+- [Aplicație care preia date meteorologice și le afișează cu grafice](#aplica%C8%9Bie-care-preia-date-meteorologice-%C8%99i-le-afi%C8%99eaz%C4%83-cu-grafice)
+    - [1. OpenWeatherMap API](#1-openweathermap-api)
+    - [2. Concepte importante](#2-concepte-importante)
+        - [2.1. RecyclerView](#21-recyclerview)
+        - [2.2. Parcelable](#22-parcelable)
+        - [2.3. MPAndroidChart](#23-mpandroidchart)
+        - [2.4. GPS și Geocoding](#24-gps-%C8%99i-geocoding)
+        - [2.5. Structura împărțită pe componente](#25-structura-%C3%AEmp%C4%83r%C8%9Bit%C4%83-pe-componente)
+    - [3. Structura aplicației](#3-structura-aplica%C8%9Biei)
+        - [3.1. JSON-ul returnat de API](#31-json-ul-returnat-de-api)
+        - [3.2. ro.makore.akrilki_08.api - clasa WeatherAPI](#32-romakoreakrilki_08api---clasa-weatherapi)
+        - [3.3. ro.makore.akrilki_08.parser - clasa WeatherParser](#33-romakoreakrilki_08parser---clasa-weatherparser)
+        - [3.4. ro.makore.akrilki_08.model - clasele WeatherItem și DailyWeatherItem](#34-romakoreakrilki_08model---clasele-weatheritem-%C8%99i-dailyweatheritem)
+        - [3.5. ro.makore.akrilki_08.adapter - clasele DailyWeatherAdapter și LocationSpinnerAdapter](#35-romakoreakrilki_08adapter---clasele-dailyweatheradapter-%C8%99i-locationspinneradapter)
+        - [3.6. ro.makore.akrilki_08.util - clasele LocationManager și LocationService](#36-romakoreakrilki_08util---clasele-locationmanager-%C8%99i-locationservice)
+        - [3.7. ro.makore.akrilki_08.dialog - clasa AddLocationDialog](#37-romakoreakrilki_08dialog---clasa-addlocationdialog)
+    - [4. Activități](#4-activit%C4%83%C8%9Bi)
+        - [4.1. MainActivity](#41-mainactivity)
+        - [4.2. WeatherDetailActivity](#42-weatherdetailactivity)
+    - [5. Layouturi](#5-layouturi)
+        - [5.1. activity_main.xml](#51-activity_mainxml)
+        - [5.2. app_bar_main.xml](#52-app_bar_mainxml)
+        - [5.3. item_daily_weather.xml](#53-item_daily_weatherxml)
+        - [5.4. dialog_add_location.xml](#54-dialog_add_locationxml)
+        - [5.5. spinner_item_location.xml și spinner_dropdown_item_location.xml](#55-spinner_item_locationxml-%C8%99i-spinner_dropdown_item_locationxml)
+    - [6. Dependențe principale](#6-dependen%C8%9Be-principale)
+    - [7. Caracteristici speciale](#7-caracteristici-speciale)
 
 <!-- /TOC -->
 
@@ -296,23 +299,24 @@ Ambele clase implementează interfața `Parcelable` pentru transferul eficient d
 ### ro.makore.akrilki_08.util - clasele LocationManager și LocationService
 
 **LocationManager** - Gestionează locațiile salvate:
-- Folosește SharedPreferences pentru stocare persistentă
-- Metode: `getSavedLocations()`, `addLocation()`, `removeLocation()`, `hasLocation()`
-- Stochează locația curentă (GPS) separat
+- Persistență: folosește `SharedPreferences` și păstrează lista de locații ca un JSON (String) la cheia `saved_locations` pentru a conserva ordinea inserării.
+- Metode: `getSavedLocations()`, `addLocation()`, `removeLocation()`, `hasLocation()`, `getCurrentLocation()`, `setCurrentLocation()`.
+- Migrare: la prima rulare, dacă există date vechi stocate ca `StringSet` (comportament anterior), codul încearcă să le citească și să le convertească într-o listă ordonată, apoi le persista în format JSON.
+- Locația curentă (GPS) este stocată separat la cheia `current_location`.
 
 **LocationService** - Gestionează obținerea locației GPS:
-- Folosește Google Play Services Location API (FusedLocationProviderClient)
-- Convertește coordonatele GPS în nume de oraș folosind Geocoder
-- Gestionează permisiunile de locație
-- Callback pentru rezultate: `onLocationReceived()`, `onLocationError()`
+- Folosește Google Play Services Location API (`FusedLocationProviderClient`) pentru a obține coordonate.
+- Convertește coordonatele în nume de oraș folosind `Geocoder` (sau fallback-uri dacă Geocoder nu returnează un rezultat).
+- Gestionează permisiunile de locație și expune un callback: `onLocationReceived(String cityName)` și `onLocationError(String error)`.
 
 ### ro.makore.akrilki_08.dialog - clasa AddLocationDialog
 
 Dialog pentru adăugarea de locații noi:
-- Câmp de text pentru introducerea numelui locației
-- Validare în timp real prin verificarea disponibilității locației pe API
-- Afișare status: "Checking...", "Location found", "Location not found", "Already exists"
-- Adaugă locația doar dacă este validă și nu există deja
+- Câmp de text pentru introducerea numelui locației.
+- Verificare debounced la tastare (600ms) pentru a evita apelurile API la fiecare keystroke.
+- Butonul `Add` forțează o verificare finală: dacă numele a fost anterior validat și nu s-a schimbat, se adaugă imediat; altfel se rulează o verificare imediată și adăugarea se face doar la validare reușită.
+- Afișare status: `Checking...`, `Location found` (valid), `Location not found`, `Already exists`, erori de rețea etc.
+- Comportament UX: dacă validarea eșuează dialogul rămâne deschis pentru corectare; doar la validare reușită dialogul se închide și locația este adăugată.
 
 ## Activități
 
@@ -321,20 +325,17 @@ Dialog pentru adăugarea de locații noi:
 Activitatea principală care afișează lista de prognoze meteo grupate pe zile.
 
 **Funcționalități:**
-- App bar cu Spinner pentru selecția locației
-- Buton pentru adăugarea de locații noi
-- Obținere automată a locației GPS curente
-- Afișare date meteo în RecyclerView cu grafice
-- Butoane Floating Action Button pentru refresh și quit
+- App bar cu `Spinner` pentru selecția locației
+- Buton pentru adăugarea de locații noi (deschide `AddLocationDialog`)
+- Obținere automată a locației GPS curente și marcarea acesteia ca `(current)` în listă
+- Afișare date meteo în `RecyclerView` cu grafice
+- FloatingActionButton pentru refresh și quit
 - Gestionare stări de loading și erori
 
-**Fluxul de date:**
-1. La pornire, obține locația GPS (dacă permisiunea este acordată)
-2. Încarcă locațiile salvate din SharedPreferences
-3. Afișează locațiile în Spinner
-4. Preia datele meteo pentru locația selectată
-5. Parsează și grupează datele pe zile
-6. Afișează datele în RecyclerView cu grafice
+**Fluxul de date (rezumat):**
+1. La pornire, `MainActivity` încarcă lista de locații salvate (`LocationManager.getSavedLocations()`). Dacă lista e goală, adaugă `Bucharest` ca implicit.
+2. Se încearcă obținerea locației GPS (dacă permisiunea este acordată). Dacă se obține, `LocationService` trimite numele orașului înapoi; `MainActivity` setează `currentGpsLocation`, apelează `locationManager.setCurrentLocation(...)` și — dacă locația nu există în listă — o adaugă și o mută pe poziția 0, selectând-o în spinner.
+3. Spinner-ul afișează locațiile în ordinea păstrată; selecția schimbă `currentSelectedLocation` și declanșează `refreshWeatherData()` care apelează `WeatherAPI.fetchWeather(...)` pentru orașul selectat.
 
 ### WeatherDetailActivity
 

@@ -27,6 +27,7 @@
     <string name="enter_location_name">Enter location name</string>
     <string name="checking_location">Checking location availability...</string>
     <string name="location_added">Location added successfully</string>
+    <string name="location_valid">Location found</string>
     <string name="location_not_found">Location not found. Please check the name and try again.</string>
     <string name="location_already_exists">This location is already saved</string>
     <string name="error_adding_location">Error adding location</string>

@@ -5,55 +5,55 @@
 
 - [Dezvoltare Android pe platforma Windows, fara Android Studio](#dezvoltare-android-pe-platforma-windows-fara-android-studio)
 - [Instalrea JAVA DEVELOPMENT KIT](#instalrea-java-development-kit)
-  - [Descarcarea Java SE](#descarcarea-java-se)
-  - [Instalarea Java SE](#instalarea-java-se)
-  - [Setarea PATH-ului](#setarea-path-ului)
-  - [Verificarea existentei comenzilor](#verificarea-existentei-comenzilor)
+    - [1. Descarcarea Java SE](#1-descarcarea-java-se)
+    - [2. Instalarea Java SE](#2-instalarea-java-se)
+    - [3. Setarea PATH-ului](#3-setarea-path-ului)
+    - [4. Verificarea existentei comenzilor](#4-verificarea-existentei-comenzilor)
 - [Instalarea Android Command Line Tools](#instalarea-android-command-line-tools)
-  - [Descarcati Android Command-Line Tools](#descarcati-android-command-line-tools)
-  - [Instalarea Android Command-Line Tools](#instalarea-android-command-line-tools-1)
-  - [Adaugati directorul "bin" al cmdline-tools la PATH](#adaugati-directorul-bin-al-cmdline-tools-la-path)
-  - [Adaugati variabile la environment: ANDROID\_HOME si ANDROID\_SDK\_ROOT](#adaugati-variabile-la-environment-android_home-si-android_sdk_root)
-  - [Instalarea restului instrumentelor](#instalarea-restului-instrumentelor)
-    - [Care sunt restul instrumentelor](#care-sunt-restul-instrumentelor)
-    - [Versiuni Android](#versiuni-android)
-    - [Instalarea propriu-zisa](#instalarea-propriu-zisa)
+    - [1. Descarcati Android Command-Line Tools](#1-descarcati-android-command-line-tools)
+    - [2. Instalarea Android Command-Line Tools](#2-instalarea-android-command-line-tools)
+    - [3. Adaugati directorul "bin" al cmdline-tools la PATH](#3-adaugati-directorul-bin-al-cmdline-tools-la-path)
+    - [4. Adaugati variabile la environment: ANDROID_HOME si ANDROID_SDK_ROOT](#4-adaugati-variabile-la-environment-android_home-si-android_sdk_root)
+    - [5. Instalarea restului instrumentelor](#5-instalarea-restului-instrumentelor)
+        - [5.1. Care sunt restul instrumentelor](#51-care-sunt-restul-instrumentelor)
+        - [5.2. Versiuni Android](#52-versiuni-android)
+        - [5.3. Instalarea propriu-zisa](#53-instalarea-propriu-zisa)
 - [Instalare gradle](#instalare-gradle)
-  - [Adaugati calea in PATH](#adaugati-calea-in-path)
+    - [1. Adaugati calea in PATH](#1-adaugati-calea-in-path)
 - [Verificati disponibilitatea comenzilor](#verificati-disponibilitatea-comenzilor)
-  - [adb](#adb)
-  - [gradle](#gradle)
-  - [avdmanager](#avdmanager)
-  - [emulator](#emulator)
-  - [Verificati toate componentele folosind sdkmanager](#verificati-toate-componentele-folosind-sdkmanager)
-- [Emulator](#emulator-1)
-  - [Creati un avd](#creati-un-avd)
-  - [Porniti emulatorul](#porniti-emulatorul)
-  - [Lista de dispozitive existente](#lista-de-dispozitive-existente)
-  - [Instalati aplicatia pe dispozitiv](#instalati-aplicatia-pe-dispozitiv)
-  - [Verificati existenta aplicatiei (powershell)](#verificati-existenta-aplicatiei-powershell)
+    - [1. adb](#1-adb)
+    - [2. gradle](#2-gradle)
+    - [3. avdmanager](#3-avdmanager)
+    - [4. emulator](#4-emulator)
+    - [5. Verificati toate componentele folosind sdkmanager](#5-verificati-toate-componentele-folosind-sdkmanager)
+- [Emulator](#emulator)
+    - [1. Creati un avd](#1-creati-un-avd)
+    - [2. Porniti emulatorul](#2-porniti-emulatorul)
+    - [3. Lista de dispozitive existente](#3-lista-de-dispozitive-existente)
+    - [4. Instalati aplicatia pe dispozitiv](#4-instalati-aplicatia-pe-dispozitiv)
+    - [5. Verificati existenta aplicatiei powershell](#5-verificati-existenta-aplicatiei-powershell)
 - [Instalari partiale](#instalari-partiale)
-  - [Platform tools](#platform-tools)
+    - [1. Platform tools](#1-platform-tools)
 - [Acces telefon hardware](#acces-telefon-hardware)
-  - [Pregatirea dispozitivului](#pregatirea-dispozitivului)
-    - [Activarea optiunilor de dezvoltare](#activarea-optiunilor-de-dezvoltare)
-    - [Cateva comenzi adb](#cateva-comenzi-adb)
-    - [adb shell pm list packages](#adb-shell-pm-list-packages)
-    - [adb logcat](#adb-logcat)
-    - [screenshot](#screenshot)
-    - [screen recording](#screen-recording)
-    - [adb shell getprop](#adb-shell-getprop)
-    - [adb shell settings put](#adb-shell-settings-put)
-    - [Alte comenzi](#alte-comenzi)
-    - [Conectarea unui dispozitiv USB la o masina virtuala](#conectarea-unui-dispozitiv-usb-la-o-masina-virtuala)
+    - [1. Pregatirea dispozitivului](#1-pregatirea-dispozitivului)
+        - [1.1. Activarea optiunilor de dezvoltare](#11-activarea-optiunilor-de-dezvoltare)
+        - [1.2. Cateva comenzi adb](#12-cateva-comenzi-adb)
+        - [1.3. adb shell pm list packages](#13-adb-shell-pm-list-packages)
+        - [1.4. adb logcat](#14-adb-logcat)
+        - [1.5. screenshot](#15-screenshot)
+        - [1.6. screen recording](#16-screen-recording)
+        - [1.7. adb shell getprop](#17-adb-shell-getprop)
+        - [1.8. adb shell settings put](#18-adb-shell-settings-put)
+        - [1.9. Alte comenzi](#19-alte-comenzi)
+        - [1.10. Conectarea unui dispozitiv USB la o masina virtuala](#110-conectarea-unui-dispozitiv-usb-la-o-masina-virtuala)
 - [Alte instrumente utile](#alte-instrumente-utile)
-  - [git](#git)
-  - [Windows terminal](#windows-terminal)
-    - [Descarcarea directa din repository](#descarcarea-directa-din-repository)
-    - [Alte variante](#alte-variante)
-  - [Scrcpy](#scrcpy)
-    - [Instalare](#instalare)
-    - [Utilizare](#utilizare)
+    - [1. git](#1-git)
+    - [2. Windows terminal](#2-windows-terminal)
+        - [2.1. Descarcarea directa din repository](#21-descarcarea-directa-din-repository)
+        - [2.2. Alte variante](#22-alte-variante)
+    - [3. Scrcpy](#3-scrcpy)
+        - [3.1. Instalare](#31-instalare)
+        - [3.2. Utilizare](#32-utilizare)
 
 <!-- /TOC -->
 # Instalrea JAVA DEVELOPMENT KIT
@@ -80,7 +80,7 @@ Retineti calea in care va fi instalata distributia si care va aparea in al doile
 
 ![alt text](images/install_step_2.jpg)
 
-Dupa finalizarea instalarii, comanda `$env:Path - split ';'` in powershell va afisa toate componentele path-ului disponibil. 
+Dupa finalizarea instalarii, comanda `$env:Path -split ';'` in powershell va afisa toate componentele path-ului disponibil. 
 
 ![alt text](images/paths_post_install.jpg)
 
@@ -208,6 +208,9 @@ Usage:
 
 ANDROID_SDK_ROOT este varianta mai recenta a variabilei de mediu necesara in timp ce ANDROID_HOME este varianta mai veche.
 
+![alt text](images/android_home_env.jpg)
+
+
 ## Instalarea restului instrumentelor
 
 ### Care sunt restul instrumentelor
@@ -304,7 +307,7 @@ Gradle este un sistem de automatizare a construirii aplicatiilor. Este frecvent 
 Gradle gestionează cu ușurință bibliotecile externe (de exemplu, prin integrarea cu Maven Central sau alte repository-uri) si permite automatizarea întregului flux de lucru, de la compilare la testare și livrare.
 
 
-Descarcati gradle de la https://gradle.org/releases/
+Descarcati gradle de la https://gradle.org/releases/ (binary-only este suficient)
 
 Dezarhivati gradle intr-un director oarecare
 
