@@ -175,52 +175,126 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void updateSpinner() {
-        spinnerAdapter.clear();
-        spinnerAdapter.addAll(cities);
-        spinnerAdapter.notifyDataSetChanged();
-        
-        int position = cities.indexOf(currentCity);
-        if (position >= 0) {
-            citySpinner.setSelection(position);
-        }
+        runOnUiThread(() -> {
+            // Recreate the adapter to avoid issues
+            spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cities);
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            citySpinner.setAdapter(spinnerAdapter);
+            
+            int position = cities.indexOf(currentCity);
+            if (position >= 0) {
+                citySpinner.setSelection(position);
+            }
+        });
     }
     
-    // ========== ADD CITY DIALOG (INLINE - simple AlertDialog) ==========
+    // ========== ADD CITY DIALOG (INLINE - with real-time validation) ==========
+    
+    private android.os.Handler validationHandler = new android.os.Handler();
+    private Runnable validationRunnable;
     
     private void showAddCityDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add City");
         
+        // Create custom layout with EditText and feedback TextView
+        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
+        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setPadding(50, 40, 50, 10);
+        
         final EditText input = new EditText(this);
         input.setHint("Enter city name");
-        builder.setView(input);
+        layout.addView(input);
         
-        builder.setPositiveButton("Add", (dialog, which) -> {
-            String city = input.getText().toString().trim();
-            if (!city.isEmpty()) {
-                // Verify city exists with API
-                new Thread(() -> {
-                    try {
-                        fetchWeatherFromAPI(city); // This will throw if city doesn't exist
-                        runOnUiThread(() -> {
-                            addCity(city);
-                            currentCity = city;
-                            saveCities();
-                            updateSpinner();
-                            loadWeather(city);
-                            Toast.makeText(this, "Added: " + city, Toast.LENGTH_SHORT).show();
-                        });
-                    } catch (Exception e) {
-                        runOnUiThread(() -> {
-                            Toast.makeText(this, "City not found: " + city, Toast.LENGTH_SHORT).show();
-                        });
-                    }
-                }).start();
+        final TextView feedback = new TextView(this);
+        feedback.setPadding(0, 20, 0, 0);
+        feedback.setTextSize(14);
+        layout.addView(feedback);
+        
+        builder.setView(layout);
+        
+        builder.setPositiveButton("Add", null); // Set to null, we'll override later
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        
+        // Get the Add button and disable it initially
+        Button addButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        addButton.setEnabled(false);
+        
+        // Set up real-time validation with debouncing
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            
+            @Override
+            public void afterTextChanged(Editable s) {
+                String city = s.toString().trim();
+                
+                // Cancel previous validation
+                if (validationRunnable != null) {
+                    validationHandler.removeCallbacks(validationRunnable);
+                }
+                
+                if (city.isEmpty()) {
+                    feedback.setText("");
+                    addButton.setEnabled(false);
+                    return;
+                }
+                
+                // Check if city already exists
+                if (cities.contains(city)) {
+                    feedback.setText("City already in list");
+                    feedback.setTextColor(0xFFFF5722); // Orange
+                    addButton.setEnabled(false);
+                    return;
+                }
+                
+                feedback.setText("Checking...");
+                feedback.setTextColor(0xFF9E9E9E); // Gray
+                addButton.setEnabled(false);
+                
+                // Debounce: wait 600ms before validating
+                validationRunnable = () -> {
+                    new Thread(() -> {
+                        try {
+                            fetchWeatherFromAPI(city); // Throws if city not found
+                            runOnUiThread(() -> {
+                                feedback.setText("✓ City found");
+                                feedback.setTextColor(0xFF4CAF50); // Green
+                                addButton.setEnabled(true);
+                            });
+                        } catch (Exception e) {
+                            runOnUiThread(() -> {
+                                feedback.setText("✗ City not found");
+                                feedback.setTextColor(0xFFF44336); // Red
+                                addButton.setEnabled(false);
+                            });
+                        }
+                    }).start();
+                };
+                
+                validationHandler.postDelayed(validationRunnable, 600);
             }
         });
         
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
+        // Override Add button click
+        addButton.setOnClickListener(v -> {
+            String city = input.getText().toString().trim();
+            if (!city.isEmpty() && !cities.contains(city)) {
+                addCity(city);
+                currentCity = city;
+                saveCities();
+                updateSpinner();
+                loadWeather(city);
+                Toast.makeText(this, "Added: " + city, Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
     }
     
     // ========== GPS LOCATION (INLINE - using FusedLocationProviderClient) ==========
@@ -266,14 +340,22 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 
                                 if (cityName != null && !cityName.isEmpty()) {
-                                    String finalCity = cityName;
+                                    final String finalCity = cityName;
                                     runOnUiThread(() -> {
                                         Log.d(TAG, "GPS location: " + finalCity);
-                                        addCity(finalCity);
+                                        
+                                        // Add city if not already in list
+                                        if (!cities.contains(finalCity)) {
+                                            cities.add(0, finalCity); // Add at beginning
+                                            saveCities();
+                                        }
+                                        
                                         currentCity = finalCity;
                                         saveCities();
                                         updateSpinner();
                                         loadWeather(finalCity);
+                                        
+                                        Toast.makeText(this, "Current location: " + finalCity, Toast.LENGTH_SHORT).show();
                                     });
                                 }
                             }
@@ -281,11 +363,79 @@ public class MainActivity extends AppCompatActivity {
                             Log.e(TAG, "Geocoding error", e);
                         }
                     }).start();
+                } else {
+                    Log.w(TAG, "GPS location is null, trying to get fresh location");
+                    // Last location is null, try to get current location
+                    requestCurrentLocation();
                 }
             })
             .addOnFailureListener(e -> {
                 Log.e(TAG, "Failed to get location", e);
             });
+    }
+    
+    private void requestCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) 
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        
+        com.google.android.gms.location.LocationRequest locationRequest = 
+            com.google.android.gms.location.LocationRequest.create();
+        locationRequest.setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setNumUpdates(1);
+        
+        fusedLocationClient.requestLocationUpdates(locationRequest, 
+            new com.google.android.gms.location.LocationCallback() {
+                @Override
+                public void onLocationResult(com.google.android.gms.location.LocationResult locationResult) {
+                    if (locationResult != null && locationResult.getLastLocation() != null) {
+                        android.location.Location loc = locationResult.getLastLocation();
+                        
+                        // Process this location same as getLastLocation
+                        new Thread(() -> {
+                            try {
+                                Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                                List<Address> addresses = geocoder.getFromLocation(
+                                    loc.getLatitude(), loc.getLongitude(), 1);
+                                
+                                if (addresses != null && !addresses.isEmpty()) {
+                                    Address address = addresses.get(0);
+                                    String cityName = address.getLocality();
+                                    
+                                    if (cityName == null || cityName.isEmpty()) {
+                                        cityName = address.getAdminArea();
+                                    }
+                                    if (cityName == null || cityName.isEmpty()) {
+                                        cityName = address.getCountryName();
+                                    }
+                                    
+                                    if (cityName != null && !cityName.isEmpty()) {
+                                        final String finalCity = cityName;
+                                        runOnUiThread(() -> {
+                                            Log.d(TAG, "Current GPS location: " + finalCity);
+                                            
+                                            if (!cities.contains(finalCity)) {
+                                                cities.add(0, finalCity);
+                                                saveCities();
+                                            }
+                                            
+                                            currentCity = finalCity;
+                                            saveCities();
+                                            updateSpinner();
+                                            loadWeather(finalCity);
+                                            
+                                            Toast.makeText(MainActivity.this, "Current location: " + finalCity, Toast.LENGTH_SHORT).show();
+                                        });
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e(TAG, "Geocoding error", e);
+                            }
+                        }).start();
+                    }
+                }
+            }, null);
     }
     
     @Override
