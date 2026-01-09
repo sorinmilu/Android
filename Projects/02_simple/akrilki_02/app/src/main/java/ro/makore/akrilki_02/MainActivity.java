@@ -3,11 +3,8 @@ package ro.makore.akrilki_02;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
 import android.widget.Button;
 import android.widget.TextView;
-import androidx.core.view.WindowInsetsCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -34,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         refreshButton = findViewById(R.id.refreshButton);
 
         // Find the quit button and the textview
-        Button quitButton = findViewById(R.id.quitButton);
-        TextView jokeTextView = findViewById(R.id.jokeTextView);
+        // Button quitButton = findViewById(R.id.quitButton);
+        // TextView jokeTextView = findViewById(R.id.jokeTextView);
 
         // fetch the first joke    
         fetchJoke();
