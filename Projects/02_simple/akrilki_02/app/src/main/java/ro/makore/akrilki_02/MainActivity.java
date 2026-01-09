@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView jokeTextView;
     private Button refreshButton;
+    private Button quitButton;
     private OkHttpClient client;
 
     @Override
@@ -29,15 +30,11 @@ public class MainActivity extends AppCompatActivity {
 
         jokeTextView = findViewById(R.id.jokeTextView);
         refreshButton = findViewById(R.id.refreshButton);
-
-        // Find the quit button and the textview
-        // Button quitButton = findViewById(R.id.quitButton);
-        // TextView jokeTextView = findViewById(R.id.jokeTextView);
+        quitButton = findViewById(R.id.quitButton);
 
         // fetch the first joke    
         fetchJoke();
 
-        // Add the quit button action
         quitButton.setOnClickListener(v -> finishAffinity());
         refreshButton.setOnClickListener(v -> fetchJoke());
 
