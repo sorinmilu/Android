@@ -1,5 +1,36 @@
 # Script Live Coding - Aplicație Vreme Simplă
 
+<!-- TOC -->
+
+- [Script Live Coding - Aplicație Vreme Simplă](#script-live-coding---aplica%C8%9Bie-vreme-simpl%C4%83)
+    - [Prezentare Aplicație](#prezentare-aplica%C8%9Bie)
+    - [Structura Directorului Aplicației](#structura-directorului-aplica%C8%9Biei)
+    - [Pași Live Coding](#pa%C8%99i-live-coding)
+        - [Pasul 1: Crearea structurii de directoare](#pasul-1-crearea-structurii-de-directoare)
+        - [Pasul 2: Crearea fișierului settings.gradle](#pasul-2-crearea-fi%C8%99ierului-settingsgradle)
+        - [Pasul 3: Crearea fișierului build.gradle la rădăcină](#pasul-3-crearea-fi%C8%99ierului-buildgradle-la-r%C4%83d%C4%83cin%C4%83)
+        - [Pasul 4: Crearea fișierului gradle.properties](#pasul-4-crearea-fi%C8%99ierului-gradleproperties)
+        - [Pasul 5: Crearea fișierului build.gradle pentru app](#pasul-5-crearea-fi%C8%99ierului-buildgradle-pentru-app)
+        - [Pasul 6: Crearea fișierului AndroidManifest.xml](#pasul-6-crearea-fi%C8%99ierului-androidmanifestxml)
+        - [Pasul 7: Crearea fișierului strings.xml](#pasul-7-crearea-fi%C8%99ierului-stringsxml)
+        - [Pasul 8: Crearea fișierului api_key.json în assets](#pasul-8-crearea-fi%C8%99ierului-api_keyjson-%C3%AEn-assets)
+        - [Pasul 9: Crearea clasei WeatherItem Parcelable în MainActivity](#pasul-9-crearea-clasei-weatheritem-parcelable-%C3%AEn-mainactivity)
+        - [Pasul 10: Crearea layout-ului activity_weather_detail.xml](#pasul-10-crearea-layout-ului-activity_weather_detailxml)
+        - [Pasul 11: Crearea clasei WeatherDetailActivity](#pasul-11-crearea-clasei-weatherdetailactivity)
+        - [Pasul 12: Crearea layout-ului activity_main.xml](#pasul-12-crearea-layout-ului-activity_mainxml)
+        - [Pasul 13: Crearea layout-ului item_weather.xml](#pasul-13-crearea-layout-ului-item_weatherxml)
+        - [Pasul 14: Crearea clasei MainActivity - Declarații și onCreate](#pasul-14-crearea-clasei-mainactivity---declara%C8%9Bii-%C8%99i-oncreate)
+    - [Build, Install și Run](#build-install-%C8%99i-run)
+        - [Build APK debug](#build-apk-debug)
+        - [Listare dispozitive](#listare-dispozitive)
+        - [Instalare APK](#instalare-apk)
+        - [Lansare activitate principală](#lansare-activitate-principal%C4%83)
+        - [Afișare loguri filtrate](#afi%C8%99are-loguri-filtrate)
+
+<!-- /TOC -->
+
+
+
 ## Prezentare Aplicație
 
 Această aplicație Android preia date meteorologice de la OpenWeatherMap API și le afișează organizate pe zile, cu grafice de temperatură și icoane pentru condițiile meteo. Aplicația suportă gestionarea mai multor locații și poate obține locația curentă prin GPS.
@@ -60,7 +91,7 @@ simple_weather/
 
 ### Pasul 1: Crearea structurii de directoare
 
-**Ce fac:** Creez structura completă de directoare pentru aplicația Android.
+**Actiuni:** Creez structura completă de directoare pentru aplicația Android.
 
 **Ce scriu în terminal:**
 ```bash
@@ -69,7 +100,7 @@ mkdir -p simple_weather/app/src/main/res/{layout,drawable,values}
 mkdir -p simple_weather/app/src/main/assets
 ```
 
-**Ce spun:** "Vom începe prin a crea structura de directoare pentru aplicația noastră. Această aplicație are o structură simplă - toată logica este în MainActivity, deci nu avem nevoie de directoare separate pentru model, adapter, API sau parser. De asemenea, am adăugat directorul `assets` unde vom stoca cheia API."
+**Note:** "Vom începe prin a crea structura de directoare pentru aplicația noastră. Această aplicație are o structură simplă - toată logica este în MainActivity, deci nu avem nevoie de directoare separate pentru model, adapter, API sau parser. De asemenea, am adăugat directorul `assets` unde vom stoca cheia API."
 
 **Checkpoint:** Structura de directoare este creată.
 
@@ -77,7 +108,7 @@ mkdir -p simple_weather/app/src/main/assets
 
 ### Pasul 2: Crearea fișierului settings.gradle
 
-**Ce fac:** Creez fișierul `settings.gradle` la rădăcina proiectului.
+**Actiuni:** Creez fișierul `settings.gradle` la rădăcina proiectului.
 
 **Ce scriu:**
 ```groovy
@@ -106,7 +137,7 @@ rootProject.name = "simple_weather"
 include ':app'
 ```
 
-**Ce spun:** "Creez fișierul `settings.gradle` cu configurația standard. Observați că numele proiectului este `simple_weather`."
+**Note:** "Creez fișierul `settings.gradle` cu configurația standard. Observați că numele proiectului este `simple_weather`."
 
 **Checkpoint:** Fișierul `settings.gradle` este creat.
 
@@ -114,7 +145,7 @@ include ':app'
 
 ### Pasul 3: Crearea fișierului build.gradle la rădăcină
 
-**Ce fac:** Creez fișierul `build.gradle` la nivelul rădăcină.
+**Actiuni:** Creez fișierul `build.gradle` la nivelul rădăcină.
 
 **Ce scriu:**
 ```groovy
@@ -129,7 +160,7 @@ buildscript {
 }
 ```
 
-**Ce spun:** "Creez fișierul `build.gradle` la rădăcină care configurează plugin-ul Android pentru Gradle."
+**Note:** "Creez fișierul `build.gradle` la rădăcină care configurează plugin-ul Android pentru Gradle."
 
 **Checkpoint:** Fișierul `build.gradle` la rădăcină este creat.
 
@@ -137,7 +168,7 @@ buildscript {
 
 ### Pasul 4: Crearea fișierului gradle.properties
 
-**Ce fac:** Creez fișierul `gradle.properties` cu configurații pentru build.
+**Actiuni:** Creez fișierul `gradle.properties` cu configurații pentru build.
 
 **Ce scriu:**
 ```properties
@@ -146,7 +177,7 @@ android.useAndroidX=true
 android.enableJetifier=true
 ```
 
-**Ce spun:** "Creez fișierul `gradle.properties` cu configurații standard pentru AndroidX și encoding."
+**Note:** "Creez fișierul `gradle.properties` cu configurații standard pentru AndroidX și encoding."
 
 **Checkpoint:** Fișierul `gradle.properties` este creat.
 
@@ -154,7 +185,7 @@ android.enableJetifier=true
 
 ### Pasul 5: Crearea fișierului build.gradle pentru app
 
-**Ce fac:** Creez fișierul `app/build.gradle` cu toate dependențele necesare.
+**Actiuni:** Creez fișierul `app/build.gradle` cu toate dependențele necesare.
 
 **Ce scriu:**
 ```groovy
@@ -205,7 +236,7 @@ dependencies {
 }
 ```
 
-**Ce spun:** "Creez fișierul `build.gradle` pentru modulul app. Observați dependențele: `recyclerview` pentru listele scrollabile, `okhttp` pentru apeluri HTTP, `gson` pentru parsarea JSON, `play-services-location` pentru GPS, `MPAndroidChart` pentru graficele de temperatură și `glide` pentru încărcarea imaginilor. De asemenea, activez `viewBinding` pentru accesul tip-safe la view-uri."
+**Note:** "Creez fișierul `build.gradle` pentru modulul app. Observați dependențele: `recyclerview` pentru listele scrollabile, `okhttp` pentru apeluri HTTP, `gson` pentru parsarea JSON, `play-services-location` pentru GPS, `MPAndroidChart` pentru graficele de temperatură și `glide` pentru încărcarea imaginilor. De asemenea, activez `viewBinding` pentru accesul tip-safe la view-uri."
 
 **Checkpoint:** Fișierul `app/build.gradle` este creat cu toate dependențele.
 
@@ -213,7 +244,7 @@ dependencies {
 
 ### Pasul 6: Crearea fișierului AndroidManifest.xml
 
-**Ce fac:** Creez fișierul `AndroidManifest.xml` cu permisiunile și declarațiile activităților.
+**Actiuni:** Creez fișierul `AndroidManifest.xml` cu permisiunile și declarațiile activităților.
 
 **Ce scriu:**
 ```xml
@@ -247,7 +278,7 @@ dependencies {
 </manifest>
 ```
 
-**Ce spun:** "Creez fișierul `AndroidManifest.xml`. Observați permisiunile: `INTERNET` pentru apelurile API, `ACCESS_FINE_LOCATION` și `ACCESS_COARSE_LOCATION` pentru GPS. Declar două activități: `MainActivity` ca activitate principală și `WeatherDetailActivity` pentru afișarea detaliilor unei intrări meteo."
+**Note:** "Creez fișierul `AndroidManifest.xml`. Observați permisiunile: `INTERNET` pentru apelurile API, `ACCESS_FINE_LOCATION` și `ACCESS_COARSE_LOCATION` pentru GPS. Declar două activități: `MainActivity` ca activitate principală și `WeatherDetailActivity` pentru afișarea detaliilor unei intrări meteo."
 
 **Checkpoint:** Fișierul `AndroidManifest.xml` este creat.
 
@@ -255,7 +286,7 @@ dependencies {
 
 ### Pasul 7: Crearea fișierului strings.xml
 
-**Ce fac:** Creez fișierul `strings.xml` cu string-urile aplicației.
+**Actiuni:** Creez fișierul `strings.xml` cu string-urile aplicației.
 
 **Ce scriu:**
 ```xml
@@ -265,7 +296,7 @@ dependencies {
 </resources>
 ```
 
-**Ce spun:** "Creez fișierul `strings.xml` cu numele aplicației."
+**Note:** "Creez fișierul `strings.xml` cu numele aplicației."
 
 **Checkpoint:** Fișierul `strings.xml` este creat.
 
@@ -273,7 +304,7 @@ dependencies {
 
 ### Pasul 8: Crearea fișierului api_key.json în assets
 
-**Ce fac:** Creez fișierul JSON pentru cheia API.
+**Actiuni:** Creez fișierul JSON pentru cheia API.
 
 **Ce scriu în `assets/api_key.json`:**
 ```json
@@ -282,7 +313,7 @@ dependencies {
 }
 ```
 
-**Ce spun:** "Creez fișierul `api_key.json` în directorul `assets` care va conține cheia API pentru OpenWeatherMap. Utilizatorul va trebui să înlocuiască valoarea cu cheia sa reală obținută de la openweathermap.org."
+**Note:** "Creez fișierul `api_key.json` în directorul `assets` care va conține cheia API pentru OpenWeatherMap. Utilizatorul va trebui să înlocuiască valoarea cu cheia sa reală obținută de la openweathermap.org."
 
 **Checkpoint:** Fișierul `api_key.json` este creat în directorul `assets`.
 
@@ -290,7 +321,7 @@ dependencies {
 
 ### Pasul 9: Crearea clasei WeatherItem (Parcelable) în MainActivity
 
-**Ce fac:** Creez clasa `WeatherItem` ca clasă internă statică în `MainActivity` care implementează interfața `Parcelable`.
+**Actiuni:** Creez clasa `WeatherItem` ca clasă internă statică în `MainActivity` care implementează interfața `Parcelable`.
 
 **Ce scriu în `MainActivity.java` (la început, după import-uri):**
 ```java
@@ -357,7 +388,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 ```
 
-**Ce spun:** "Creez clasa `MainActivity` cu toate import-urile necesare. Observați că import-urile includ biblioteci pentru Parcelable, RecyclerView, MPAndroidChart, Glide, OkHttp, Gson și Google Play Services Location."
+**Note:** "Creez clasa `MainActivity` cu toate import-urile necesare. Observați că import-urile includ biblioteci pentru Parcelable, RecyclerView, MPAndroidChart, Glide, OkHttp, Gson și Google Play Services Location."
 
 **Ce scriu în continuare (după declarațiile de câmpuri, la sfârșitul clasei, înainte de adapter):**
 ```java
@@ -377,7 +408,7 @@ public class MainActivity extends AppCompatActivity {
         public String dateTime;
 ```
 
-**Ce spun:** "Creez clasa internă statică `WeatherItem` care implementează `Parcelable`. Această interfață permite serializarea eficientă a obiectelor pentru transfer între activități. Declar câmpurile public pentru o intrare meteo: nume oraș, țară, descriere, URL icon, temperatură, temperatura resimțită, umiditate, presiune, viteză vânt, vizibilitate și dată/ora. Folosesc câmpuri public pentru simplitate, deși în producție ar fi preferabile getter-e și setter-e."
+**Note:** "Creez clasa internă statică `WeatherItem` care implementează `Parcelable`. Această interfață permite serializarea eficientă a obiectelor pentru transfer între activități. Declar câmpurile public pentru o intrare meteo: nume oraș, țară, descriere, URL icon, temperatură, temperatura resimțită, umiditate, presiune, viteză vânt, vizibilitate și dată/ora. Folosesc câmpuri public pentru simplitate, deși în producție ar fi preferabile getter-e și setter-e."
 
 **Ce scriu în continuare:**
 ```java
@@ -398,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
         }
 ```
 
-**Ce spun:** "Adaug două constructori: unul normal fără parametri și unul special care primește un `Parcel` pentru deserializare. Ordinea citirii din Parcel trebuie să fie identică cu ordinea scrierii în `writeToParcel`. Observați că folosesc `readDouble` pentru valorile numerice."
+**Note:** "Adaug două constructori: unul normal fără parametri și unul special care primește un `Parcel` pentru deserializare. Ordinea citirii din Parcel trebuie să fie identică cu ordinea scrierii în `writeToParcel`. Observați că folosesc `readDouble` pentru valorile numerice."
 
 **Ce scriu în continuare:**
 ```java
@@ -423,7 +454,7 @@ public class MainActivity extends AppCompatActivity {
         }
 ```
 
-**Ce spun:** "Implementez metoda `writeToParcel` care scrie toate câmpurile în Parcel în aceeași ordine ca în constructor. Metoda `describeContents` returnează 0 pentru obiecte simple fără file descriptors."
+**Note:** "Implementez metoda `writeToParcel` care scrie toate câmpurile în Parcel în aceeași ordine ca în constructor. Metoda `describeContents` returnează 0 pentru obiecte simple fără file descriptors."
 
 **Ce scriu în continuare:**
 ```java
@@ -441,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Creez constanta `CREATOR` care este obligatorie pentru `Parcelable`. Aceasta conține două metode: `createFromParcel` care creează un obiect din Parcel și `newArray` care creează un array de obiecte. Android folosește acest CREATOR pentru a reconstrui obiectele când sunt transferate prin Intent."
+**Note:** "Creez constanta `CREATOR` care este obligatorie pentru `Parcelable`. Aceasta conține două metode: `createFromParcel` care creează un obiect din Parcel și `newArray` care creează un array de obiecte. Android folosește acest CREATOR pentru a reconstrui obiectele când sunt transferate prin Intent."
 
 **Checkpoint:** Clasa `WeatherItem` este creată cu implementarea completă a `Parcelable`.
 
@@ -449,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 10: Crearea layout-ului activity_weather_detail.xml
 
-**Ce fac:** Creez layout-ul pentru activitatea de detalii care va afișa informațiile despre o intrare meteo.
+**Actiuni:** Creez layout-ul pentru activitatea de detalii care va afișa informațiile despre o intrare meteo.
 
 **Ce scriu în `res/layout/activity_weather_detail.xml`:**
 ```xml
@@ -561,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
 </ScrollView>
 ```
 
-**Ce spun:** "Creez layout-ul pentru activitatea de detalii folosind `ScrollView` cu un `LinearLayout` vertical. Conține: numele orașului, data/ora, temperatura (mare și bold), temperatura resimțită, descrierea, o linie separator, umiditatea, presiunea, viteza vântului, vizibilitatea și un buton Back. ScrollView permite derularea conținutului lung."
+**Note:** "Creez layout-ul pentru activitatea de detalii folosind `ScrollView` cu un `LinearLayout` vertical. Conține: numele orașului, data/ora, temperatura (mare și bold), temperatura resimțită, descrierea, o linie separator, umiditatea, presiunea, viteza vântului, vizibilitatea și un buton Back. ScrollView permite derularea conținutului lung."
 
 **Checkpoint:** Layout-ul `activity_weather_detail.xml` este creat.
 
@@ -569,7 +600,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 11: Crearea clasei WeatherDetailActivity
 
-**Ce fac:** Creez activitatea de detalii care primește `WeatherItem` prin Intent și îl afișează.
+**Actiuni:** Creez activitatea de detalii care primește `WeatherItem` prin Intent și îl afișează.
 
 **Ce scriu în `WeatherDetailActivity.java`:**
 ```java
@@ -590,7 +621,7 @@ public class WeatherDetailActivity extends AppCompatActivity {
         MainActivity.WeatherItem item = getIntent().getParcelableExtra("weather_item");
 ```
 
-**Ce spun:** "Creez clasa `WeatherDetailActivity` care extinde `AppCompatActivity`. În `onCreate`, setez layout-ul și extrag obiectul `WeatherItem` din Intent folosind `getParcelableExtra`. Observați că folosesc `MainActivity.WeatherItem` deoarece `WeatherItem` este o clasă internă statică în `MainActivity`. Android deserializează automat obiectul Parcelable."
+**Note:** "Creez clasa `WeatherDetailActivity` care extinde `AppCompatActivity`. În `onCreate`, setez layout-ul și extrag obiectul `WeatherItem` din Intent folosind `getParcelableExtra`. Observați că folosesc `MainActivity.WeatherItem` deoarece `WeatherItem` este o clasă internă statică în `MainActivity`. Android deserializează automat obiectul Parcelable."
 
 **Ce scriu în continuare:**
 ```java
@@ -622,7 +653,7 @@ public class WeatherDetailActivity extends AppCompatActivity {
 }
 ```
 
-**Ce spun:** "Dacă `item` nu este null, obțin referințele la toate TextView-urile și setez texturile cu datele din obiectul `WeatherItem`. Formatez temperatura cu o zecimală și unitatea °C, umiditatea ca procent, presiunea în hPa, viteza vântului în m/s și vizibilitatea în km. Butonul Back apelează `finish()` pentru a închide activitatea."
+**Note:** "Dacă `item` nu este null, obțin referințele la toate TextView-urile și setez texturile cu datele din obiectul `WeatherItem`. Formatez temperatura cu o zecimală și unitatea °C, umiditatea ca procent, presiunea în hPa, viteza vântului în m/s și vizibilitatea în km. Butonul Back apelează `finish()` pentru a închide activitatea."
 
 **Checkpoint:** Clasa `WeatherDetailActivity` este creată și poate afișa detaliile unei intrări meteo primite prin Intent.
 
@@ -630,7 +661,7 @@ public class WeatherDetailActivity extends AppCompatActivity {
 
 ### Pasul 12: Crearea layout-ului activity_main.xml
 
-**Ce fac:** Creez layout-ul principal cu CoordinatorLayout, Spinner pentru locații, RecyclerView și butoane.
+**Actiuni:** Creez layout-ul principal cu CoordinatorLayout, Spinner pentru locații, RecyclerView și butoane.
 
 **Ce scriu în `res/layout/activity_main.xml`:**
 ```xml
@@ -716,7 +747,7 @@ public class WeatherDetailActivity extends AppCompatActivity {
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
-**Ce spun:** "Creez layout-ul principal folosind `CoordinatorLayout` care permite coordonarea între componente. Conține un `LinearLayout` vertical cu: un TextView pentru titlu, un LinearLayout orizontal cu Spinner pentru selecția locației și un buton pentru adăugarea de locații noi, un buton Refresh, un TextView pentru mesajul de încărcare și un RecyclerView pentru lista de prognoze. De asemenea, adaug un FloatingActionButton pentru quit în colțul din dreapta jos."
+**Note:** "Creez layout-ul principal folosind `CoordinatorLayout` care permite coordonarea între componente. Conține un `LinearLayout` vertical cu: un TextView pentru titlu, un LinearLayout orizontal cu Spinner pentru selecția locației și un buton pentru adăugarea de locații noi, un buton Refresh, un TextView pentru mesajul de încărcare și un RecyclerView pentru lista de prognoze. De asemenea, adaug un FloatingActionButton pentru quit în colțul din dreapta jos."
 
 **Checkpoint:** Layout-ul `activity_main.xml` este creat.
 
@@ -724,7 +755,7 @@ public class WeatherDetailActivity extends AppCompatActivity {
 
 ### Pasul 13: Crearea layout-ului item_weather.xml
 
-**Ce fac:** Creez layout-ul pentru un element din RecyclerView care conține un grafic de temperatură.
+**Actiuni:** Creez layout-ul pentru un element din RecyclerView care conține un grafic de temperatură.
 
 **Ce scriu în `res/layout/item_weather.xml`:**
 ```xml
@@ -786,7 +817,7 @@ public class WeatherDetailActivity extends AppCompatActivity {
 </androidx.cardview.widget.CardView>
 ```
 
-**Ce spun:** "Creez layout-ul pentru un element din listă folosind `CardView` pentru un aspect modern cu umbre. Layout-ul conține: data formatată, temperatura minimă și maximă, un `FrameLayout` care conține un `LineChart` pentru graficul de temperatură (FrameLayout permite suprapunerea de icoane peste grafic) și un TextView pentru numărul de intrări. Observați că folosesc `com.github.mikephil.charting.charts.LineChart` din biblioteca MPAndroidChart."
+**Note:** "Creez layout-ul pentru un element din listă folosind `CardView` pentru un aspect modern cu umbre. Layout-ul conține: data formatată, temperatura minimă și maximă, un `FrameLayout` care conține un `LineChart` pentru graficul de temperatură (FrameLayout permite suprapunerea de icoane peste grafic) și un TextView pentru numărul de intrări. Observați că folosesc `com.github.mikephil.charting.charts.LineChart` din biblioteca MPAndroidChart."
 
 **Checkpoint:** Layout-ul `item_weather.xml` este creat.
 
@@ -794,7 +825,7 @@ public class WeatherDetailActivity extends AppCompatActivity {
 
 ### Pasul 14: Crearea clasei MainActivity - Declarații și onCreate
 
-**Ce fac:** Creez clasa `MainActivity` cu declarațiile de câmpuri și metoda `onCreate` parțială.
+**Actiuni:** Creez clasa `MainActivity` cu declarațiile de câmpuri și metoda `onCreate` parțială.
 
 **Ce scriu în `MainActivity.java` (după import-uri, înainte de clasa WeatherItem):**
 ```java
@@ -818,7 +849,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentCity;
 ```
 
-**Ce spun:** "Creez clasa `MainActivity` cu constante pentru SharedPreferences, tag pentru logging și declarații de câmpuri: RecyclerView, TextView pentru loading, Spinner pentru locații, adapteri, FusedLocationProviderClient pentru GPS și liste pentru gestionarea locațiilor."
+**Note:** "Creez clasa `MainActivity` cu constante pentru SharedPreferences, tag pentru logging și declarații de câmpuri: RecyclerView, TextView pentru loading, Spinner pentru locații, adapteri, FusedLocationProviderClient pentru GPS și liste pentru gestionarea locațiilor."
 
 **Ce scriu în continuare:**
 ```java
@@ -846,7 +877,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "În `onCreate`, setez layout-ul, obțin referințele la view-uri, setez LinearLayoutManager pentru RecyclerView, inițializez FusedLocationProviderClient, încarc locațiile salvate, configurez Spinner-ul, conectez butoanele la metodele lor și solicit locația GPS. Pentru simplitate, omit implementarea completă a metodelor `loadCities`, `setupCitySpinner`, `showAddCityDialog`, `requestGPSLocation` și `loadWeather` - acestea ar necesita implementări complexe pentru API calls, JSON parsing, GPS și chart setup care depășesc scopul acestui script de bază."
+**Note:** "În `onCreate`, setez layout-ul, obțin referințele la view-uri, setez LinearLayoutManager pentru RecyclerView, inițializez FusedLocationProviderClient, încarc locațiile salvate, configurez Spinner-ul, conectez butoanele la metodele lor și solicit locația GPS. Pentru simplitate, omit implementarea completă a metodelor `loadCities`, `setupCitySpinner`, `showAddCityDialog`, `requestGPSLocation` și `loadWeather` - acestea ar necesita implementări complexe pentru API calls, JSON parsing, GPS și chart setup care depășesc scopul acestui script de bază."
 
 **Checkpoint:** Clasa `MainActivity` este creată cu structura de bază și metodele helper sunt declarate (implementarea completă ar necesita pași suplimentari pentru API, parsing, GPS și charts).
 
@@ -856,7 +887,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Build APK debug
 
-**Ce fac:** Compilez aplicația într-un APK debug.
+**Actiuni:** Compilez aplicația într-un APK debug.
 
 **Ce scriu în terminal:**
 ```bash
@@ -864,7 +895,7 @@ cd simple_weather
 gradle assembleDebug
 ```
 
-**Ce spun:** "Compilez aplicația folosind Gradle. Comanda `assembleDebug` creează un APK debug în `app/build/outputs/apk/debug/`."
+**Note:** "Compilez aplicația folosind Gradle. Comanda `assembleDebug` creează un APK debug în `app/build/outputs/apk/debug/`."
 
 **Checkpoint:** APK-ul debug este generat.
 
@@ -872,14 +903,14 @@ gradle assembleDebug
 
 ### Listare dispozitive
 
-**Ce fac:** Listez dispozitivele Android conectate.
+**Actiuni:** Listez dispozitivele Android conectate.
 
 **Ce scriu în terminal:**
 ```bash
 adb devices
 ```
 
-**Ce spun:** "Listez dispozitivele conectate. Asigurați-vă că aveți un emulator pornit sau un dispozitiv fizic conectat prin USB cu USB debugging activat."
+**Note:** "Listez dispozitivele conectate. Asigurați-vă că aveți un emulator pornit sau un dispozitiv fizic conectat prin USB cu USB debugging activat."
 
 **Checkpoint:** Dispozitivul este listat.
 
@@ -887,14 +918,14 @@ adb devices
 
 ### Instalare APK
 
-**Ce fac:** Instalez APK-ul pe dispozitiv.
+**Actiuni:** Instalez APK-ul pe dispozitiv.
 
 **Ce scriu în terminal:**
 ```bash
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-**Ce spun:** "Instalez APK-ul pe dispozitiv. Flag-ul `-r` permite reinstalarea dacă aplicația există deja."
+**Note:** "Instalez APK-ul pe dispozitiv. Flag-ul `-r` permite reinstalarea dacă aplicația există deja."
 
 **Checkpoint:** Aplicația este instalată pe dispozitiv.
 
@@ -902,14 +933,14 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 ### Lansare activitate principală
 
-**Ce fac:** Lansez activitatea principală.
+**Actiuni:** Lansez activitatea principală.
 
 **Ce scriu în terminal:**
 ```bash
 adb shell am start -n ro.makore.simple_weather/.MainActivity
 ```
 
-**Ce spun:** "Lansez activitatea principală folosind `am start` cu numele complet al pachetului și activității."
+**Note:** "Lansez activitatea principală folosind `am start` cu numele complet al pachetului și activității."
 
 **Checkpoint:** Aplicația se deschide.
 
@@ -917,14 +948,15 @@ adb shell am start -n ro.makore.simple_weather/.MainActivity
 
 ### Afișare loguri filtrate
 
-**Ce fac:** Afișez logurile filtrate pentru aplicație.
+**Actiuni:** Afișez logurile filtrate pentru aplicație.
 
 **Ce scriu în terminal:**
 ```bash
 adb logcat | grep -E "(SimpleWeather|AndroidRuntime)"
 ```
 
-**Ce spun:** "Afișez logurile filtrate pentru tag-ul nostru (`SimpleWeather`) și erorile (`AndroidRuntime`). Observați mesajele legate de apelurile API, parsarea JSON, GPS și gestionarea locațiilor."
+**Note:** "Afișez logurile filtrate pentru tag-ul nostru (`SimpleWeather`) și erorile (`AndroidRuntime`). Observați mesajele legate de apelurile API, parsarea JSON, GPS și gestionarea locațiilor."
 
 **Checkpoint:** Logurile sunt afișate și pot fi monitorizate pentru debugging.
+
 

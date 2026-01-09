@@ -1,5 +1,41 @@
 # Script Live Coding - Aplicație cu Google Maps și Location Services
 
+<!-- TOC -->
+
+- [Script Live Coding - Aplicație cu Google Maps și Location Services](#script-live-coding---aplica%C8%9Bie-cu-google-maps-%C8%99i-location-services)
+    - [Prezentare Aplicație](#prezentare-aplica%C8%9Bie)
+    - [Structura Directorului Aplicației](#structura-directorului-aplica%C8%9Biei)
+    - [Pași Live Coding](#pa%C8%99i-live-coding)
+        - [Pasul 1: Crearea structurii de directoare](#pasul-1-crearea-structurii-de-directoare)
+        - [Pasul 2: Crearea fișierului settings.gradle](#pasul-2-crearea-fi%C8%99ierului-settingsgradle)
+        - [Pasul 3: Crearea fișierului build.gradle la rădăcină](#pasul-3-crearea-fi%C8%99ierului-buildgradle-la-r%C4%83d%C4%83cin%C4%83)
+        - [Pasul 4: Crearea fișierului gradle.properties](#pasul-4-crearea-fi%C8%99ierului-gradleproperties)
+        - [Pasul 5: Crearea fișierului app/build.gradle](#pasul-5-crearea-fi%C8%99ierului-appbuildgradle)
+        - [Pasul 6: Crearea fișierului AndroidManifest.xml](#pasul-6-crearea-fi%C8%99ierului-androidmanifestxml)
+        - [Pasul 7: Crearea fișierului activity_main_drawer.xml](#pasul-7-crearea-fi%C8%99ierului-activity_main_drawerxml)
+        - [Pasul 8: Crearea fișierului main.xml](#pasul-8-crearea-fi%C8%99ierului-mainxml)
+        - [Pasul 9: Crearea fișierului mobile_navigation.xml](#pasul-9-crearea-fi%C8%99ierului-mobile_navigationxml)
+        - [Pasul 10: Crearea fișierului activity_main.xml](#pasul-10-crearea-fi%C8%99ierului-activity_mainxml)
+        - [Pasul 11: Crearea fișierului app_bar_main.xml](#pasul-11-crearea-fi%C8%99ierului-app_bar_mainxml)
+        - [Pasul 12: Crearea fișierului content_main.xml](#pasul-12-crearea-fi%C8%99ierului-content_mainxml)
+        - [Pasul 13: Crearea fișierului fragment_home.xml](#pasul-13-crearea-fi%C8%99ierului-fragment_homexml)
+        - [Pasul 14: Crearea clasei HomeFragment.java - Partea 1: Imports și Declarații](#pasul-14-crearea-clasei-homefragmentjava---partea-1-imports-%C8%99i-declara%C8%9Bii)
+        - [Pasul 15: Crearea clasei HomeFragment.java - Partea 2: Metoda onCreateView](#pasul-15-crearea-clasei-homefragmentjava---partea-2-metoda-oncreateview)
+        - [Pasul 16: Crearea clasei HomeFragment.java - Partea 3: Metoda onMapReady](#pasul-16-crearea-clasei-homefragmentjava---partea-3-metoda-onmapready)
+        - [Pasul 17: Crearea clasei HomeFragment.java - Partea 4: Metode Helper și Lifecycle](#pasul-17-crearea-clasei-homefragmentjava---partea-4-metode-helper-%C8%99i-lifecycle)
+        - [Pasul 18: Crearea clasei MainActivity.java](#pasul-18-crearea-clasei-mainactivityjava)
+        - [Pasul 19: Verificarea structurii proiectului](#pasul-19-verificarea-structurii-proiectului)
+    - [Compilare, Instalare și Rulare](#compilare-instalare-%C8%99i-rulare)
+        - [Compilarea aplicației](#compilarea-aplica%C8%9Biei)
+        - [Listarea dispozitivelor conectate](#listarea-dispozitivelor-conectate)
+        - [Instalarea aplicației](#instalarea-aplica%C8%9Biei)
+        - [Lansarea activității principale](#lansarea-activit%C4%83%C8%9Bii-principale)
+        - [Afișarea logurilor filtrate](#afi%C8%99area-logurilor-filtrate)
+    - [Rezumat](#rezumat)
+
+<!-- /TOC -->
+
+
 ## Prezentare Aplicație
 
 Această aplicație Android extinde aplicațiile anterioare prin introducerea integrării cu Google Maps API și serviciilor de localizare. Diferențele arhitecturale principale față de aplicațiile `01_hello_world`, `01_simple`, `02_simple`, `03_less_simple` și `04_three_fragments` sunt: utilizarea Google Maps SDK pentru afișarea hărților interactive (`MapView`, `GoogleMap`), integrarea cu serviciile de localizare Google (`FusedLocationProviderClient`) pentru obținerea poziției dispozitivului, utilizarea `Geocoder` pentru conversia între adrese și coordonate geografice, gestionarea permisiunilor de localizare în runtime, și utilizarea `DrawerLayout` cu `NavigationView` pentru meniul lateral glisant (în loc de `BottomNavigationView`). Aplicația demonstrează gestionarea lifecycle-ului `MapView`-ului care trebuie să fie conectat la lifecycle-ul fragmentului, pattern-ul `OnMapReadyCallback` pentru inițializarea asincronă a hărții, și utilizarea `ActivityResultLauncher` pentru gestionarea modernă a permisiunilor. Fluxul de date este: utilizatorul deschide aplicația → se solicită permisiunea de localizare → `FusedLocationProviderClient` obține poziția → harta se centrează pe locația utilizatorului → utilizatorul navighează între fragmente prin meniul lateral → fiecare fragment afișează hărți sau date geografice diferite. Aplicația nu folosește Parcelable și nu are navigare între activități multiple.
@@ -50,7 +86,7 @@ akrilki_05/
 
 ### Pasul 1: Crearea structurii de directoare
 
-**Ce fac:** Creez structura completă de directoare pentru aplicația Android, inclusiv directoarele pentru fragmente și resurse de navigare.
+**Actiuni:** Creez structura completă de directoare pentru aplicația Android, inclusiv directoarele pentru fragmente și resurse de navigare.
 
 **Ce scriu în terminal:**
 ```bash
@@ -63,7 +99,7 @@ mkdir -p akrilki_05/app/src/main/res/menu
 mkdir -p akrilki_05/app/src/main/res/navigation
 ```
 
-**Ce spun:** "Vom începe prin a crea structura de directoare pentru aplicația noastră. Această aplicație va integra Google Maps, deci vom avea nevoie de fragmente care gestionează hărți și servicii de localizare. Observați că am adăugat directoare pentru patru fragmente: home, geodata, location, și address."
+**Note:** "Vom începe prin a crea structura de directoare pentru aplicația noastră. Această aplicație va integra Google Maps, deci vom avea nevoie de fragmente care gestionează hărți și servicii de localizare. Observați că am adăugat directoare pentru patru fragmente: home, geodata, location, și address."
 
 **Checkpoint:** Structura de directoare este creată, inclusiv directoarele pentru fragmente și resurse de navigare.
 
@@ -71,7 +107,7 @@ mkdir -p akrilki_05/app/src/main/res/navigation
 
 ### Pasul 2: Crearea fișierului settings.gradle
 
-**Ce fac:** Creez fișierul `settings.gradle` la rădăcina proiectului.
+**Actiuni:** Creez fișierul `settings.gradle` la rădăcina proiectului.
 
 **Ce scriu:**
 ```groovy
@@ -100,7 +136,7 @@ rootProject.name = "Akrilki_05"
 include ':app'
 ```
 
-**Ce spun:** "Creez fișierul `settings.gradle` cu configurația standard. Numele proiectului este `Akrilki_05`."
+**Note:** "Creez fișierul `settings.gradle` cu configurația standard. Numele proiectului este `Akrilki_05`."
 
 **Checkpoint:** Fișierul `settings.gradle` este creat.
 
@@ -108,7 +144,7 @@ include ':app'
 
 ### Pasul 3: Crearea fișierului build.gradle la rădăcină
 
-**Ce fac:** Creez fișierul `build.gradle` la nivelul rădăcină.
+**Actiuni:** Creez fișierul `build.gradle` la nivelul rădăcină.
 
 **Ce scriu:**
 ```groovy
@@ -123,7 +159,7 @@ buildscript {
 }
 ```
 
-**Ce spun:** "Creez fișierul `build.gradle` la rădăcină cu configurația pentru plugin-ul Gradle Android."
+**Note:** "Creez fișierul `build.gradle` la rădăcină cu configurația pentru plugin-ul Gradle Android."
 
 **Checkpoint:** Fișierul `build.gradle` rădăcină este creat.
 
@@ -131,7 +167,7 @@ buildscript {
 
 ### Pasul 4: Crearea fișierului gradle.properties
 
-**Ce fac:** Creez fișierul `gradle.properties` pentru configurații globale.
+**Actiuni:** Creez fișierul `gradle.properties` pentru configurații globale.
 
 **Ce scriu:**
 ```
@@ -140,7 +176,7 @@ android.useAndroidX=true
 android.nonTransitiveRClass=true
 ```
 
-**Ce spun:** "Creez fișierul `gradle.properties` cu setările standard pentru memorie JVM și AndroidX."
+**Note:** "Creez fișierul `gradle.properties` cu setările standard pentru memorie JVM și AndroidX."
 
 **Checkpoint:** Fișierul `gradle.properties` este creat.
 
@@ -148,7 +184,7 @@ android.nonTransitiveRClass=true
 
 ### Pasul 5: Crearea fișierului app/build.gradle
 
-**Ce fac:** Creez fișierul `build.gradle` pentru modulul `app` cu dependențele necesare pentru Google Maps și Location Services.
+**Actiuni:** Creez fișierul `build.gradle` pentru modulul `app` cu dependențele necesare pentru Google Maps și Location Services.
 
 **Ce scriu:**
 ```groovy
@@ -168,7 +204,7 @@ android {
     }
 ```
 
-**Ce spun:** "Creez fișierul `app/build.gradle`. Setez namespace-ul la `ro.makore.akrilki_05` și `minSdk` la 21."
+**Note:** "Creez fișierul `app/build.gradle`. Setez namespace-ul la `ro.makore.akrilki_05` și `minSdk` la 21."
 
 **Ce scriu (continuare):**
 ```groovy
@@ -188,7 +224,7 @@ android {
 }
 ```
 
-**Ce spun:** "Configurez tipurile de build, opțiunile de compilare Java, și activez ViewBinding pentru generarea automată a claselor de binding."
+**Note:** "Configurez tipurile de build, opțiunile de compilare Java, și activez ViewBinding pentru generarea automată a claselor de binding."
 
 **Ce scriu (continuare):**
 ```groovy
@@ -204,7 +240,7 @@ dependencies {
 }
 ```
 
-**Ce spun:** "În blocul `dependencies` adaug bibliotecile necesare. Observați noile dependențe esențiale: `play-services-maps` pentru Google Maps, `play-services-location` pentru serviciile de localizare, și `play-services-tasks` pentru gestionarea task-urilor asincrone. De asemenea, păstrăm Navigation Component pentru navigarea între fragmente."
+**Note:** "În blocul `dependencies` adaug bibliotecile necesare. Observați noile dependențe esențiale: `play-services-maps` pentru Google Maps, `play-services-location` pentru serviciile de localizare, și `play-services-tasks` pentru gestionarea task-urilor asincrone. De asemenea, păstrăm Navigation Component pentru navigarea între fragmente."
 
 **Checkpoint:** Fișierul `app/build.gradle` este complet configurat, inclusiv dependențele pentru Google Maps și Location Services.
 
@@ -212,7 +248,7 @@ dependencies {
 
 ### Pasul 6: Crearea fișierului AndroidManifest.xml
 
-**Ce fac:** Creez fișierul `AndroidManifest.xml` cu permisiunile necesare și cheia API Google Maps.
+**Actiuni:** Creez fișierul `AndroidManifest.xml` cu permisiunile necesare și cheia API Google Maps.
 
 **Ce scriu:**
 ```xml
@@ -225,7 +261,7 @@ dependencies {
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 ```
 
-**Ce spun:** "Creez fișierul `AndroidManifest.xml` în `app/src/main/`. Adaug trei permisiuni esențiale: `INTERNET` pentru conexiunea la serviciile Google Maps, `ACCESS_FINE_LOCATION` pentru localizare precisă (GPS), și `ACCESS_COARSE_LOCATION` pentru localizare aproximativă (rețea). Observați că permisiunile de localizare trebuie să fie solicitate și în runtime pentru Android 6.0+."
+**Note:** "Creez fișierul `AndroidManifest.xml` în `app/src/main/`. Adaug trei permisiuni esențiale: `INTERNET` pentru conexiunea la serviciile Google Maps, `ACCESS_FINE_LOCATION` pentru localizare precisă (GPS), și `ACCESS_COARSE_LOCATION` pentru localizare aproximativă (rețea). Observați că permisiunile de localizare trebuie să fie solicitate și în runtime pentru Android 6.0+."
 
 **Ce scriu (continuare):**
 ```xml
@@ -243,7 +279,7 @@ dependencies {
         </activity>
 ```
 
-**Ce spun:** "Declar activitatea `MainActivity` ca activitate principală."
+**Note:** "Declar activitatea `MainActivity` ca activitate principală."
 
 **Ce scriu (continuare):**
 ```xml
@@ -252,7 +288,7 @@ dependencies {
             android:value="YOUR_API_KEY_HERE" />
 ```
 
-**Ce spun:** "Această linie este crucială pentru Google Maps! Adaug un `meta-data` care conține cheia API Google Maps. `android:name="com.google.android.geo.API_KEY"` este numele standard recunoscut de Google Maps SDK. `android:value` trebuie să conțină cheia API obținută de la Google Cloud Console. Fără această cheie, hărțile nu vor funcționa!"
+**Note:** "Această linie este crucială pentru Google Maps! Adaug un `meta-data` care conține cheia API Google Maps. `android:name="com.google.android.geo.API_KEY"` este numele standard recunoscut de Google Maps SDK. `android:value` trebuie să conțină cheia API obținută de la Google Cloud Console. Fără această cheie, hărțile nu vor funcționa!"
 
 **Ce scriu (continuare):**
 ```xml
@@ -261,7 +297,7 @@ dependencies {
 </manifest>
 ```
 
-**Ce spun:** "Închid tag-urile `application` și `manifest`. Manifest-ul este complet cu permisiunile și cheia API necesare pentru Google Maps."
+**Note:** "Închid tag-urile `application` și `manifest`. Manifest-ul este complet cu permisiunile și cheia API necesare pentru Google Maps."
 
 **Checkpoint:** Fișierul `AndroidManifest.xml` este creat cu permisiunile de localizare și cheia API Google Maps.
 
@@ -269,7 +305,7 @@ dependencies {
 
 ### Pasul 7: Crearea fișierului activity_main_drawer.xml
 
-**Ce fac:** Creez fișierul XML pentru meniul lateral (drawer menu).
+**Actiuni:** Creez fișierul XML pentru meniul lateral (drawer menu).
 
 **Ce scriu:**
 ```xml
@@ -299,7 +335,7 @@ dependencies {
 </menu>
 ```
 
-**Ce spun:** "Creez fișierul `activity_main_drawer.xml` în directorul `app/src/main/res/menu/`. Acest fișier definește elementele meniului lateral (drawer menu). `group` cu `checkableBehavior="single"` permite selecția unui singur element la un moment dat. Fiecare `item` are un ID care corespunde cu ID-urile fragmentelor din graful de navigare, o iconiță, și un titlu. ID-urile trebuie să corespundă exact cu cele din graful de navigare."
+**Note:** "Creez fișierul `activity_main_drawer.xml` în directorul `app/src/main/res/menu/`. Acest fișier definește elementele meniului lateral (drawer menu). `group` cu `checkableBehavior="single"` permite selecția unui singur element la un moment dat. Fiecare `item` are un ID care corespunde cu ID-urile fragmentelor din graful de navigare, o iconiță, și un titlu. ID-urile trebuie să corespundă exact cu cele din graful de navigare."
 
 **Checkpoint:** Fișierul `activity_main_drawer.xml` este creat cu patru elemente de meniu.
 
@@ -307,7 +343,7 @@ dependencies {
 
 ### Pasul 8: Crearea fișierului main.xml
 
-**Ce fac:** Creez fișierul XML pentru meniul dropdown din ActionBar.
+**Actiuni:** Creez fișierul XML pentru meniul dropdown din ActionBar.
 
 **Ce scriu:**
 ```xml
@@ -322,7 +358,7 @@ dependencies {
 </menu>
 ```
 
-**Ce spun:** "Creez fișierul `main.xml` în directorul `app/src/main/res/menu/`. Acest fișier definește meniul dropdown care apare când utilizatorul apasă pe butonul cu trei puncte din ActionBar. `app:showAsAction="never"` înseamnă că elementul va apărea doar în meniul dropdown, nu în ActionBar."
+**Note:** "Creez fișierul `main.xml` în directorul `app/src/main/res/menu/`. Acest fișier definește meniul dropdown care apare când utilizatorul apasă pe butonul cu trei puncte din ActionBar. `app:showAsAction="never"` înseamnă că elementul va apărea doar în meniul dropdown, nu în ActionBar."
 
 **Checkpoint:** Fișierul `main.xml` este creat cu elementul de quit.
 
@@ -330,7 +366,7 @@ dependencies {
 
 ### Pasul 9: Crearea fișierului mobile_navigation.xml
 
-**Ce fac:** Creez graful de navigare care definește fragmentele și relațiile dintre ele.
+**Actiuni:** Creez graful de navigare care definește fragmentele și relațiile dintre ele.
 
 **Ce scriu:**
 ```xml
@@ -342,7 +378,7 @@ dependencies {
     app:startDestination="@+id/nav_home">
 ```
 
-**Ce spun:** "Creez fișierul `mobile_navigation.xml` în directorul `app/src/main/res/navigation/`. Acesta este graful de navigare care definește structura navigării aplicației. `app:startDestination="@+id/nav_home"` specifică că `HomeFragment` se încarcă la pornirea aplicației."
+**Note:** "Creez fișierul `mobile_navigation.xml` în directorul `app/src/main/res/navigation/`. Acesta este graful de navigare care definește structura navigării aplicației. `app:startDestination="@+id/nav_home"` specifică că `HomeFragment` se încarcă la pornirea aplicației."
 
 **Ce scriu (continuare):**
 ```xml
@@ -372,7 +408,7 @@ dependencies {
 </navigation>
 ```
 
-**Ce spun:** "Adaug cele patru fragmente în graf. Fiecare fragment are un ID care corespunde cu ID-urile din meniul drawer, numele complet al clasei Java, o etichetă pentru ActionBar, și layout-ul pentru preview. Observați că ID-urile (`nav_home`, `nav_geodata`, etc.) trebuie să corespundă exact cu cele din meniul drawer pentru ca navigarea să funcționeze."
+**Note:** "Adaug cele patru fragmente în graf. Fiecare fragment are un ID care corespunde cu ID-urile din meniul drawer, numele complet al clasei Java, o etichetă pentru ActionBar, și layout-ul pentru preview. Observați că ID-urile (`nav_home`, `nav_geodata`, etc.) trebuie să corespundă exact cu cele din meniul drawer pentru ca navigarea să funcționeze."
 
 **Checkpoint:** Fișierul `mobile_navigation.xml` este creat cu patru fragmente definite.
 
@@ -380,7 +416,7 @@ dependencies {
 
 ### Pasul 10: Crearea fișierului activity_main.xml
 
-**Ce fac:** Creez layout-ul principal al activității cu `DrawerLayout` și `NavigationView`.
+**Actiuni:** Creez layout-ul principal al activității cu `DrawerLayout` și `NavigationView`.
 
 **Ce scriu:**
 ```xml
@@ -395,7 +431,7 @@ dependencies {
     tools:openDrawer="start">
 ```
 
-**Ce spun:** "Creez fișierul `activity_main.xml` în directorul `app/src/main/res/layout/`. Folosesc `DrawerLayout` ca layout principal - aceasta este diferența față de aplicația anterioară care folosea `BottomNavigationView`. `DrawerLayout` permite un meniu lateral glisant. `android:fitsSystemWindows="true"` asigură adaptarea la marginea ferestrei sistemului. `tools:openDrawer="start"` permite preview-ul drawer-ului deschis în instrumentele de dezvoltare."
+**Note:** "Creez fișierul `activity_main.xml` în directorul `app/src/main/res/layout/`. Folosesc `DrawerLayout` ca layout principal - aceasta este diferența față de aplicația anterioară care folosea `BottomNavigationView`. `DrawerLayout` permite un meniu lateral glisant. `android:fitsSystemWindows="true"` asigură adaptarea la marginea ferestrei sistemului. `tools:openDrawer="start"` permite preview-ul drawer-ului deschis în instrumentele de dezvoltare."
 
 **Ce scriu (continuare):**
 ```xml
@@ -406,7 +442,7 @@ dependencies {
         android:layout_height="match_parent" />
 ```
 
-**Ce spun:** "Folosesc tag-ul `include` pentru a include layout-ul `app_bar_main` care conține Toolbar-ul și conținutul principal. `include` permite reutilizarea layout-urilor și separarea structurii complexe în fișiere mai mici."
+**Note:** "Folosesc tag-ul `include` pentru a include layout-ul `app_bar_main` care conține Toolbar-ul și conținutul principal. `include` permite reutilizarea layout-urilor și separarea structurii complexe în fișiere mai mici."
 
 **Ce scriu (continuare):**
 ```xml
@@ -421,7 +457,7 @@ dependencies {
 </androidx.drawerlayout.widget.DrawerLayout>
 ```
 
-**Ce spun:** "Adaug `NavigationView` care este meniul lateral glisant. `android:layout_gravity="start"` plasează meniul în partea stângă (sau dreapta pentru RTL). `app:headerLayout` specifică un layout pentru antetul meniului, iar `app:menu` conectează meniul XML creat anterior. Meniul va glisa din stânga când utilizatorul apasă pe butonul hamburger din Toolbar."
+**Note:** "Adaug `NavigationView` care este meniul lateral glisant. `android:layout_gravity="start"` plasează meniul în partea stângă (sau dreapta pentru RTL). `app:headerLayout` specifică un layout pentru antetul meniului, iar `app:menu` conectează meniul XML creat anterior. Meniul va glisa din stânga când utilizatorul apasă pe butonul hamburger din Toolbar."
 
 **Checkpoint:** Fișierul `activity_main.xml` este creat cu `DrawerLayout` și `NavigationView`.
 
@@ -429,7 +465,7 @@ dependencies {
 
 ### Pasul 11: Crearea fișierului app_bar_main.xml
 
-**Ce fac:** Creez layout-ul pentru AppBar cu Toolbar și conținutul principal.
+**Actiuni:** Creez layout-ul pentru AppBar cu Toolbar și conținutul principal.
 
 **Ce scriu:**
 ```xml
@@ -442,7 +478,7 @@ dependencies {
     tools:context=".MainActivity">
 ```
 
-**Ce spun:** "Creez fișierul `app_bar_main.xml` în directorul `app/src/main/res/layout/`. Folosesc `CoordinatorLayout` ca layout principal - acesta permite coordonarea interacțiunilor între elemente, cum ar fi ascunderea Toolbar-ului la scroll."
+**Note:** "Creez fișierul `app_bar_main.xml` în directorul `app/src/main/res/layout/`. Folosesc `CoordinatorLayout` ca layout principal - acesta permite coordonarea interacțiunilor între elemente, cum ar fi ascunderea Toolbar-ului la scroll."
 
 **Ce scriu (continuare):**
 ```xml
@@ -461,7 +497,7 @@ dependencies {
     </com.google.android.material.appbar.AppBarLayout>
 ```
 
-**Ce spun:** "Adaug `AppBarLayout` care conține `Toolbar`-ul. `AppBarLayout` gestionează comportamentul Toolbar-ului în raport cu scroll-ul. `Toolbar` este ActionBar-ul personalizat care va conține butonul hamburger pentru deschiderea drawer-ului și butonul cu trei puncte pentru meniul dropdown."
+**Note:** "Adaug `AppBarLayout` care conține `Toolbar`-ul. `AppBarLayout` gestionează comportamentul Toolbar-ului în raport cu scroll-ul. `Toolbar` este ActionBar-ul personalizat care va conține butonul hamburger pentru deschiderea drawer-ului și butonul cu trei puncte pentru meniul dropdown."
 
 **Ce scriu (continuare):**
 ```xml
@@ -470,7 +506,7 @@ dependencies {
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
-**Ce spun:** "Includ layout-ul `content_main` care va conține `NavHostFragment`-ul pentru fragmente. Închid tag-ul `CoordinatorLayout`."
+**Note:** "Includ layout-ul `content_main` care va conține `NavHostFragment`-ul pentru fragmente. Închid tag-ul `CoordinatorLayout`."
 
 **Checkpoint:** Fișierul `app_bar_main.xml` este creat cu `AppBarLayout`, `Toolbar`, și include pentru conținut.
 
@@ -478,7 +514,7 @@ dependencies {
 
 ### Pasul 12: Crearea fișierului content_main.xml
 
-**Ce fac:** Creez layout-ul pentru conținutul principal cu `NavHostFragment`.
+**Actiuni:** Creez layout-ul pentru conținutul principal cu `NavHostFragment`.
 
 **Ce scriu:**
 ```xml
@@ -492,7 +528,7 @@ dependencies {
     tools:showIn="@layout/app_bar_main">
 ```
 
-**Ce spun:** "Creez fișierul `content_main.xml` în directorul `app/src/main/res/layout/`. Folosesc `ConstraintLayout` ca layout principal. `app:layout_behavior="@string/appbar_scrolling_view_behavior"` permite coordonarea cu `AppBarLayout` pentru scroll. `tools:showIn` indică că acest layout este inclus în `app_bar_main`."
+**Note:** "Creez fișierul `content_main.xml` în directorul `app/src/main/res/layout/`. Folosesc `ConstraintLayout` ca layout principal. `app:layout_behavior="@string/appbar_scrolling_view_behavior"` permite coordonarea cu `AppBarLayout` pentru scroll. `tools:showIn` indică că acest layout este inclus în `app_bar_main`."
 
 **Ce scriu (continuare):**
 ```xml
@@ -509,7 +545,7 @@ dependencies {
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-**Ce spun:** "Adaug `NavHostFragment` care găzduiește fragmentele și gestionează navigarea. `android:name="androidx.navigation.fragment.NavHostFragment"` specifică clasa specială pentru Navigation Component. `app:defaultNavHost="true"` permite gestionarea automată a butonului Back. `app:navGraph="@navigation/mobile_navigation"` conectează graful de navigare creat anterior. Constraint-urile plasează fragmentul să ocupe tot spațiul disponibil."
+**Note:** "Adaug `NavHostFragment` care găzduiește fragmentele și gestionează navigarea. `android:name="androidx.navigation.fragment.NavHostFragment"` specifică clasa specială pentru Navigation Component. `app:defaultNavHost="true"` permite gestionarea automată a butonului Back. `app:navGraph="@navigation/mobile_navigation"` conectează graful de navigare creat anterior. Constraint-urile plasează fragmentul să ocupe tot spațiul disponibil."
 
 **Checkpoint:** Fișierul `content_main.xml` este creat cu `NavHostFragment`.
 
@@ -517,7 +553,7 @@ dependencies {
 
 ### Pasul 13: Crearea fișierului fragment_home.xml
 
-**Ce fac:** Creez layout-ul pentru `HomeFragment` cu `MapView`.
+**Actiuni:** Creez layout-ul pentru `HomeFragment` cu `MapView`.
 
 **Ce scriu:**
 ```xml
@@ -530,7 +566,7 @@ dependencies {
     tools:context=".ui.home.HomeFragment">
 ```
 
-**Ce spun:** "Creez fișierul `fragment_home.xml` în directorul `app/src/main/res/layout/`. Folosesc `ConstraintLayout` ca layout principal. `tools:context` specifică fragmentul asociat pentru preview."
+**Note:** "Creez fișierul `fragment_home.xml` în directorul `app/src/main/res/layout/`. Folosesc `ConstraintLayout` ca layout principal. `tools:context` specifică fragmentul asociat pentru preview."
 
 **Ce scriu (continuare):**
 ```xml
@@ -545,7 +581,7 @@ dependencies {
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-**Ce spun:** "Adaug `MapView` - acesta este componenta Google Maps care va afișa harta. `com.google.android.gms.maps.MapView` este clasa din Google Maps SDK. `android:layout_width="0dp"` și `android:layout_height="0dp"` în ConstraintLayout înseamnă că va ocupa tot spațiul disponibil între constrângeri. Constraint-urile plasează harta să ocupe tot ecranul."
+**Note:** "Adaug `MapView` - acesta este componenta Google Maps care va afișa harta. `com.google.android.gms.maps.MapView` este clasa din Google Maps SDK. `android:layout_width="0dp"` și `android:layout_height="0dp"` în ConstraintLayout înseamnă că va ocupa tot spațiul disponibil între constrângeri. Constraint-urile plasează harta să ocupe tot ecranul."
 
 **Checkpoint:** Fișierul `fragment_home.xml` este creat cu `MapView`.
 
@@ -553,7 +589,7 @@ dependencies {
 
 ### Pasul 14: Crearea clasei HomeFragment.java - Partea 1: Imports și Declarații
 
-**Ce fac:** Creez fragmentul care gestionează harta și localizarea.
+**Actiuni:** Creez fragmentul care gestionează harta și localizarea.
 
 **Ce scriu:**
 ```java
@@ -580,7 +616,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import ro.makore.akrilki_05.databinding.FragmentHomeBinding;
 ```
 
-**Ce spun:** "Creez fișierul `HomeFragment.java` în directorul `app/src/main/java/ro/makore/akrilki_05/ui/home/`. Declar pachetul și adaug import-urile: `Fragment` ca clasă de bază, `FusedLocationProviderClient` pentru serviciile de localizare, clasele Google Maps (`GoogleMap`, `MapView`, `OnMapReadyCallback`), și `FragmentHomeBinding` generat automat de ViewBinding."
+**Note:** "Creez fișierul `HomeFragment.java` în directorul `app/src/main/java/ro/makore/akrilki_05/ui/home/`. Declar pachetul și adaug import-urile: `Fragment` ca clasă de bază, `FusedLocationProviderClient` pentru serviciile de localizare, clasele Google Maps (`GoogleMap`, `MapView`, `OnMapReadyCallback`), și `FragmentHomeBinding` generat automat de ViewBinding."
 
 **Ce scriu (continuare):**
 ```java
@@ -591,7 +627,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
 ```
 
-**Ce spun:** "Definesc clasa `HomeFragment` care extinde `Fragment` și implementează `OnMapReadyCallback`. `OnMapReadyCallback` este o interfață necesară pentru a primi notificarea când harta este gata de utilizare. Declar `binding` pentru ViewBinding, `googleMap` pentru referința la hartă, și `fusedLocationProviderClient` pentru serviciile de localizare."
+**Note:** "Definesc clasa `HomeFragment` care extinde `Fragment` și implementează `OnMapReadyCallback`. `OnMapReadyCallback` este o interfață necesară pentru a primi notificarea când harta este gata de utilizare. Declar `binding` pentru ViewBinding, `googleMap` pentru referința la hartă, și `fusedLocationProviderClient` pentru serviciile de localizare."
 
 **Checkpoint:** Clasa `HomeFragment` este declarată cu toate import-urile și atributele necesare.
 
@@ -608,7 +644,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 ```
 
-**Ce spun:** "Suprascriu metoda `onCreateView` care este apelată pentru a crea view-ul fragmentului. Folosesc ViewBinding pentru a inflata layout-ul - `FragmentHomeBinding.inflate()` creează binding-ul și inflatează layout-ul XML."
+**Note:** "Suprascriu metoda `onCreateView` care este apelată pentru a crea view-ul fragmentului. Folosesc ViewBinding pentru a inflata layout-ul - `FragmentHomeBinding.inflate()` creează binding-ul și inflatează layout-ul XML."
 
 **Ce scriu (continuare):**
 ```java
@@ -616,7 +652,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 ```
 
-**Ce spun:** "Inițializez `FusedLocationProviderClient` folosind `LocationServices.getFusedLocationProviderClient()`. Acest client combină GPS, Wi-Fi și rețele mobile pentru a oferi localizare precisă și eficientă. `requireActivity()` returnează activitatea asociată fragmentului."
+**Note:** "Inițializez `FusedLocationProviderClient` folosind `LocationServices.getFusedLocationProviderClient()`. Acest client combină GPS, Wi-Fi și rețele mobile pentru a oferi localizare precisă și eficientă. `requireActivity()` returnează activitatea asociată fragmentului."
 
 **Ce scriu (continuare):**
 ```java
@@ -625,7 +661,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         binding.mapView.getMapAsync(this);
 ```
 
-**Ce spun:** "Această linie este crucială pentru Google Maps! `binding.mapView.onCreate(savedInstanceState)` inițializează `MapView`-ul și restabilește starea dacă există. `binding.mapView.getMapAsync(this)` solicită harta asincron - `this` este fragmentul care implementează `OnMapReadyCallback`, deci metoda `onMapReady()` va fi apelată când harta este gata. Aceasta este pattern-ul standard pentru inițializarea Google Maps!"
+**Note:** "Această linie este crucială pentru Google Maps! `binding.mapView.onCreate(savedInstanceState)` inițializează `MapView`-ul și restabilește starea dacă există. `binding.mapView.getMapAsync(this)` solicită harta asincron - `this` este fragmentul care implementează `OnMapReadyCallback`, deci metoda `onMapReady()` va fi apelată când harta este gata. Aceasta este pattern-ul standard pentru inițializarea Google Maps!"
 
 **Ce scriu (continuare):**
 ```java
@@ -633,7 +669,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 ```
 
-**Ce spun:** "Returnez view-ul rădăcină al layout-ului. Acum trebuie să implementăm metoda `onMapReady()` care va fi apelată când harta este inițializată."
+**Note:** "Returnez view-ul rădăcină al layout-ului. Acum trebuie să implementăm metoda `onMapReady()` care va fi apelată când harta este inițializată."
 
 **Checkpoint:** Metoda `onCreateView` este completă și inițializează `MapView` și `FusedLocationProviderClient`.
 
@@ -648,7 +684,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         googleMap = map;
 ```
 
-**Ce spun:** "Implementez metoda `onMapReady()` care este apelată automat când harta este gata de utilizare. Primim obiectul `GoogleMap` care ne permite să controlăm harta - adăugăm markeri, centrăm camera, setăm stiluri, etc."
+**Note:** "Implementez metoda `onMapReady()` care este apelată automat când harta este gata de utilizare. Primim obiectul `GoogleMap` care ne permite să controlăm harta - adăugăm markeri, centrăm camera, setăm stiluri, etc."
 
 **Ce scriu (continuare):**
 ```java
@@ -661,7 +697,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
 ```
 
-**Ce spun:** "Verific permisiunile de localizare folosind `ActivityCompat.checkSelfPermission()`. Dacă permisiunile nu sunt acordate, le solicit folosind `ActivityCompat.requestPermissions()`. Aceasta este gestionarea permisiunilor în runtime, necesară pentru Android 6.0+. Dacă permisiunile nu sunt acordate, ies din metodă - harta va funcționa, dar fără afișarea locației utilizatorului."
+**Note:** "Verific permisiunile de localizare folosind `ActivityCompat.checkSelfPermission()`. Dacă permisiunile nu sunt acordate, le solicit folosind `ActivityCompat.requestPermissions()`. Aceasta este gestionarea permisiunilor în runtime, necesară pentru Android 6.0+. Dacă permisiunile nu sunt acordate, ies din metodă - harta va funcționa, dar fără afișarea locației utilizatorului."
 
 **Ce scriu (continuare):**
 ```java
@@ -669,7 +705,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setMapStyle(new MapStyleOptions("[{\"featureType\":\"poi\",\"stylers\":[{\"visibility\":\"off\"}]}]"));
 ```
 
-**Ce spun:** "Activez afișarea locației utilizatorului pe hartă cu `setMyLocationEnabled(true)` - aceasta va afișa un punct albastru pe hartă. Apoi setez un stil personalizat pentru hartă cu `setMapStyle()` - stilul JSON ascunde punctele de interes (POI) pentru o vizualizare mai curată."
+**Note:** "Activez afișarea locației utilizatorului pe hartă cu `setMyLocationEnabled(true)` - aceasta va afișa un punct albastru pe hartă. Apoi setez un stil personalizat pentru hartă cu `setMapStyle()` - stilul JSON ascunde punctele de interes (POI) pentru o vizualizare mai curată."
 
 **Ce scriu (continuare):**
 ```java
@@ -681,7 +717,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 ```
 
-**Ce spun:** "Obțin ultima locație cunoscută folosind `getLastLocation()` - aceasta este o operație asincronă care returnează un `Task`. `addOnSuccessListener()` adaugă un callback care se execută când locația este obținută cu succes. Dacă locația nu este null, apelez `centerMapOnLocation()` pentru a centra harta pe poziția utilizatorului."
+**Note:** "Obțin ultima locație cunoscută folosind `getLastLocation()` - aceasta este o operație asincronă care returnează un `Task`. `addOnSuccessListener()` adaugă un callback care se execută când locația este obținută cu succes. Dacă locația nu este null, apelez `centerMapOnLocation()` pentru a centra harta pe poziția utilizatorului."
 
 **Checkpoint:** Metoda `onMapReady` este completă și gestionează permisiunile, activează locația, și obține poziția utilizatorului.
 
@@ -698,7 +734,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 ```
 
-**Ce spun:** "Creez metoda helper `centerMapOnLocation()` care centrează harta pe o locație specifică. `LatLng` este o clasă din Google Maps SDK care reprezintă o coordonată geografică (latitudine, longitudine). `CameraUpdateFactory.newLatLngZoom()` creează o actualizare a camerei care centrează harta pe coordonată cu un nivel de zoom (15 este un nivel mediu). `addMarker()` adaugă un marker pe hartă la poziția specificată."
+**Note:** "Creez metoda helper `centerMapOnLocation()` care centrează harta pe o locație specifică. `LatLng` este o clasă din Google Maps SDK care reprezintă o coordonată geografică (latitudine, longitudine). `CameraUpdateFactory.newLatLngZoom()` creează o actualizare a camerei care centrează harta pe coordonată cu un nivel de zoom (15 este un nivel mediu). `addMarker()` adaugă un marker pe hartă la poziția specificată."
 
 **Ce scriu (continuare):**
 ```java
@@ -753,7 +789,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 }
 ```
 
-**Ce spun:** "Suprascriu metodele de lifecycle ale fragmentului pentru a conecta lifecycle-ul `MapView`-ului cu lifecycle-ul fragmentului. Aceasta este esențială! `MapView` trebuie să primească apelurile de lifecycle (`onStart()`, `onResume()`, `onPause()`, `onStop()`, `onDestroy()`, `onLowMemory()`) pentru a funcționa corect. Fără aceste apeluri, harta nu se va actualiza sau poate cauza memory leaks. În `onDestroyView()`, setez `binding` la `null` pentru a preveni memory leaks."
+**Note:** "Suprascriu metodele de lifecycle ale fragmentului pentru a conecta lifecycle-ul `MapView`-ului cu lifecycle-ul fragmentului. Aceasta este esențială! `MapView` trebuie să primească apelurile de lifecycle (`onStart()`, `onResume()`, `onPause()`, `onStop()`, `onDestroy()`, `onLowMemory()`) pentru a funcționa corect. Fără aceste apeluri, harta nu se va actualiza sau poate cauza memory leaks. În `onDestroyView()`, setez `binding` la `null` pentru a preveni memory leaks."
 
 **Checkpoint:** Clasa `HomeFragment` este completă cu gestionarea lifecycle-ului `MapView`-ului.
 
@@ -761,7 +797,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
 ### Pasul 18: Crearea clasei MainActivity.java
 
-**Ce fac:** Creez activitatea principală care configurează Navigation Component cu DrawerLayout.
+**Actiuni:** Creez activitatea principală care configurează Navigation Component cu DrawerLayout.
 
 **Ce scriu:**
 ```java
@@ -780,7 +816,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import ro.makore.akrilki_05.databinding.ActivityMainBinding;
 ```
 
-**Ce spun:** "Creez fișierul `MainActivity.java` în directorul `app/src/main/java/ro/makore/akrilki_05/`. Declar pachetul și adaug import-urile: componente Material Design pentru drawer, Navigation Component, și `ActivityMainBinding` generat automat de ViewBinding."
+**Note:** "Creez fișierul `MainActivity.java` în directorul `app/src/main/java/ro/makore/akrilki_05/`. Declar pachetul și adaug import-urile: componente Material Design pentru drawer, Navigation Component, și `ActivityMainBinding` generat automat de ViewBinding."
 
 **Ce scriu (continuare):**
 ```java
@@ -797,7 +833,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 ```
 
-**Ce spun:** "Definesc clasa `MainActivity` care extinde `AppCompatActivity`. Declar `mAppBarConfiguration` pentru configurarea ActionBar-ului și `binding` pentru ViewBinding. În `onCreate`, folosesc ViewBinding pentru a inflata layout-ul."
+**Note:** "Definesc clasa `MainActivity` care extinde `AppCompatActivity`. Declar `mAppBarConfiguration` pentru configurarea ActionBar-ului și `binding` pentru ViewBinding. În `onCreate`, folosesc ViewBinding pentru a inflata layout-ul."
 
 **Ce scriu (continuare):**
 ```java
@@ -807,7 +843,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
 ```
 
-**Ce spun:** "Setez Toolbar-ul ca ActionBar folosind `setSupportActionBar()`. Observați accesul la Toolbar prin `binding.appBarMain.toolbar` - ViewBinding permite accesul la elemente din layout-uri incluse! Obțin referințe la `DrawerLayout` și `NavigationView` folosind ViewBinding."
+**Note:** "Setez Toolbar-ul ca ActionBar folosind `setSupportActionBar()`. Observați accesul la Toolbar prin `binding.appBarMain.toolbar` - ViewBinding permite accesul la elemente din layout-uri incluse! Obțin referințe la `DrawerLayout` și `NavigationView` folosind ViewBinding."
 
 **Ce scriu (continuare):**
 ```java
@@ -820,7 +856,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 ```
 
-**Ce spun:** "Creez `AppBarConfiguration` care specifică fragmentele de nivel superior. `.setOpenableLayout(drawer)` este esențială pentru drawer menu - conectează ActionBar-ul cu DrawerLayout-ul, permițând butonului hamburger să deschidă drawer-ul!"
+**Note:** "Creez `AppBarConfiguration` care specifică fragmentele de nivel superior. `.setOpenableLayout(drawer)` este esențială pentru drawer menu - conectează ActionBar-ul cu DrawerLayout-ul, permițând butonului hamburger să deschidă drawer-ul!"
 
 **Ce scriu (continuare):**
 ```java
@@ -830,7 +866,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Obțin `NavController` folosind ID-ul `NavHostFragment`-ului din `content_main.xml`. Configurez ActionBar-ul să lucreze cu Navigation Component. Apoi conectez `NavigationView` (drawer menu) cu `NavController` - aceasta face ca navigarea să funcționeze automat când utilizatorul apasă pe elementele meniului!"
+**Note:** "Obțin `NavController` folosind ID-ul `NavHostFragment`-ului din `content_main.xml`. Configurez ActionBar-ul să lucreze cu Navigation Component. Apoi conectez `NavigationView` (drawer menu) cu `NavController` - aceasta face ca navigarea să funcționeze automat când utilizatorul apasă pe elementele meniului!"
 
 **Ce scriu (continuare):**
 ```java
@@ -852,7 +888,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Suprascriu `onCreateOptionsMenu()` pentru a inflata meniul dropdown din ActionBar. Suprascriu `onOptionsItemSelected()` pentru a gestiona apăsarea elementului 'Quit' - închid activitatea și termin procesul aplicației."
+**Note:** "Suprascriu `onCreateOptionsMenu()` pentru a inflata meniul dropdown din ActionBar. Suprascriu `onOptionsItemSelected()` pentru a gestiona apăsarea elementului 'Quit' - închid activitatea și termin procesul aplicației."
 
 **Ce scriu (continuare):**
 ```java
@@ -865,7 +901,7 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-**Ce spun:** "Suprascriu `onSupportNavigateUp()` pentru a gestiona butonul hamburger din ActionBar. Când utilizatorul apasă pe buton, această metodă deschide drawer-ul sau navighează înapoi, în funcție de context. `NavigationUI.navigateUp()` gestionează automat acest comportament."
+**Note:** "Suprascriu `onSupportNavigateUp()` pentru a gestiona butonul hamburger din ActionBar. Când utilizatorul apasă pe buton, această metodă deschide drawer-ul sau navighează înapoi, în funcție de context. `NavigationUI.navigateUp()` gestionează automat acest comportament."
 
 **Checkpoint:** Clasa `MainActivity` este completă și configurează Navigation Component cu DrawerLayout.
 
@@ -873,9 +909,9 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 19: Verificarea structurii proiectului
 
-**Ce fac:** Verific că toate fișierele necesare sunt prezente.
+**Actiuni:** Verific că toate fișierele necesare sunt prezente.
 
-**Ce spun:** "Am creat structura de bază pentru aplicația cu Google Maps. Pentru simplitate, am creat doar `HomeFragment` ca exemplu. Fragmentele `GeodataFragment`, `LocationFragment`, și `AddressFragment` urmează același pattern - fiecare gestionează propriul `MapView` și lifecycle-ul său. Aplicația nu folosește Parcelable, deci nu avem clase Parcelable de creat."
+**Note:** "Am creat structura de bază pentru aplicația cu Google Maps. Pentru simplitate, am creat doar `HomeFragment` ca exemplu. Fragmentele `GeodataFragment`, `LocationFragment`, și `AddressFragment` urmează același pattern - fiecare gestionează propriul `MapView` și lifecycle-ul său. Aplicația nu folosește Parcelable, deci nu avem clase Parcelable de creat."
 
 **Checkpoint:** Toate fișierele esențiale sunt create: MainActivity cu DrawerLayout și Navigation Component, un fragment exemplu (HomeFragment) cu Google Maps, și toate resursele necesare (meniu, navigare, layout-uri).
 
@@ -885,7 +921,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Compilarea aplicației
 
-**Ce fac:** Compilez aplicația pentru a genera APK-ul de debug.
+**Actiuni:** Compilez aplicația pentru a genera APK-ul de debug.
 
 **Ce scriu în terminal:**
 ```bash
@@ -893,7 +929,7 @@ cd akrilki_05
 gradle build
 ```
 
-**Ce spun:** "Navighez în directorul proiectului și rulez `gradle build` pentru a compila aplicația. Gradle va descărca automat dependențele pentru Google Maps și Location Services și va compila codul. Asigurați-vă că cheia API Google Maps este setată corect în `AndroidManifest.xml`, altfel build-ul va reuși, dar hărțile nu vor funcționa la runtime. APK-ul va fi generat în `app/build/outputs/apk/debug/app-debug.apk`."
+**Note:** "Navighez în directorul proiectului și rulez `gradle build` pentru a compila aplicația. Gradle va descărca automat dependențele pentru Google Maps și Location Services și va compila codul. Asigurați-vă că cheia API Google Maps este setată corect în `AndroidManifest.xml`, altfel build-ul va reuși, dar hărțile nu vor funcționa la runtime. APK-ul va fi generat în `app/build/outputs/apk/debug/app-debug.apk`."
 
 **Checkpoint:** Build-ul se finalizează cu succes, APK-ul este generat, și dependențele pentru Google Maps sunt incluse.
 
@@ -901,14 +937,14 @@ gradle build
 
 ### Listarea dispozitivelor conectate
 
-**Ce fac:** Verific ce dispozitive Android sunt conectate și disponibile pentru instalare.
+**Actiuni:** Verific ce dispozitive Android sunt conectate și disponibile pentru instalare.
 
 **Ce scriu în terminal:**
 ```bash
 adb devices
 ```
 
-**Ce spun:** "Folosesc `adb devices` pentru a lista toate dispozitivele Android conectate. Asigurați-vă că dispozitivul are conexiune la internet și serviciile de localizare activate pentru ca aplicația să funcționeze corect."
+**Note:** "Folosesc `adb devices` pentru a lista toate dispozitivele Android conectate. Asigurați-vă că dispozitivul are conexiune la internet și serviciile de localizare activate pentru ca aplicația să funcționeze corect."
 
 **Checkpoint:** Se afișează lista de dispozitive cu status 'device'.
 
@@ -916,14 +952,14 @@ adb devices
 
 ### Instalarea aplicației
 
-**Ce fac:** Instalez APK-ul de debug pe dispozitivul conectat.
+**Actiuni:** Instalez APK-ul de debug pe dispozitivul conectat.
 
 **Ce scriu în terminal:**
 ```bash
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-**Ce spun:** "Folosesc `adb install` pentru a instala APK-ul de debug pe dispozitiv. Dacă aplicația există deja, pot folosi `adb install -r` pentru reinstalare."
+**Note:** "Folosesc `adb install` pentru a instala APK-ul de debug pe dispozitiv. Dacă aplicația există deja, pot folosi `adb install -r` pentru reinstalare."
 
 **Checkpoint:** Aplicația este instalată cu succes.
 
@@ -931,14 +967,14 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 ### Lansarea activității principale
 
-**Ce fac:** Lansez activitatea principală a aplicației pe dispozitiv.
+**Actiuni:** Lansez activitatea principală a aplicației pe dispozitiv.
 
 **Ce scriu în terminal:**
 ```bash
 adb shell am start -n ro.makore.akrilki_05/.MainActivity
 ```
 
-**Ce spun:** "Folosesc `adb shell am start` pentru a lansa activitatea. Aplicația se va deschide și va afișa automat `HomeFragment` cu harta. Dacă permisiunile de localizare nu sunt acordate, aplicația le va solicita. După acordarea permisiunilor, harta se va centra pe locația utilizatorului. Testați meniul lateral - glisați din stânga sau apăsați pe butonul hamburger pentru a deschide drawer-ul și navigați între fragmente!"
+**Note:** "Folosesc `adb shell am start` pentru a lansa activitatea. Aplicația se va deschide și va afișa automat `HomeFragment` cu harta. Dacă permisiunile de localizare nu sunt acordate, aplicația le va solicita. După acordarea permisiunilor, harta se va centra pe locația utilizatorului. Testați meniul lateral - glisați din stânga sau apăsați pe butonul hamburger pentru a deschide drawer-ul și navigați între fragmente!"
 
 **Checkpoint:** Aplicația se deschide, `HomeFragment` se încarcă cu harta, permisiunile de localizare sunt solicitate, și harta se centrează pe locația utilizatorului. Meniul lateral funcționează pentru navigare între fragmente. La apăsarea butonului Quit din meniul dropdown, aplicația se închide.
 
@@ -946,14 +982,14 @@ adb shell am start -n ro.makore.akrilki_05/.MainActivity
 
 ### Afișarea logurilor filtrate
 
-**Ce fac:** Monitorizez logurile aplicației pentru a verifica navigarea, lifecycle-ul fragmentelor, și serviciile de localizare.
+**Actiuni:** Monitorizez logurile aplicației pentru a verifica navigarea, lifecycle-ul fragmentelor, și serviciile de localizare.
 
 **Ce scriu în terminal:**
 ```bash
 adb logcat | grep -i "akrilki_05\|MainActivity\|HomeFragment\|GoogleMap\|Location"
 ```
 
-**Ce spun:** "Folosesc `adb logcat` pentru a afișa logurile sistemului Android. Filtrez output-ul pentru a vedea mesajele legate de aplicația noastră, MainActivity, HomeFragment, GoogleMap, și Location Services. Aici putem vedea inițializarea hărții, obținerea locației, și eventualele erori legate de permisiuni sau cheia API."
+**Note:** "Folosesc `adb logcat` pentru a afișa logurile sistemului Android. Filtrez output-ul pentru a vedea mesajele legate de aplicația noastră, MainActivity, HomeFragment, GoogleMap, și Location Services. Aici putem vedea inițializarea hărții, obținerea locației, și eventualele erori legate de permisiuni sau cheia API."
 
 **Alternativă (Windows PowerShell):**
 ```powershell
@@ -993,4 +1029,5 @@ Am creat o aplicație Android cu Google Maps și Location Services care demonstr
 - Coordonate geografice (`LatLng`) și conversie adrese (`Geocoder`)
 
 Aplicația este funcțională și demonstrează conceptele fundamentale ale integrării Google Maps și serviciilor de localizare în Android.
+
 

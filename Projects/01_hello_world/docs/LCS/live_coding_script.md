@@ -1,5 +1,30 @@
 # Script Live Coding - Hello World Android
 
+<!-- TOC -->
+
+- [Script Live Coding - Hello World Android](#script-live-coding---hello-world-android)
+    - [Prezentare Aplicație](#prezentare-aplica%C8%9Bie)
+    - [Structura Directorului Aplicației](#structura-directorului-aplica%C8%9Biei)
+    - [Pași Live Coding](#pa%C8%99i-live-coding)
+        - [Pasul 1: Crearea structurii de directoare](#pasul-1-crearea-structurii-de-directoare)
+        - [Pasul 2: Crearea fișierului settings.gradle](#pasul-2-crearea-fi%C8%99ierului-settingsgradle)
+        - [Pasul 3: Crearea fișierului build.gradle la rădăcină](#pasul-3-crearea-fi%C8%99ierului-buildgradle-la-r%C4%83d%C4%83cin%C4%83)
+        - [Pasul 4: Crearea fișierului gradle.properties](#pasul-4-crearea-fi%C8%99ierului-gradleproperties)
+        - [Pasul 5: Crearea fișierului app/build.gradle](#pasul-5-crearea-fi%C8%99ierului-appbuildgradle)
+        - [Pasul 6: Crearea fișierului AndroidManifest.xml](#pasul-6-crearea-fi%C8%99ierului-androidmanifestxml)
+        - [Pasul 7: Crearea clasei MainActivity.java](#pasul-7-crearea-clasei-mainactivityjava)
+        - [Pasul 8: Verificarea structurii proiectului](#pasul-8-verificarea-structurii-proiectului)
+    - [Compilare, Instalare și Rulare](#compilare-instalare-%C8%99i-rulare)
+        - [Compilarea aplicației](#compilarea-aplica%C8%9Biei)
+        - [Listarea dispozitivelor conectate](#listarea-dispozitivelor-conectate)
+        - [Instalarea aplicației](#instalarea-aplica%C8%9Biei)
+        - [Lansarea activității principale](#lansarea-activit%C4%83%C8%9Bii-principale)
+        - [Afișarea logurilor filtrate](#afi%C8%99area-logurilor-filtrate)
+    - [Rezumat](#rezumat)
+
+<!-- /TOC -->
+
+
 ## Prezentare Aplicație
 
 Această aplicație Android este cea mai simplă aplicație posibilă care afișează textul "Hello World" pe ecran. Aplicația folosește o singură activitate (`MainActivity`) care extinde `AppCompatActivity` din biblioteca AndroidX pentru compatibilitate cu versiuni mai vechi de Android. Interfața utilizatorului este creată programatic, fără fișiere XML de layout, folosind un `LinearLayout` vertical în care este plasat un `TextView` cu textul "Hello World". Aplicația nu folosește Parcelable și nu are navigare între activități. Este o aplicație minimală care demonstrează conceptele de bază: crearea unei activități, inițializarea interfeței programatic și asocierea layout-ului cu activitatea prin metoda `setContentView()`.
@@ -27,7 +52,7 @@ hello_world/
 
 ### Pasul 1: Crearea structurii de directoare
 
-**Ce fac:** Creez structura completă de directoare pentru aplicația Android.
+**Actiuni:** Creez structura completă de directoare pentru aplicația Android.
 
 **Ce scriu în terminal:**
 ```bash
@@ -35,7 +60,7 @@ mkdir -p hello_world/app/src/main/java/ro/makore/hello_world
 mkdir -p hello_world/app/src/main/res
 ```
 
-**Ce spun:** "Vom începe prin a crea structura de directoare pentru aplicația noastră. Structura respectă convențiile Android: directorul `app` conține codul aplicației, `src/main` conține sursele principale, iar `java/ro/makore/hello_world` respectă structura pachetului Java."
+**Note:** "Vom începe prin a crea structura de directoare pentru aplicația noastră. Structura respectă convențiile Android: directorul `app` conține codul aplicației, `src/main` conține sursele principale, iar `java/ro/makore/hello_world` respectă structura pachetului Java."
 
 **Checkpoint:** Structura de directoare este creată și gata pentru fișiere.
 
@@ -43,7 +68,7 @@ mkdir -p hello_world/app/src/main/res
 
 ### Pasul 2: Crearea fișierului settings.gradle
 
-**Ce fac:** Creez fișierul `settings.gradle` la rădăcina proiectului pentru configurarea modulelor Gradle.
+**Actiuni:** Creez fișierul `settings.gradle` la rădăcina proiectului pentru configurarea modulelor Gradle.
 
 **Ce scriu:**
 ```groovy
@@ -62,7 +87,7 @@ pluginManagement {
 }
 ```
 
-**Ce spun:** "Creez fișierul `settings.gradle` care configurează gestionarea plugin-urilor. Blocul `pluginManagement` specifică depozitele de unde Gradle va descărca plugin-urile. Folosim depozitul Google pentru plugin-urile Android și Maven Central pentru celelalte."
+**Note:** "Creez fișierul `settings.gradle` care configurează gestionarea plugin-urilor. Blocul `pluginManagement` specifică depozitele de unde Gradle va descărca plugin-urile. Folosim depozitul Google pentru plugin-urile Android și Maven Central pentru celelalte."
 
 **Ce scriu (continuare):**
 ```groovy
@@ -78,7 +103,7 @@ rootProject.name = "hello_world"
 include ':app'
 ```
 
-**Ce spun:** "Blocul `dependencyResolutionManagement` configurează gestionarea dependențelor. Setăm modul la `FAIL_ON_PROJECT_REPOS` pentru a forța utilizarea depozitelor centrale. Definim numele proiectului rădăcină ca `hello_world` și includem modulul `app`."
+**Note:** "Blocul `dependencyResolutionManagement` configurează gestionarea dependențelor. Setăm modul la `FAIL_ON_PROJECT_REPOS` pentru a forța utilizarea depozitelor centrale. Definim numele proiectului rădăcină ca `hello_world` și includem modulul `app`."
 
 **Checkpoint:** Fișierul `settings.gradle` este creat și configurează corect proiectul.
 
@@ -86,7 +111,7 @@ include ':app'
 
 ### Pasul 3: Crearea fișierului build.gradle la rădăcină
 
-**Ce fac:** Creez fișierul `build.gradle` la nivelul rădăcină care configurează plugin-ul Android pentru Gradle.
+**Actiuni:** Creez fișierul `build.gradle` la nivelul rădăcină care configurează plugin-ul Android pentru Gradle.
 
 **Ce scriu:**
 ```groovy
@@ -101,7 +126,7 @@ buildscript {
 }
 ```
 
-**Ce spun:** "Creez fișierul `build.gradle` la rădăcină. Blocul `buildscript` definește depozitele și dependențele necesare pentru construirea proiectului. Aici adăugăm plugin-ul Gradle pentru Android, versiunea 8.4.2."
+**Note:** "Creez fișierul `build.gradle` la rădăcină. Blocul `buildscript` definește depozitele și dependențele necesare pentru construirea proiectului. Aici adăugăm plugin-ul Gradle pentru Android, versiunea 8.4.2."
 
 **Checkpoint:** Fișierul `build.gradle` rădăcină este creat și conține configurația pentru plugin-ul Android.
 
@@ -109,7 +134,7 @@ buildscript {
 
 ### Pasul 4: Crearea fișierului gradle.properties
 
-**Ce fac:** Creez fișierul `gradle.properties` pentru configurații globale Gradle.
+**Actiuni:** Creez fișierul `gradle.properties` pentru configurații globale Gradle.
 
 **Ce scriu:**
 ```
@@ -118,7 +143,7 @@ android.useAndroidX=true
 android.nonTransitiveRClass=true
 ```
 
-**Ce spun:** "Creez fișierul `gradle.properties`. Prima linie setează memoria maximă pentru JVM la 2GB și codificarea fișierelor la UTF-8. A doua linie activează AndroidX în locul bibliotecilor vechi de suport. A treia linie configurează generarea unui fișier R non-transitiv pentru o mai bună separare a modulelor."
+**Note:** "Creez fișierul `gradle.properties`. Prima linie setează memoria maximă pentru JVM la 2GB și codificarea fișierelor la UTF-8. A doua linie activează AndroidX în locul bibliotecilor vechi de suport. A treia linie configurează generarea unui fișier R non-transitiv pentru o mai bună separare a modulelor."
 
 **Checkpoint:** Fișierul `gradle.properties` este creat cu configurațiile necesare.
 
@@ -126,7 +151,7 @@ android.nonTransitiveRClass=true
 
 ### Pasul 5: Crearea fișierului app/build.gradle
 
-**Ce fac:** Creez fișierul `build.gradle` pentru modulul `app` care definește configurația aplicației Android.
+**Actiuni:** Creez fișierul `build.gradle` pentru modulul `app` care definește configurația aplicației Android.
 
 **Ce scriu:**
 ```groovy
@@ -137,7 +162,7 @@ android {
     compileSdk 34
 ```
 
-**Ce spun:** "Creez fișierul `app/build.gradle`. Aplic plugin-ul `com.android.application` care transformă acest modul într-o aplicație Android. În blocul `android`, setez namespace-ul la `ro.makore.hello_world` și SDK-ul de compilare la 34, corespunzător Android 14."
+**Note:** "Creez fișierul `app/build.gradle`. Aplic plugin-ul `com.android.application` care transformă acest modul într-o aplicație Android. În blocul `android`, setez namespace-ul la `ro.makore.hello_world` și SDK-ul de compilare la 34, corespunzător Android 14."
 
 **Ce scriu (continuare):**
 ```groovy
@@ -151,7 +176,7 @@ android {
     }
 ```
 
-**Ce spun:** "În `defaultConfig` definesc ID-ul aplicației, versiunea minimă de Android acceptată (API 21, Android 5.0), versiunea țintă (API 34), codul de versiune intern și numele versiunii. De asemenea, specific runner-ul pentru teste instrumentate."
+**Note:** "În `defaultConfig` definesc ID-ul aplicației, versiunea minimă de Android acceptată (API 21, Android 5.0), versiunea țintă (API 34), codul de versiune intern și numele versiunii. De asemenea, specific runner-ul pentru teste instrumentate."
 
 **Ce scriu (continuare):**
 ```groovy
@@ -168,7 +193,7 @@ android {
 }
 ```
 
-**Ce spun:** "Blocul `buildTypes` definește tipurile de build. Pentru release, dezactivez minificarea pentru simplitate. În `compileOptions` setez compatibilitatea Java la versiunea 11."
+**Note:** "Blocul `buildTypes` definește tipurile de build. Pentru release, dezactivez minificarea pentru simplitate. În `compileOptions` setez compatibilitatea Java la versiunea 11."
 
 **Ce scriu (continuare):**
 ```groovy
@@ -177,7 +202,7 @@ dependencies {
 }
 ```
 
-**Ce spun:** "În blocul `dependencies` adaug biblioteca `appcompat` din AndroidX, versiunea 1.5.1, necesară pentru `AppCompatActivity`."
+**Note:** "În blocul `dependencies` adaug biblioteca `appcompat` din AndroidX, versiunea 1.5.1, necesară pentru `AppCompatActivity`."
 
 **Checkpoint:** Fișierul `app/build.gradle` este complet configurat cu toate setările necesare pentru aplicație.
 
@@ -185,7 +210,7 @@ dependencies {
 
 ### Pasul 6: Crearea fișierului AndroidManifest.xml
 
-**Ce fac:** Creez fișierul `AndroidManifest.xml` care declară componentele aplicației și metadatele esențiale.
+**Actiuni:** Creez fișierul `AndroidManifest.xml` care declară componentele aplicației și metadatele esențiale.
 
 **Ce scriu:**
 ```xml
@@ -193,7 +218,7 @@ dependencies {
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 ```
 
-**Ce spun:** "Creez fișierul `AndroidManifest.xml` în `app/src/main/`. Prima linie este declarația XML standard. În tag-ul `manifest` includ namespace-urile pentru Android și tools."
+**Note:** "Creez fișierul `AndroidManifest.xml` în `app/src/main/`. Prima linie este declarația XML standard. În tag-ul `manifest` includ namespace-urile pentru Android și tools."
 
 **Ce scriu (continuare):**
 ```xml
@@ -203,7 +228,7 @@ dependencies {
         tools:targetApi="34">
 ```
 
-**Ce spun:** "Tag-ul `application` definește configurația aplicației. Setez tema la `Theme.AppCompat.Light.NoActionBar` pentru un fundal clar fără bara de acțiuni. Label-ul aplicației este 'HelloWorld'."
+**Note:** "Tag-ul `application` definește configurația aplicației. Setez tema la `Theme.AppCompat.Light.NoActionBar` pentru un fundal clar fără bara de acțiuni. Label-ul aplicației este 'HelloWorld'."
 
 **Ce scriu (continuare):**
 ```xml
@@ -219,7 +244,7 @@ dependencies {
 </manifest>
 ```
 
-**Ce spun:** "Declar activitatea `MainActivity` cu `android:name=".MainActivity"` - punctul înseamnă că este în pachetul definit în namespace. `android:exported="true"` permite sistemului să o lanseze. `intent-filter` cu acțiunea `MAIN` și categoria `LAUNCHER` face ca această activitate să fie punctul de intrare al aplicației, apărând în lista de aplicații."
+**Note:** "Declar activitatea `MainActivity` cu `android:name=".MainActivity"` - punctul înseamnă că este în pachetul definit în namespace. `android:exported="true"` permite sistemului să o lanseze. `intent-filter` cu acțiunea `MAIN` și categoria `LAUNCHER` face ca această activitate să fie punctul de intrare al aplicației, apărând în lista de aplicații."
 
 **Checkpoint:** Fișierul `AndroidManifest.xml` este creat și declară corect activitatea principală ca launcher.
 
@@ -227,14 +252,14 @@ dependencies {
 
 ### Pasul 7: Crearea clasei MainActivity.java
 
-**Ce fac:** Creez clasa Java principală `MainActivity` care extinde `AppCompatActivity` și creează interfața programatic.
+**Actiuni:** Creez clasa Java principală `MainActivity` care extinde `AppCompatActivity` și creează interfața programatic.
 
 **Ce scriu:**
 ```java
 package ro.makore.hello_world;
 ```
 
-**Ce spun:** "Creez fișierul `MainActivity.java` în directorul `app/src/main/java/ro/makore/hello_world/`. Prima linie declară pachetul aplicației, care trebuie să corespundă cu structura de directoare."
+**Note:** "Creez fișierul `MainActivity.java` în directorul `app/src/main/java/ro/makore/hello_world/`. Prima linie declară pachetul aplicației, care trebuie să corespundă cu structura de directoare."
 
 **Ce scriu (continuare):**
 ```java
@@ -244,7 +269,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 ```
 
-**Ce spun:** "Adaug import-urile necesare: `Bundle` pentru starea activității, `LinearLayout` și `TextView` pentru interfață, și `AppCompatActivity` ca clasă de bază pentru activitate."
+**Note:** "Adaug import-urile necesare: `Bundle` pentru starea activității, `LinearLayout` și `TextView` pentru interfață, și `AppCompatActivity` ca clasă de bază pentru activitate."
 
 **Ce scriu (continuare):**
 ```java
@@ -254,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 ```
 
-**Ce spun:** "Definesc clasa `MainActivity` care extinde `AppCompatActivity`. Suprascriu metoda `onCreate` care este apelată când activitatea este creată. Apelez `super.onCreate` pentru inițializarea corectă a clasei de bază."
+**Note:** "Definesc clasa `MainActivity` care extinde `AppCompatActivity`. Suprascriu metoda `onCreate` care este apelată când activitatea este creată. Apelez `super.onCreate` pentru inițializarea corectă a clasei de bază."
 
 **Ce scriu (continuare):**
 ```java
@@ -263,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
         layout.setOrientation(LinearLayout.VERTICAL);
 ```
 
-**Ce spun:** "Creez un `LinearLayout` programatic, pasând contextul activității prin `this`. Setez orientarea la `VERTICAL` pentru a aranja elementele vertical."
+**Note:** "Creez un `LinearLayout` programatic, pasând contextul activității prin `this`. Setez orientarea la `VERTICAL` pentru a aranja elementele vertical."
 
 **Ce scriu (continuare):**
 ```java
@@ -273,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setTextSize(24);
 ```
 
-**Ce spun:** "Creez un `TextView` programatic și setez textul la 'Hello World'. Dimensiunea textului este setată la 24sp, o unitate scalabilă care se adaptează la preferințele utilizatorului pentru dimensiunea fontului."
+**Note:** "Creez un `TextView` programatic și setez textul la 'Hello World'. Dimensiunea textului este setată la 24sp, o unitate scalabilă care se adaptează la preferințele utilizatorului pentru dimensiunea fontului."
 
 **Ce scriu (continuare):**
 ```java
@@ -286,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-**Ce spun:** "Adaug `TextView`-ul în layout folosind `addView`. Apoi asociez layout-ul cu activitatea prin `setContentView`, care face ca layout-ul să fie afișat pe ecran."
+**Note:** "Adaug `TextView`-ul în layout folosind `addView`. Apoi asociez layout-ul cu activitatea prin `setContentView`, care face ca layout-ul să fie afișat pe ecran."
 
 **Checkpoint:** Clasa `MainActivity` este completă și creează interfața programatic cu un TextView care afișează "Hello World".
 
@@ -294,9 +319,9 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 8: Verificarea structurii proiectului
 
-**Ce fac:** Verific că toate fișierele necesare sunt prezente.
+**Actiuni:** Verific că toate fișierele necesare sunt prezente.
 
-**Ce spun:** "Am creat toate fișierele necesare pentru aplicația Hello World. Aplicația nu folosește Parcelable, deci nu avem clase Parcelable de creat. Structura este completă și gata pentru compilare."
+**Note:** "Am creat toate fișierele necesare pentru aplicația Hello World. Aplicația nu folosește Parcelable, deci nu avem clase Parcelable de creat. Structura este completă și gata pentru compilare."
 
 **Checkpoint:** Toate fișierele sunt create și structura proiectului este completă.
 
@@ -306,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Compilarea aplicației
 
-**Ce fac:** Compilez aplicația pentru a genera APK-ul de debug.
+**Actiuni:** Compilez aplicația pentru a genera APK-ul de debug.
 
 **Ce scriu în terminal:**
 ```bash
@@ -314,7 +339,7 @@ cd hello_world
 gradle build
 ```
 
-**Ce spun:** "Navighez în directorul proiectului și rulez `gradle build` pentru a compila aplicația. Această comandă va genera APK-ul de debug în `app/build/outputs/apk/debug/app-debug.apk`."
+**Note:** "Navighez în directorul proiectului și rulez `gradle build` pentru a compila aplicația. Această comandă va genera APK-ul de debug în `app/build/outputs/apk/debug/app-debug.apk`."
 
 **Checkpoint:** Build-ul se finalizează cu succes și APK-ul este generat.
 
@@ -322,14 +347,14 @@ gradle build
 
 ### Listarea dispozitivelor conectate
 
-**Ce fac:** Verific ce dispozitive Android sunt conectate și disponibile pentru instalare.
+**Actiuni:** Verific ce dispozitive Android sunt conectate și disponibile pentru instalare.
 
 **Ce scriu în terminal:**
 ```bash
 adb devices
 ```
 
-**Ce spun:** "Folosesc `adb devices` pentru a lista toate dispozitivele Android conectate prin USB sau emulatoarele care rulează. Trebuie să văd cel puțin un dispozitiv cu status 'device'."
+**Note:** "Folosesc `adb devices` pentru a lista toate dispozitivele Android conectate prin USB sau emulatoarele care rulează. Trebuie să văd cel puțin un dispozitiv cu status 'device'."
 
 **Checkpoint:** Se afișează lista de dispozitive, de exemplu: `List of devices attached` urmat de ID-ul dispozitivului și statusul `device`.
 
@@ -337,14 +362,14 @@ adb devices
 
 ### Instalarea aplicației
 
-**Ce fac:** Instalez APK-ul de debug pe dispozitivul conectat.
+**Actiuni:** Instalez APK-ul de debug pe dispozitivul conectat.
 
 **Ce scriu în terminal:**
 ```bash
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-**Ce spun:** "Folosesc `adb install` pentru a instala APK-ul de debug pe dispozitiv. Dacă aplicația există deja, pot folosi `adb install -r` pentru reinstalare."
+**Note:** "Folosesc `adb install` pentru a instala APK-ul de debug pe dispozitiv. Dacă aplicația există deja, pot folosi `adb install -r` pentru reinstalare."
 
 **Checkpoint:** Aplicația este instalată cu succes. Mesajul de confirmare arată "Success" sau "Performing Streamed Install".
 
@@ -352,14 +377,14 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 ### Lansarea activității principale
 
-**Ce fac:** Lansez activitatea principală a aplicației pe dispozitiv.
+**Actiuni:** Lansez activitatea principală a aplicației pe dispozitiv.
 
 **Ce scriu în terminal:**
 ```bash
 adb shell am start -n ro.makore.hello_world/.MainActivity
 ```
 
-**Ce spun:** "Folosesc `adb shell am start` pentru a lansa activitatea. Opțiunea `-n` specifică componenta prin pachet și numele clasei. Aplicația se va deschide pe dispozitiv și va afișa 'Hello World'."
+**Note:** "Folosesc `adb shell am start` pentru a lansa activitatea. Opțiunea `-n` specifică componenta prin pachet și numele clasei. Aplicația se va deschide pe dispozitiv și va afișa 'Hello World'."
 
 **Checkpoint:** Aplicația se deschide pe dispozitiv și se afișează textul "Hello World" pe ecran.
 
@@ -367,14 +392,14 @@ adb shell am start -n ro.makore.hello_world/.MainActivity
 
 ### Afișarea logurilor filtrate
 
-**Ce fac:** Monitorizez logurile aplicației pentru a verifica comportamentul.
+**Actiuni:** Monitorizez logurile aplicației pentru a verifica comportamentul.
 
 **Ce scriu în terminal:**
 ```bash
 adb logcat | grep -i "hello_world\|MainActivity"
 ```
 
-**Ce spun:** "Folosesc `adb logcat` pentru a afișa logurile sistemului Android. Filtrez output-ul cu `grep` pentru a vedea doar mesajele legate de aplicația noastră sau `MainActivity`. Pot folosi și `adb logcat *:S MainActivity:D` pentru a vedea doar log-urile de debug din MainActivity."
+**Note:** "Folosesc `adb logcat` pentru a afișa logurile sistemului Android. Filtrez output-ul cu `grep` pentru a vedea doar mesajele legate de aplicația noastră sau `MainActivity`. Pot folosi și `adb logcat *:S MainActivity:D` pentru a vedea doar log-urile de debug din MainActivity."
 
 **Alternativă (Windows PowerShell):**
 ```powershell

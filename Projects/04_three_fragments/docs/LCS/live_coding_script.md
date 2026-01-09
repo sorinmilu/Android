@@ -1,5 +1,37 @@
 # Script Live Coding - Aplicație cu Trei Fragmente și Navigation Component
 
+<!-- TOC -->
+
+- [Script Live Coding - Aplicație cu Trei Fragmente și Navigation Component](#script-live-coding---aplica%C8%9Bie-cu-trei-fragmente-%C8%99i-navigation-component)
+    - [Prezentare Aplicație](#prezentare-aplica%C8%9Bie)
+    - [Structura Directorului Aplicației](#structura-directorului-aplica%C8%9Biei)
+    - [Pași Live Coding](#pa%C8%99i-live-coding)
+        - [Pasul 1: Crearea structurii de directoare](#pasul-1-crearea-structurii-de-directoare)
+        - [Pasul 2: Crearea fișierului settings.gradle](#pasul-2-crearea-fi%C8%99ierului-settingsgradle)
+        - [Pasul 3: Crearea fișierului build.gradle la rădăcină](#pasul-3-crearea-fi%C8%99ierului-buildgradle-la-r%C4%83d%C4%83cin%C4%83)
+        - [Pasul 4: Crearea fișierului gradle.properties](#pasul-4-crearea-fi%C8%99ierului-gradleproperties)
+        - [Pasul 5: Crearea fișierului app/build.gradle](#pasul-5-crearea-fi%C8%99ierului-appbuildgradle)
+        - [Pasul 6: Crearea fișierului AndroidManifest.xml](#pasul-6-crearea-fi%C8%99ierului-androidmanifestxml)
+        - [Pasul 7: Crearea fișierului bottom_nav_menu.xml](#pasul-7-crearea-fi%C8%99ierului-bottom_nav_menuxml)
+        - [Pasul 8: Crearea fișierului mobile_navigation.xml](#pasul-8-crearea-fi%C8%99ierului-mobile_navigationxml)
+        - [Pasul 9: Crearea fișierului activity_main.xml](#pasul-9-crearea-fi%C8%99ierului-activity_mainxml)
+        - [Pasul 10: Crearea fișierului fragment_chuck.xml](#pasul-10-crearea-fi%C8%99ierului-fragment_chuckxml)
+        - [Pasul 11: Crearea clasei ChuckViewModel.java](#pasul-11-crearea-clasei-chuckviewmodeljava)
+        - [Pasul 12: Crearea clasei ChuckFragment.java](#pasul-12-crearea-clasei-chuckfragmentjava)
+        - [Pasul 13: Crearea clasei MainActivity.java](#pasul-13-crearea-clasei-mainactivityjava)
+        - [Pasul 14: Verificarea structurii proiectului](#pasul-14-verificarea-structurii-proiectului)
+    - [Compilare, Instalare și Rulare](#compilare-instalare-%C8%99i-rulare)
+        - [Compilarea aplicației](#compilarea-aplica%C8%9Biei)
+        - [Listarea dispozitivelor conectate](#listarea-dispozitivelor-conectate)
+        - [Instalarea aplicației](#instalarea-aplica%C8%9Biei)
+        - [Lansarea activității principale](#lansarea-activit%C4%83%C8%9Bii-principale)
+        - [Afișarea logurilor filtrate](#afi%C8%99area-logurilor-filtrate)
+    - [Rezumat](#rezumat)
+
+<!-- /TOC -->
+
+
+
 ## Prezentare Aplicație
 
 Această aplicație Android extinde aplicațiile anterioare prin introducerea Fragmentelor și a Navigation Component pentru gestionarea navigării între multiple ecrane. Diferențele arhitecturale principale față de aplicațiile `01_hello_world`, `01_simple`, `02_simple` și `03_less_simple` sunt: introducerea Fragmentelor (componente UI reutilizabile care pot fi înlocuite în cadrul unei activități), utilizarea Navigation Component pentru gestionarea automată a navigării între fragmente, utilizarea ViewBinding pentru accesul la elementele UI (în loc de `findViewById()`), și pattern-ul de un ViewModel per Fragment pentru separarea logicii. Aplicația demonstrează arhitectura multi-fragment: o singură activitate (`MainActivity`) găzduiește trei fragmente distincte (ChuckFragment, JokeFragment, CocktailFragment) care sunt schimbate prin `BottomNavigationView`. Fiecare fragment are propriul ViewModel și propriul layout XML. Navigation Component gestionează automat stiva de back și tranzițiile între fragmente. ViewBinding generează automat clase de binding pentru fiecare layout, eliminând necesitatea `findViewById()`. Fluxul de date este: utilizatorul selectează un tab în `BottomNavigationView` → Navigation Component înlocuiește fragmentul activ → Fragment-ul observă LiveData din ViewModel-ul său → ViewModel face apeluri HTTP și actualizează LiveData → UI-ul se actualizează automat. Aplicația nu folosește Parcelable și nu are navigare între activități multiple.
@@ -47,7 +79,7 @@ akrilki_04/
 
 ### Pasul 1: Crearea structurii de directoare
 
-**Ce fac:** Creez structura completă de directoare pentru aplicația Android, inclusiv directoarele pentru fragmente și resurse de navigare.
+**Actiuni:** Creez structura completă de directoare pentru aplicația Android, inclusiv directoarele pentru fragmente și resurse de navigare.
 
 **Ce scriu în terminal:**
 ```bash
@@ -59,7 +91,7 @@ mkdir -p akrilki_04/app/src/main/res/menu
 mkdir -p akrilki_04/app/src/main/res/navigation
 ```
 
-**Ce spun:** "Vom începe prin a crea structura de directoare pentru aplicația noastră. Observați că am adăugat directoare pentru trei fragmente (`ui/chuck`, `ui/joke`, `ui/cocktail`), fiecare cu propriul ViewModel. De asemenea, am adăugat directoare pentru meniu și navigare, necesare pentru Navigation Component."
+**Note:** "Vom începe prin a crea structura de directoare pentru aplicația noastră. Observați că am adăugat directoare pentru trei fragmente (`ui/chuck`, `ui/joke`, `ui/cocktail`), fiecare cu propriul ViewModel. De asemenea, am adăugat directoare pentru meniu și navigare, necesare pentru Navigation Component."
 
 **Checkpoint:** Structura de directoare este creată, inclusiv directoarele pentru fragmente și resurse de navigare.
 
@@ -67,7 +99,7 @@ mkdir -p akrilki_04/app/src/main/res/navigation
 
 ### Pasul 2: Crearea fișierului settings.gradle
 
-**Ce fac:** Creez fișierul `settings.gradle` la rădăcina proiectului.
+**Actiuni:** Creez fișierul `settings.gradle` la rădăcina proiectului.
 
 **Ce scriu:**
 ```groovy
@@ -96,7 +128,7 @@ rootProject.name = "Akrilki_04"
 include ':app'
 ```
 
-**Ce spun:** "Creez fișierul `settings.gradle` cu configurația standard. Numele proiectului este `Akrilki_04`."
+**Note:** "Creez fișierul `settings.gradle` cu configurația standard. Numele proiectului este `Akrilki_04`."
 
 **Checkpoint:** Fișierul `settings.gradle` este creat.
 
@@ -104,7 +136,7 @@ include ':app'
 
 ### Pasul 3: Crearea fișierului build.gradle la rădăcină
 
-**Ce fac:** Creez fișierul `build.gradle` la nivelul rădăcină.
+**Actiuni:** Creez fișierul `build.gradle` la nivelul rădăcină.
 
 **Ce scriu:**
 ```groovy
@@ -119,7 +151,7 @@ buildscript {
 }
 ```
 
-**Ce spun:** "Creez fișierul `build.gradle` la rădăcină cu configurația pentru plugin-ul Gradle Android."
+**Note:** "Creez fișierul `build.gradle` la rădăcină cu configurația pentru plugin-ul Gradle Android."
 
 **Checkpoint:** Fișierul `build.gradle` rădăcină este creat.
 
@@ -127,7 +159,7 @@ buildscript {
 
 ### Pasul 4: Crearea fișierului gradle.properties
 
-**Ce fac:** Creez fișierul `gradle.properties` pentru configurații globale.
+**Actiuni:** Creez fișierul `gradle.properties` pentru configurații globale.
 
 **Ce scriu:**
 ```
@@ -137,7 +169,7 @@ android.nonTransitiveRClass=true
 android.enableJetifier=true
 ```
 
-**Ce spun:** "Creez fișierul `gradle.properties` cu setările standard. `android.enableJetifier=true` permite migrarea automată a bibliotecilor vechi la AndroidX."
+**Note:** "Creez fișierul `gradle.properties` cu setările standard. `android.enableJetifier=true` permite migrarea automată a bibliotecilor vechi la AndroidX."
 
 **Checkpoint:** Fișierul `gradle.properties` este creat.
 
@@ -145,7 +177,7 @@ android.enableJetifier=true
 
 ### Pasul 5: Crearea fișierului app/build.gradle
 
-**Ce fac:** Creez fișierul `build.gradle` pentru modulul `app` cu dependențele necesare pentru Navigation Component și ViewBinding.
+**Actiuni:** Creez fișierul `build.gradle` pentru modulul `app` cu dependențele necesare pentru Navigation Component și ViewBinding.
 
 **Ce scriu:**
 ```groovy
@@ -165,7 +197,7 @@ android {
     }
 ```
 
-**Ce spun:** "Creez fișierul `app/build.gradle`. Setez namespace-ul la `ro.makore.akrilki_04` și `minSdk` la 21."
+**Note:** "Creez fișierul `app/build.gradle`. Setez namespace-ul la `ro.makore.akrilki_04` și `minSdk` la 21."
 
 **Ce scriu (continuare):**
 ```groovy
@@ -185,7 +217,7 @@ android {
 }
 ```
 
-**Ce spun:** "Configurez tipurile de build și opțiunile de compilare Java. Observați blocul `buildFeatures` - setez `viewBinding true` pentru a activa ViewBinding. Aceasta va genera automat clase de binding pentru fiecare layout XML, eliminând necesitatea `findViewById()`."
+**Note:** "Configurez tipurile de build și opțiunile de compilare Java. Observați blocul `buildFeatures` - setez `viewBinding true` pentru a activa ViewBinding. Aceasta va genera automat clase de binding pentru fiecare layout XML, eliminând necesitatea `findViewById()`."
 
 **Ce scriu (continuare):**
 ```groovy
@@ -202,7 +234,7 @@ dependencies {
 }
 ```
 
-**Ce spun:** "În blocul `dependencies` adaug bibliotecile necesare. Observați noile dependențe: `navigation-fragment-ktx` și `navigation-ui-ktx` pentru Navigation Component, `picasso` pentru încărcarea imaginilor din URL-uri, și `lifecycle-viewmodel-ktx` pentru ViewModel-uri."
+**Note:** "În blocul `dependencies` adaug bibliotecile necesare. Observați noile dependențe: `navigation-fragment-ktx` și `navigation-ui-ktx` pentru Navigation Component, `picasso` pentru încărcarea imaginilor din URL-uri, și `lifecycle-viewmodel-ktx` pentru ViewModel-uri."
 
 **Checkpoint:** Fișierul `app/build.gradle` este complet configurat, inclusiv ViewBinding și Navigation Component.
 
@@ -210,7 +242,7 @@ dependencies {
 
 ### Pasul 6: Crearea fișierului AndroidManifest.xml
 
-**Ce fac:** Creez fișierul `AndroidManifest.xml` cu permisiunea INTERNET.
+**Actiuni:** Creez fișierul `AndroidManifest.xml` cu permisiunea INTERNET.
 
 **Ce scriu:**
 ```xml
@@ -221,7 +253,7 @@ dependencies {
     <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-**Ce spun:** "Creez fișierul `AndroidManifest.xml` în `app/src/main/`. Adaug permisiunea `INTERNET` necesară pentru apeluri HTTP."
+**Note:** "Creez fișierul `AndroidManifest.xml` în `app/src/main/`. Adaug permisiunea `INTERNET` necesară pentru apeluri HTTP."
 
 **Ce scriu (continuare):**
 ```xml
@@ -243,7 +275,7 @@ dependencies {
 </manifest>
 ```
 
-**Ce spun:** "Declar activitatea `MainActivity` ca activitate principală cu tema Material Components."
+**Note:** "Declar activitatea `MainActivity` ca activitate principală cu tema Material Components."
 
 **Checkpoint:** Fișierul `AndroidManifest.xml` este creat cu permisiunea INTERNET.
 
@@ -251,7 +283,7 @@ dependencies {
 
 ### Pasul 7: Crearea fișierului bottom_nav_menu.xml
 
-**Ce fac:** Creez fișierul XML pentru meniul de navigare de jos.
+**Actiuni:** Creez fișierul XML pentru meniul de navigare de jos.
 
 **Ce scriu:**
 ```xml
@@ -279,7 +311,7 @@ dependencies {
 </menu>
 ```
 
-**Ce spun:** "Creez fișierul `bottom_nav_menu.xml` în directorul `app/src/main/res/menu/`. Acest fișier definește elementele meniului pentru `BottomNavigationView`. Fiecare `item` are un ID care corespunde cu ID-urile fragmentelor din graful de navigare, o iconiță, și un titlu. ID-urile trebuie să corespundă exact cu cele din graful de navigare pentru ca navigarea să funcționeze."
+**Note:** "Creez fișierul `bottom_nav_menu.xml` în directorul `app/src/main/res/menu/`. Acest fișier definește elementele meniului pentru `BottomNavigationView`. Fiecare `item` are un ID care corespunde cu ID-urile fragmentelor din graful de navigare, o iconiță, și un titlu. ID-urile trebuie să corespundă exact cu cele din graful de navigare pentru ca navigarea să funcționeze."
 
 **Checkpoint:** Fișierul `bottom_nav_menu.xml` este creat cu trei elemente de meniu.
 
@@ -287,7 +319,7 @@ dependencies {
 
 ### Pasul 8: Crearea fișierului mobile_navigation.xml
 
-**Ce fac:** Creez graful de navigare care definește fragmentele și relațiile dintre ele.
+**Actiuni:** Creez graful de navigare care definește fragmentele și relațiile dintre ele.
 
 **Ce scriu:**
 ```xml
@@ -299,7 +331,7 @@ dependencies {
     app:startDestination="@+id/navigation_chuck">
 ```
 
-**Ce spun:** "Creez fișierul `mobile_navigation.xml` în directorul `app/src/main/res/navigation/`. Acesta este graful de navigare care definește structura navigării aplicației. Tag-ul `navigation` este rădăcina grafului. `app:startDestination` specifică fragmentul care se încarcă la pornirea aplicației - în cazul nostru `navigation_chuck`."
+**Note:** "Creez fișierul `mobile_navigation.xml` în directorul `app/src/main/res/navigation/`. Acesta este graful de navigare care definește structura navigării aplicației. Tag-ul `navigation` este rădăcina grafului. `app:startDestination` specifică fragmentul care se încarcă la pornirea aplicației - în cazul nostru `navigation_chuck`."
 
 **Ce scriu (continuare):**
 ```xml
@@ -310,7 +342,7 @@ dependencies {
         tools:layout="@layout/fragment_chuck" />
 ```
 
-**Ce spun:** "Adaug primul fragment în graf. `android:id` este ID-ul fragmentului folosit pentru navigare, `android:name` este numele complet al clasei Java a fragmentului, `android:label` este eticheta afișată în ActionBar, și `tools:layout` este layout-ul folosit pentru preview în instrumentele de dezvoltare."
+**Note:** "Adaug primul fragment în graf. `android:id` este ID-ul fragmentului folosit pentru navigare, `android:name` este numele complet al clasei Java a fragmentului, `android:label` este eticheta afișată în ActionBar, și `tools:layout` este layout-ul folosit pentru preview în instrumentele de dezvoltare."
 
 **Ce scriu (continuare):**
 ```xml
@@ -328,7 +360,7 @@ dependencies {
 </navigation>
 ```
 
-**Ce spun:** "Adaug celelalte două fragmente în graf. Observați că ID-urile (`navigation_joke`, `navigation_cocktail`) corespund cu ID-urile din meniul de navigare. Navigation Component va conecta automat meniul cu fragmentele pe baza acestor ID-uri."
+**Note:** "Adaug celelalte două fragmente în graf. Observați că ID-urile (`navigation_joke`, `navigation_cocktail`) corespund cu ID-urile din meniul de navigare. Navigation Component va conecta automat meniul cu fragmentele pe baza acestor ID-uri."
 
 **Checkpoint:** Fișierul `mobile_navigation.xml` este creat cu trei fragmente definite.
 
@@ -336,7 +368,7 @@ dependencies {
 
 ### Pasul 9: Crearea fișierului activity_main.xml
 
-**Ce fac:** Creez layout-ul principal al activității cu `BottomNavigationView` și `NavHostFragment`.
+**Actiuni:** Creez layout-ul principal al activității cu `BottomNavigationView` și `NavHostFragment`.
 
 **Ce scriu:**
 ```xml
@@ -349,7 +381,7 @@ dependencies {
     android:paddingTop="?attr/actionBarSize">
 ```
 
-**Ce spun:** "Creez fișierul `activity_main.xml` în directorul `app/src/main/res/layout/`. Folosesc `ConstraintLayout` ca layout principal. `android:paddingTop` adaugă padding pentru ActionBar."
+**Note:** "Creez fișierul `activity_main.xml` în directorul `app/src/main/res/layout/`. Folosesc `ConstraintLayout` ca layout principal. `android:paddingTop` adaugă padding pentru ActionBar."
 
 **Ce scriu (continuare):**
 ```xml
@@ -366,7 +398,7 @@ dependencies {
         app:menu="@menu/bottom_nav_menu" />
 ```
 
-**Ce spun:** "Adaug `BottomNavigationView` care va afișa meniul de navigare în partea de jos a ecranului. `app:menu="@menu/bottom_nav_menu"` conectează meniul XML creat anterior. Constraint-urile fixează meniul în partea de jos a ecranului."
+**Note:** "Adaug `BottomNavigationView` care va afișa meniul de navigare în partea de jos a ecranului. `app:menu="@menu/bottom_nav_menu"` conectează meniul XML creat anterior. Constraint-urile fixează meniul în partea de jos a ecranului."
 
 **Ce scriu (continuare):**
 ```xml
@@ -383,7 +415,7 @@ dependencies {
         app:navGraph="@navigation/mobile_navigation" />
 ```
 
-**Ce spun:** "Adaug `NavHostFragment` - acesta este un fragment special care găzduiește fragmentele și gestionează navigarea. `android:name="androidx.navigation.fragment.NavHostFragment"` specifică clasa specială pentru Navigation Component. `app:defaultNavHost="true"` permite gestionarea automată a butonului Back. `app:navGraph="@navigation/mobile_navigation"` conectează graful de navigare creat anterior. Constraint-urile plasează `NavHostFragment` deasupra meniului de navigare."
+**Note:** "Adaug `NavHostFragment` - acesta este un fragment special care găzduiește fragmentele și gestionează navigarea. `android:name="androidx.navigation.fragment.NavHostFragment"` specifică clasa specială pentru Navigation Component. `app:defaultNavHost="true"` permite gestionarea automată a butonului Back. `app:navGraph="@navigation/mobile_navigation"` conectează graful de navigare creat anterior. Constraint-urile plasează `NavHostFragment` deasupra meniului de navigare."
 
 **Ce scriu (continuare):**
 ```xml
@@ -401,7 +433,7 @@ dependencies {
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-**Ce spun:** "Adaug un `FloatingActionButton` pentru butonul de quit, poziționat deasupra meniului de navigare. `android:src` referă o iconiță din drawable."
+**Note:** "Adaug un `FloatingActionButton` pentru butonul de quit, poziționat deasupra meniului de navigare. `android:src` referă o iconiță din drawable."
 
 **Checkpoint:** Fișierul `activity_main.xml` este creat cu `BottomNavigationView`, `NavHostFragment`, și `FloatingActionButton`.
 
@@ -409,7 +441,7 @@ dependencies {
 
 ### Pasul 10: Crearea fișierului fragment_chuck.xml
 
-**Ce fac:** Creez layout-ul pentru `ChuckFragment`.
+**Actiuni:** Creez layout-ul pentru `ChuckFragment`.
 
 **Ce scriu:**
 ```xml
@@ -422,7 +454,7 @@ dependencies {
     tools:context=".ui.chuck.ChuckFragment">
 ```
 
-**Ce spun:** "Creez fișierul `fragment_chuck.xml` în directorul `app/src/main/res/layout/`. Folosesc `ConstraintLayout` ca layout principal. `tools:context` specifică fragmentul asociat pentru preview."
+**Note:** "Creez fișierul `fragment_chuck.xml` în directorul `app/src/main/res/layout/`. Folosesc `ConstraintLayout` ca layout principal. `tools:context` specifică fragmentul asociat pentru preview."
 
 **Ce scriu (continuare):**
 ```xml
@@ -439,7 +471,7 @@ dependencies {
         app:layout_constraintTop_toTopOf="parent" />
 ```
 
-**Ce spun:** "Adaug un `TextView` pentru titlul fragmentului, fixat sus și centrat orizontal."
+**Note:** "Adaug un `TextView` pentru titlul fragmentului, fixat sus și centrat orizontal."
 
 **Ce scriu (continuare):**
 ```xml
@@ -454,7 +486,7 @@ dependencies {
         app:layout_constraintTop_toTopOf="parent" />
 ```
 
-**Ce spun:** "Adaug un `ImageView` pentru imaginea Chuck Norris, centrat pe ecran. `android:src="@drawable/chuck"` referă o imagine din drawable."
+**Note:** "Adaug un `ImageView` pentru imaginea Chuck Norris, centrat pe ecran. `android:src="@drawable/chuck"` referă o imagine din drawable."
 
 **Ce scriu (continuare):**
 ```xml
@@ -473,7 +505,7 @@ dependencies {
         app:layout_constraintTop_toTopOf="parent" />
 ```
 
-**Ce spun:** "Adaug un `TextView` cu ID-ul `text_chuck` pentru afișarea faptului Chuck Norris. Acest ID va fi folosit în ViewBinding pentru a accesa elementul din cod."
+**Note:** "Adaug un `TextView` cu ID-ul `text_chuck` pentru afișarea faptului Chuck Norris. Acest ID va fi folosit în ViewBinding pentru a accesa elementul din cod."
 
 **Ce scriu (continuare):**
 ```xml
@@ -490,7 +522,7 @@ dependencies {
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-**Ce spun:** "Adaug butonul de refresh, fixat în partea de jos a fragmentului. Închid tag-ul `ConstraintLayout`."
+**Note:** "Adaug butonul de refresh, fixat în partea de jos a fragmentului. Închid tag-ul `ConstraintLayout`."
 
 **Checkpoint:** Fișierul `fragment_chuck.xml` este creat cu TextView pentru titlu, ImageView, TextView pentru text, și buton de refresh.
 
@@ -498,7 +530,7 @@ dependencies {
 
 ### Pasul 11: Crearea clasei ChuckViewModel.java
 
-**Ce fac:** Creez ViewModel-ul pentru `ChuckFragment` care gestionează logica de business.
+**Actiuni:** Creez ViewModel-ul pentru `ChuckFragment` care gestionează logica de business.
 
 **Ce scriu:**
 ```java
@@ -517,7 +549,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 ```
 
-**Ce spun:** "Creez fișierul `ChuckViewModel.java` în directorul `app/src/main/java/ro/makore/akrilki_04/ui/chuck/`. Declar pachetul și adaug import-urile: ViewModel și LiveData pentru arhitectură, JSON pentru parsare, și OkHttp pentru apeluri HTTP."
+**Note:** "Creez fișierul `ChuckViewModel.java` în directorul `app/src/main/java/ro/makore/akrilki_04/ui/chuck/`. Declar pachetul și adaug import-urile: ViewModel și LiveData pentru arhitectură, JSON pentru parsare, și OkHttp pentru apeluri HTTP."
 
 **Ce scriu (continuare):**
 ```java
@@ -532,7 +564,7 @@ public class ChuckViewModel extends ViewModel {
     }
 ```
 
-**Ce spun:** "Definesc clasa `ChuckViewModel` care extinde `ViewModel`. Declar `mText` ca `MutableLiveData<String>` pentru a stoca faptul Chuck Norris. În constructor, inițializez `mText` și apelez imediat `fetchCNFact()` pentru a prelua primul fapt."
+**Note:** "Definesc clasa `ChuckViewModel` care extinde `ViewModel`. Declar `mText` ca `MutableLiveData<String>` pentru a stoca faptul Chuck Norris. În constructor, inițializez `mText` și apelez imediat `fetchCNFact()` pentru a prelua primul fapt."
 
 **Ce scriu (continuare):**
 ```java
@@ -575,7 +607,7 @@ public class ChuckViewModel extends ViewModel {
 }
 ```
 
-**Ce spun:** "Implementez metoda `fetchCNFact()` care face apelul HTTP către API-ul Chuck Norris, parsează răspunsul JSON, și actualizează LiveData cu `postValue()`. Metoda `getText()` returnează LiveData read-only pentru observare. Această implementare este similară cu ViewModel-ul din aplicația anterioară, dar este dedicat unui singur fragment."
+**Note:** "Implementez metoda `fetchCNFact()` care face apelul HTTP către API-ul Chuck Norris, parsează răspunsul JSON, și actualizează LiveData cu `postValue()`. Metoda `getText()` returnează LiveData read-only pentru observare. Această implementare este similară cu ViewModel-ul din aplicația anterioară, dar este dedicat unui singur fragment."
 
 **Checkpoint:** Clasa `ChuckViewModel` este completă cu logica de business pentru preluarea faptelor Chuck Norris.
 
@@ -583,7 +615,7 @@ public class ChuckViewModel extends ViewModel {
 
 ### Pasul 12: Crearea clasei ChuckFragment.java
 
-**Ce fac:** Creez fragmentul care folosește ViewBinding și observă LiveData din ViewModel.
+**Actiuni:** Creez fragmentul care folosește ViewBinding și observă LiveData din ViewModel.
 
 **Ce scriu:**
 ```java
@@ -601,7 +633,7 @@ import androidx.lifecycle.ViewModelProvider;
 import ro.makore.akrilki_04.databinding.FragmentChuckBinding;
 ```
 
-**Ce spun:** "Creez fișierul `ChuckFragment.java` în directorul `app/src/main/java/ro/makore/akrilki_04/ui/chuck/`. Declar pachetul și adaug import-urile: `Fragment` ca clasă de bază, `ViewModelProvider` pentru a obține ViewModel-ul, și `FragmentChuckBinding` - aceasta este clasa generată automat de ViewBinding pentru layout-ul `fragment_chuck.xml`."
+**Note:** "Creez fișierul `ChuckFragment.java` în directorul `app/src/main/java/ro/makore/akrilki_04/ui/chuck/`. Declar pachetul și adaug import-urile: `Fragment` ca clasă de bază, `ViewModelProvider` pentru a obține ViewModel-ul, și `FragmentChuckBinding` - aceasta este clasa generată automat de ViewBinding pentru layout-ul `fragment_chuck.xml`."
 
 **Ce scriu (continuare):**
 ```java
@@ -613,7 +645,7 @@ public class ChuckFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 ```
 
-**Ce spun:** "Definesc clasa `ChuckFragment` care extinde `Fragment`. Declar `binding` de tip `FragmentChuckBinding` - aceasta va conține referințe la toate elementele UI din layout. Suprascriu metoda `onCreateView()` care este apelată pentru a crea view-ul fragmentului."
+**Note:** "Definesc clasa `ChuckFragment` care extinde `Fragment`. Declar `binding` de tip `FragmentChuckBinding` - aceasta va conține referințe la toate elementele UI din layout. Suprascriu metoda `onCreateView()` care este apelată pentru a crea view-ul fragmentului."
 
 **Ce scriu (continuare):**
 ```java
@@ -621,7 +653,7 @@ public class ChuckFragment extends Fragment {
                 new ViewModelProvider(this).get(ChuckViewModel.class);
 ```
 
-**Ce spun:** "Obțin instanța ViewModel-ului folosind `ViewModelProvider`. `this` este fragmentul curent - ViewModel-ul va fi legat de lifecycle-ul fragmentului și va supraviețui recreării fragmentului."
+**Note:** "Obțin instanța ViewModel-ului folosind `ViewModelProvider`. `this` este fragmentul curent - ViewModel-ul va fi legat de lifecycle-ul fragmentului și va supraviețui recreării fragmentului."
 
 **Ce scriu (continuare):**
 ```java
@@ -629,7 +661,7 @@ public class ChuckFragment extends Fragment {
         View root = binding.getRoot();
 ```
 
-**Ce spun:** "Această linie este esențială pentru ViewBinding! `FragmentChuckBinding.inflate()` creează instanța de binding și inflatează layout-ul XML. `binding.getRoot()` returnează view-ul rădăcină al layout-ului. Observați că nu mai folosim `setContentView()` sau `findViewById()` - ViewBinding gestionează totul automat!"
+**Note:** "Această linie este esențială pentru ViewBinding! `FragmentChuckBinding.inflate()` creează instanța de binding și inflatează layout-ul XML. `binding.getRoot()` returnează view-ul rădăcină al layout-ului. Observați că nu mai folosim `setContentView()` sau `findViewById()` - ViewBinding gestionează totul automat!"
 
 **Ce scriu (continuare):**
 ```java
@@ -637,7 +669,7 @@ public class ChuckFragment extends Fragment {
         chuckViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 ```
 
-**Ce spun:** "Obțin referința la TextView folosind `binding.textChuck` - ViewBinding generează automat proprietăți pentru fiecare element cu ID din layout! Apoi observ LiveData din ViewModel folosind `observe()`. `getViewLifecycleOwner()` este lifecycle owner-ul specific pentru view-ul fragmentului - permite LiveData să știe când view-ul este distrus. `textView::setText` este o method reference care actualizează automat TextView-ul când LiveData se schimbă."
+**Note:** "Obțin referința la TextView folosind `binding.textChuck` - ViewBinding generează automat proprietăți pentru fiecare element cu ID din layout! Apoi observ LiveData din ViewModel folosind `observe()`. `getViewLifecycleOwner()` este lifecycle owner-ul specific pentru view-ul fragmentului - permite LiveData să știe când view-ul este distrus. `textView::setText` este o method reference care actualizează automat TextView-ul când LiveData se schimbă."
 
 **Ce scriu (continuare):**
 ```java
@@ -650,7 +682,7 @@ public class ChuckFragment extends Fragment {
     }
 ```
 
-**Ce spun:** "Obțin referința la buton folosind `binding.refreshButton` și atașez listener care apelează `fetchCNFact()` din ViewModel. Returnez `root` - view-ul rădăcină al fragmentului."
+**Note:** "Obțin referința la buton folosind `binding.refreshButton` și atașez listener care apelează `fetchCNFact()` din ViewModel. Returnez `root` - view-ul rădăcină al fragmentului."
 
 **Ce scriu (continuare):**
 ```java
@@ -662,7 +694,7 @@ public class ChuckFragment extends Fragment {
 }
 ```
 
-**Ce spun:** "Suprascriu `onDestroyView()` pentru a seta `binding` la `null` când view-ul este distrus. Aceasta previne memory leaks - ViewBinding păstrează referințe la view-uri care ar putea fi distruse."
+**Note:** "Suprascriu `onDestroyView()` pentru a seta `binding` la `null` când view-ul este distrus. Aceasta previne memory leaks - ViewBinding păstrează referințe la view-uri care ar putea fi distruse."
 
 **Checkpoint:** Clasa `ChuckFragment` este completă și folosește ViewBinding și pattern-ul Observer pentru a observa LiveData din ViewModel.
 
@@ -670,7 +702,7 @@ public class ChuckFragment extends Fragment {
 
 ### Pasul 13: Crearea clasei MainActivity.java
 
-**Ce fac:** Creez activitatea principală care configurează Navigation Component.
+**Actiuni:** Creez activitatea principală care configurează Navigation Component.
 
 **Ce scriu:**
 ```java
@@ -687,7 +719,7 @@ import androidx.navigation.ui.NavigationUI;
 import ro.makore.akrilki_04.databinding.ActivityMainBinding;
 ```
 
-**Ce spun:** "Creez fișierul `MainActivity.java` în directorul `app/src/main/java/ro/makore/akrilki_04/`. Declar pachetul și adaug import-urile: componente Material Design, Navigation Component, și `ActivityMainBinding` generat automat de ViewBinding."
+**Note:** "Creez fișierul `MainActivity.java` în directorul `app/src/main/java/ro/makore/akrilki_04/`. Declar pachetul și adaug import-urile: componente Material Design, Navigation Component, și `ActivityMainBinding` generat automat de ViewBinding."
 
 **Ce scriu (continuare):**
 ```java
@@ -703,7 +735,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 ```
 
-**Ce spun:** "Definesc clasa `MainActivity` care extinde `AppCompatActivity`. Declar `binding` de tip `ActivityMainBinding`. În `onCreate`, folosesc ViewBinding pentru a inflata layout-ul - `ActivityMainBinding.inflate(getLayoutInflater())` creează binding-ul, iar `binding.getRoot()` returnează view-ul rădăcină."
+**Note:** "Definesc clasa `MainActivity` care extinde `AppCompatActivity`. Declar `binding` de tip `ActivityMainBinding`. În `onCreate`, folosesc ViewBinding pentru a inflata layout-ul - `ActivityMainBinding.inflate(getLayoutInflater())` creează binding-ul, iar `binding.getRoot()` returnează view-ul rădăcină."
 
 **Ce scriu (continuare):**
 ```java
@@ -711,7 +743,7 @@ public class MainActivity extends AppCompatActivity {
         fabQuit.setOnClickListener(v -> finishAffinity());
 ```
 
-**Ce spun:** "Obțin referința la FloatingActionButton și atașez listener pentru quit. Observați că pentru acest element folosesc încă `findViewById()` - puteam folosi și `binding.fabQuit` dacă doream."
+**Note:** "Obțin referința la FloatingActionButton și atașez listener pentru quit. Observați că pentru acest element folosesc încă `findViewById()` - puteam folosi și `binding.fabQuit` dacă doream."
 
 **Ce scriu (continuare):**
 ```java
@@ -721,7 +753,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 ```
 
-**Ce spun:** "Obțin referința la `BottomNavigationView` și creez `AppBarConfiguration` care specifică care fragmente sunt destinații de nivel superior. Acest lucru este important pentru ActionBar - butonul Back nu va apărea pentru aceste destinații de top."
+**Note:** "Obțin referința la `BottomNavigationView` și creez `AppBarConfiguration` care specifică care fragmente sunt destinații de nivel superior. Acest lucru este important pentru ActionBar - butonul Back nu va apărea pentru aceste destinații de top."
 
 **Ce scriu (continuare):**
 ```java
@@ -730,7 +762,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 ```
 
-**Ce spun:** "Obțin `NavController` folosind `Navigation.findNavController()` - trebuie să trec ID-ul `NavHostFragment`-ului din layout. Configurez ActionBar să lucreze cu Navigation Component. Apoi conectez `BottomNavigationView` cu `NavController` folosind `NavigationUI.setupWithNavController()` - aceasta face ca navigarea să funcționeze automat când utilizatorul apasă pe elementele meniului!"
+**Note:** "Obțin `NavController` folosind `Navigation.findNavController()` - trebuie să trec ID-ul `NavHostFragment`-ului din layout. Configurez ActionBar să lucreze cu Navigation Component. Apoi conectez `BottomNavigationView` cu `NavController` folosind `NavigationUI.setupWithNavController()` - aceasta face ca navigarea să funcționeze automat când utilizatorul apasă pe elementele meniului!"
 
 **Ce scriu (continuare):**
 ```java
@@ -738,7 +770,7 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-**Ce spun:** "Închid metoda `onCreate` și clasa. Activity-ul este mult mai simplu acum - Navigation Component gestionează toată logica de navigare automat!"
+**Note:** "Închid metoda `onCreate` și clasa. Activity-ul este mult mai simplu acum - Navigation Component gestionează toată logica de navigare automat!"
 
 **Checkpoint:** Clasa `MainActivity` este completă și configurează Navigation Component pentru navigare automată între fragmente.
 
@@ -746,9 +778,9 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 14: Verificarea structurii proiectului
 
-**Ce fac:** Verific că toate fișierele necesare sunt prezente.
+**Actiuni:** Verific că toate fișierele necesare sunt prezente.
 
-**Ce spun:** "Am creat structura de bază pentru aplicația cu trei fragmente. Pentru simplitate, am creat doar `ChuckFragment` și `ChuckViewModel` ca exemplu. Fragmentele `JokeFragment` și `CocktailFragment` urmează același pattern - fiecare are propriul ViewModel și layout XML. Aplicația nu folosește Parcelable, deci nu avem clase Parcelable de creat."
+**Note:** "Am creat structura de bază pentru aplicația cu trei fragmente. Pentru simplitate, am creat doar `ChuckFragment` și `ChuckViewModel` ca exemplu. Fragmentele `JokeFragment` și `CocktailFragment` urmează același pattern - fiecare are propriul ViewModel și layout XML. Aplicația nu folosește Parcelable, deci nu avem clase Parcelable de creat."
 
 **Checkpoint:** Toate fișierele esențiale sunt create: MainActivity cu Navigation Component, un fragment exemplu (ChuckFragment) cu ViewModel, și toate resursele necesare (meniu, navigare, layout-uri).
 
@@ -758,7 +790,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Compilarea aplicației
 
-**Ce fac:** Compilez aplicația pentru a genera APK-ul de debug.
+**Actiuni:** Compilez aplicația pentru a genera APK-ul de debug.
 
 **Ce scriu în terminal:**
 ```bash
@@ -766,7 +798,7 @@ cd akrilki_04
 gradle build
 ```
 
-**Ce spun:** "Navighez în directorul proiectului și rulez `gradle build` pentru a compila aplicația. Gradle va genera automat clasele de ViewBinding pentru toate layout-urile XML și va compila codul. APK-ul va fi generat în `app/build/outputs/apk/debug/app-debug.apk`."
+**Note:** "Navighez în directorul proiectului și rulez `gradle build` pentru a compila aplicația. Gradle va genera automat clasele de ViewBinding pentru toate layout-urile XML și va compila codul. APK-ul va fi generat în `app/build/outputs/apk/debug/app-debug.apk`."
 
 **Checkpoint:** Build-ul se finalizează cu succes, APK-ul este generat, și clasele de ViewBinding sunt create automat.
 
@@ -774,14 +806,14 @@ gradle build
 
 ### Listarea dispozitivelor conectate
 
-**Ce fac:** Verific ce dispozitive Android sunt conectate și disponibile pentru instalare.
+**Actiuni:** Verific ce dispozitive Android sunt conectate și disponibile pentru instalare.
 
 **Ce scriu în terminal:**
 ```bash
 adb devices
 ```
 
-**Ce spun:** "Folosesc `adb devices` pentru a lista toate dispozitivele Android conectate. Asigurați-vă că dispozitivul are conexiune la internet pentru ca aplicația să funcționeze corect."
+**Note:** "Folosesc `adb devices` pentru a lista toate dispozitivele Android conectate. Asigurați-vă că dispozitivul are conexiune la internet pentru ca aplicația să funcționeze corect."
 
 **Checkpoint:** Se afișează lista de dispozitive cu status 'device'.
 
@@ -789,14 +821,14 @@ adb devices
 
 ### Instalarea aplicației
 
-**Ce fac:** Instalez APK-ul de debug pe dispozitivul conectat.
+**Actiuni:** Instalez APK-ul de debug pe dispozitivul conectat.
 
 **Ce scriu în terminal:**
 ```bash
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-**Ce spun:** "Folosesc `adb install` pentru a instala APK-ul de debug pe dispozitiv. Dacă aplicația există deja, pot folosi `adb install -r` pentru reinstalare."
+**Note:** "Folosesc `adb install` pentru a instala APK-ul de debug pe dispozitiv. Dacă aplicația există deja, pot folosi `adb install -r` pentru reinstalare."
 
 **Checkpoint:** Aplicația este instalată cu succes.
 
@@ -804,14 +836,14 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 ### Lansarea activității principale
 
-**Ce fac:** Lansez activitatea principală a aplicației pe dispozitiv.
+**Actiuni:** Lansez activitatea principală a aplicației pe dispozitiv.
 
 **Ce scriu în terminal:**
 ```bash
 adb shell am start -n ro.makore.akrilki_04/.MainActivity
 ```
 
-**Ce spun:** "Folosesc `adb shell am start` pentru a lansa activitatea. Aplicația se va deschide și va afișa automat `ChuckFragment` (destinația de start). `BottomNavigationView` va permite navigarea între cele trei fragmente. Testați navigarea - fiecare fragment ar trebui să se încarce corect când apăsați pe elementele meniului!"
+**Note:** "Folosesc `adb shell am start` pentru a lansa activitatea. Aplicația se va deschide și va afișa automat `ChuckFragment` (destinația de start). `BottomNavigationView` va permite navigarea între cele trei fragmente. Testați navigarea - fiecare fragment ar trebui să se încarce corect când apăsați pe elementele meniului!"
 
 **Checkpoint:** Aplicația se deschide, `ChuckFragment` se încarcă automat, și navigarea între fragmente funcționează prin `BottomNavigationView`. La apăsarea butonului "Get New Fact", se preia un nou fapt Chuck Norris. La apăsarea butonului Quit, aplicația se închide.
 
@@ -819,14 +851,14 @@ adb shell am start -n ro.makore.akrilki_04/.MainActivity
 
 ### Afișarea logurilor filtrate
 
-**Ce fac:** Monitorizez logurile aplicației pentru a verifica navigarea și lifecycle-ul fragmentelor.
+**Actiuni:** Monitorizez logurile aplicației pentru a verifica navigarea și lifecycle-ul fragmentelor.
 
 **Ce scriu în terminal:**
 ```bash
 adb logcat | grep -i "akrilki_04\|MainActivity\|ChuckFragment\|Navigation"
 ```
 
-**Ce spun:** "Folosesc `adb logcat` pentru a afișa logurile sistemului Android. Filtrez output-ul pentru a vedea mesajele legate de aplicația noastră, MainActivity, ChuckFragment, și Navigation Component. Aici putem vedea navigarea între fragmente, lifecycle-ul fragmentelor, și eventualele erori."
+**Note:** "Folosesc `adb logcat` pentru a afișa logurile sistemului Android. Filtrez output-ul pentru a vedea mesajele legate de aplicația noastră, MainActivity, ChuckFragment, și Navigation Component. Aici putem vedea navigarea între fragmente, lifecycle-ul fragmentelor, și eventualele erori."
 
 **Alternativă (Windows PowerShell):**
 ```powershell
@@ -865,4 +897,5 @@ Am creat o aplicație Android cu trei fragmente și Navigation Component care de
 - Arhitectură multi-fragment cu o singură activitate
 
 Aplicația este funcțională și demonstrează conceptele fundamentale ale arhitecturii multi-fragment și Navigation Component în Android.
+
 

@@ -4,6 +4,7 @@
 - [Devices](#devices)
 - [Build, clean](#build-clean)
 
+
 <!-- /TOC -->
 
 # Sdk tools
@@ -76,3 +77,18 @@ In directorul aplicatiei
 
     gradle clean
 
+
+# ScrCpy
+
+
+scrcpy --help afiseaza toate optiunile disponibile
+
+scrcpy --max-size 1024 reduce dimensiunea ferestrei afisate
+
+scrcpy --bit-rate 2M reduce latimea de banda video
+
+scrcpy --record file.mp4 porneste inregistrarea ecranului
+
+scrcpy --stay-awake mentine ecranul telefonului pornit
+
+scrcpy --crop 1080:1920:0:0 afiseaza doar o portiune din ecranul telefonului

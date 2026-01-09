@@ -1,5 +1,37 @@
 # Script Live Coding - Aplicație Știri cu RecyclerView și API
 
+<!-- TOC -->
+
+- [Script Live Coding - Aplicație Știri cu RecyclerView și API](#script-live-coding---aplica%C8%9Bie-%C8%99tiri-cu-recyclerview-%C8%99i-api)
+    - [Prezentare Aplicație](#prezentare-aplica%C8%9Bie)
+    - [Structura Directorului Aplicației](#structura-directorului-aplica%C8%9Biei)
+    - [Pași Live Coding](#pa%C8%99i-live-coding)
+        - [Pasul 1: Crearea structurii de directoare](#pasul-1-crearea-structurii-de-directoare)
+        - [Pasul 2: Crearea fișierului settings.gradle](#pasul-2-crearea-fi%C8%99ierului-settingsgradle)
+        - [Pasul 3: Crearea fișierului build.gradle la rădăcină](#pasul-3-crearea-fi%C8%99ierului-buildgradle-la-r%C4%83d%C4%83cin%C4%83)
+        - [Pasul 4: Crearea fișierului gradle.properties](#pasul-4-crearea-fi%C8%99ierului-gradleproperties)
+        - [Pasul 5: Crearea fișierului build.gradle pentru app](#pasul-5-crearea-fi%C8%99ierului-buildgradle-pentru-app)
+        - [Pasul 6: Crearea fișierului AndroidManifest.xml](#pasul-6-crearea-fi%C8%99ierului-androidmanifestxml)
+        - [Pasul 7: Crearea fișierului strings.xml](#pasul-7-crearea-fi%C8%99ierului-stringsxml)
+        - [Pasul 8: Crearea fișierelor JSON în assets](#pasul-8-crearea-fi%C8%99ierelor-json-%C3%AEn-assets)
+        - [Pasul 9: Crearea clasei NewsItem Parcelable](#pasul-9-crearea-clasei-newsitem-parcelable)
+        - [Pasul 10: Crearea clasei NewsAPI](#pasul-10-crearea-clasei-newsapi)
+        - [Pasul 11: Crearea clasei NewsParser](#pasul-11-crearea-clasei-newsparser)
+        - [Pasul 12: Crearea layout-ului item_news.xml](#pasul-12-crearea-layout-ului-item_newsxml)
+        - [Pasul 13: Crearea clasei NewsAdapter](#pasul-13-crearea-clasei-newsadapter)
+        - [Pasul 14: Crearea layout-ului activity_main.xml](#pasul-14-crearea-layout-ului-activity_mainxml)
+        - [Pasul 15: Crearea clasei MainActivity](#pasul-15-crearea-clasei-mainactivity)
+        - [Pasul 16: Crearea layout-ului activity_news_detail.xml](#pasul-16-crearea-layout-ului-activity_news_detailxml)
+        - [Pasul 17: Crearea clasei NewsDetailActivity](#pasul-17-crearea-clasei-newsdetailactivity)
+    - [Build, Install și Run](#build-install-%C8%99i-run)
+        - [Build APK debug](#build-apk-debug)
+        - [Listare dispozitive](#listare-dispozitive)
+        - [Instalare APK](#instalare-apk)
+        - [Lansare activitate principală](#lansare-activitate-principal%C4%83)
+        - [Afișare loguri filtrate](#afi%C8%99are-loguri-filtrate)
+
+<!-- /TOC -->
+
 ## Prezentare Aplicație
 
 Această aplicație Android preia știri de la un API extern și le afișează într-o listă scrollabilă folosind `RecyclerView`. Aplicația are două activități: `MainActivity` care afișează lista de știri și `NewsDetailActivity` care afișează detaliile unei știri selectate. 
@@ -73,7 +105,7 @@ akrilki_06/
 
 ### Pasul 1: Crearea structurii de directoare
 
-**Ce fac:** Creez structura completă de directoare pentru aplicația Android, inclusiv directoarele pentru model, adapter, API, parser și assets.
+**Actiuni:** Creez structura completă de directoare pentru aplicația Android, inclusiv directoarele pentru model, adapter, API, parser și assets.
 
 **Ce scriu în terminal:**
 ```bash
@@ -82,7 +114,7 @@ mkdir -p akrilki_06/app/src/main/res/{layout,drawable,values}
 mkdir -p akrilki_06/app/src/main/assets
 ```
 
-**Ce spun:** "Vom începe prin a crea structura de directoare pentru aplicația noastră. Observați că am adăugat directoare separate pentru model, adapter, API și parser. Aceasta este o organizare modulară care separă responsabilitățile: modelul pentru date, adapterul pentru RecyclerView, API-ul pentru comunicarea cu serverul și parserul pentru procesarea JSON. De asemenea, am adăugat directorul `assets` unde vom stoca fișierele JSON pentru configurarea request-urilor API."
+**Note:** "Vom începe prin a crea structura de directoare pentru aplicația noastră. Observați că am adăugat directoare separate pentru model, adapter, API și parser. Aceasta este o organizare modulară care separă responsabilitățile: modelul pentru date, adapterul pentru RecyclerView, API-ul pentru comunicarea cu serverul și parserul pentru procesarea JSON. De asemenea, am adăugat directorul `assets` unde vom stoca fișierele JSON pentru configurarea request-urilor API."
 
 **Checkpoint:** Structura de directoare este creată, inclusiv directoarele pentru organizarea modulară a codului.
 
@@ -90,7 +122,7 @@ mkdir -p akrilki_06/app/src/main/assets
 
 ### Pasul 2: Crearea fișierului settings.gradle
 
-**Ce fac:** Creez fișierul `settings.gradle` la rădăcina proiectului.
+**Actiuni:** Creez fișierul `settings.gradle` la rădăcina proiectului.
 
 **Ce scriu:**
 ```groovy
@@ -119,7 +151,7 @@ rootProject.name = "akrilki_06"
 include ':app'
 ```
 
-**Ce spun:** "Creez fișierul `settings.gradle` cu configurația standard. Observați că numele proiectului este `akrilki_06`."
+**Note:** "Creez fișierul `settings.gradle` cu configurația standard. Observați că numele proiectului este `akrilki_06`."
 
 **Checkpoint:** Fișierul `settings.gradle` este creat.
 
@@ -127,7 +159,7 @@ include ':app'
 
 ### Pasul 3: Crearea fișierului build.gradle la rădăcină
 
-**Ce fac:** Creez fișierul `build.gradle` la nivelul rădăcină.
+**Actiuni:** Creez fișierul `build.gradle` la nivelul rădăcină.
 
 **Ce scriu:**
 ```groovy
@@ -142,7 +174,7 @@ buildscript {
 }
 ```
 
-**Ce spun:** "Creez fișierul `build.gradle` la rădăcină care configurează plugin-ul Android pentru Gradle."
+**Note:** "Creez fișierul `build.gradle` la rădăcină care configurează plugin-ul Android pentru Gradle."
 
 **Checkpoint:** Fișierul `build.gradle` la rădăcină este creat.
 
@@ -150,7 +182,7 @@ buildscript {
 
 ### Pasul 4: Crearea fișierului gradle.properties
 
-**Ce fac:** Creez fișierul `gradle.properties` cu configurații pentru build.
+**Actiuni:** Creez fișierul `gradle.properties` cu configurații pentru build.
 
 **Ce scriu:**
 ```properties
@@ -159,7 +191,7 @@ android.useAndroidX=true
 android.enableJetifier=true
 ```
 
-**Ce spun:** "Creez fișierul `gradle.properties` cu configurații standard pentru AndroidX și encoding."
+**Note:** "Creez fișierul `gradle.properties` cu configurații standard pentru AndroidX și encoding."
 
 **Checkpoint:** Fișierul `gradle.properties` este creat.
 
@@ -167,7 +199,7 @@ android.enableJetifier=true
 
 ### Pasul 5: Crearea fișierului build.gradle pentru app
 
-**Ce fac:** Creez fișierul `app/build.gradle` cu toate dependențele necesare.
+**Actiuni:** Creez fișierul `app/build.gradle` cu toate dependențele necesare.
 
 **Ce scriu:**
 ```groovy
@@ -219,7 +251,7 @@ dependencies {
 }
 ```
 
-**Ce spun:** "Creez fișierul `build.gradle` pentru modulul app. Observați dependențele: `recyclerview` pentru listele scrollabile, `okhttp` pentru apeluri HTTP, `gson` pentru parsarea JSON, `glide` pentru încărcarea imaginilor și `threetenabp` pentru procesarea datelor. De asemenea, activez `viewBinding` pentru accesul tip-safe la view-uri."
+**Note:** "Creez fișierul `build.gradle` pentru modulul app. Observați dependențele: `recyclerview` pentru listele scrollabile, `okhttp` pentru apeluri HTTP, `gson` pentru parsarea JSON, `glide` pentru încărcarea imaginilor și `threetenabp` pentru procesarea datelor. De asemenea, activez `viewBinding` pentru accesul tip-safe la view-uri."
 
 **Checkpoint:** Fișierul `app/build.gradle` este creat cu toate dependențele.
 
@@ -227,7 +259,7 @@ dependencies {
 
 ### Pasul 6: Crearea fișierului AndroidManifest.xml
 
-**Ce fac:** Creez fișierul `AndroidManifest.xml` cu permisiunile și declarațiile activităților.
+**Actiuni:** Creez fișierul `AndroidManifest.xml` cu permisiunile și declarațiile activităților.
 
 **Ce scriu:**
 ```xml
@@ -261,7 +293,7 @@ dependencies {
 </manifest>
 ```
 
-**Ce spun:** "Creez fișierul `AndroidManifest.xml`. Observați permisiunile `INTERNET` și `ACCESS_NETWORK_STATE` necesare pentru apelurile API. Declar două activități: `MainActivity` ca activitate principală și `NewsDetailActivity` pentru afișarea detaliilor."
+**Note:** "Creez fișierul `AndroidManifest.xml`. Observați permisiunile `INTERNET` și `ACCESS_NETWORK_STATE` necesare pentru apelurile API. Declar două activități: `MainActivity` ca activitate principală și `NewsDetailActivity` pentru afișarea detaliilor."
 
 **Checkpoint:** Fișierul `AndroidManifest.xml` este creat.
 
@@ -269,7 +301,7 @@ dependencies {
 
 ### Pasul 7: Crearea fișierului strings.xml
 
-**Ce fac:** Creez fișierul `strings.xml` cu string-urile aplicației.
+**Actiuni:** Creez fișierul `strings.xml` cu string-urile aplicației.
 
 **Ce scriu:**
 ```xml
@@ -283,7 +315,7 @@ dependencies {
 </resources>
 ```
 
-**Ce spun:** "Creez fișierul `strings.xml` cu toate string-urile aplicației pentru localizare și reutilizare."
+**Note:** "Creez fișierul `strings.xml` cu toate string-urile aplicației pentru localizare și reutilizare."
 
 **Checkpoint:** Fișierul `strings.xml` este creat.
 
@@ -291,7 +323,7 @@ dependencies {
 
 ### Pasul 8: Crearea fișierelor JSON în assets
 
-**Ce fac:** Creez fișierele JSON pentru configurarea API-ului.
+**Actiuni:** Creez fișierele JSON pentru configurarea API-ului.
 
 **Ce scriu în `assets/request_body.json`:**
 ```json
@@ -322,7 +354,7 @@ dependencies {
 }
 ```
 
-**Ce spun:** "Creez două fișiere JSON în directorul `assets`. Primul, `request_body.json`, conține configurația pentru request-ul API - limba, filtrele, tipul de rezultate. Al doilea, `api_key.json`, conține cheia API. Această abordare permite modificarea ușoară a parametrilor fără a recompila codul."
+**Note:** "Creez două fișiere JSON în directorul `assets`. Primul, `request_body.json`, conține configurația pentru request-ul API - limba, filtrele, tipul de rezultate. Al doilea, `api_key.json`, conține cheia API. Această abordare permite modificarea ușoară a parametrilor fără a recompila codul."
 
 **Checkpoint:** Fișierele JSON sunt create în directorul `assets`.
 
@@ -330,7 +362,7 @@ dependencies {
 
 ### Pasul 9: Crearea clasei NewsItem (Parcelable)
 
-**Ce fac:** Creez clasa `NewsItem` care implementează interfața `Parcelable` pentru transferul eficient între activități.
+**Actiuni:** Creez clasa `NewsItem` care implementează interfața `Parcelable` pentru transferul eficient între activități.
 
 **Ce scriu în `model/NewsItem.java`:**
 ```java
@@ -350,7 +382,7 @@ public class NewsItem implements Parcelable {
     private List<String> concepts;
 ```
 
-**Ce spun:** "Creez clasa `NewsItem` care implementează `Parcelable`. Această interfață permite serializarea eficientă a obiectelor pentru transfer între activități. Declar câmpurile private pentru o știre: titlu, corp, URL imagine, limbă, sursă, dată și lista de concepte."
+**Note:** "Creez clasa `NewsItem` care implementează `Parcelable`. Această interfață permite serializarea eficientă a obiectelor pentru transfer între activități. Declar câmpurile private pentru o știre: titlu, corp, URL imagine, limbă, sursă, dată și lista de concepte."
 
 **Ce scriu în continuare:**
 ```java
@@ -370,7 +402,7 @@ public class NewsItem implements Parcelable {
     }
 ```
 
-**Ce spun:** "Adaug două constructori: unul normal pentru crearea obiectelor noi și unul special care primește un `Parcel` pentru deserializare. Ordinea citirii din Parcel trebuie să fie identică cu ordinea scrierii în `writeToParcel`."
+**Note:** "Adaug două constructori: unul normal pentru crearea obiectelor noi și unul special care primește un `Parcel` pentru deserializare. Ordinea citirii din Parcel trebuie să fie identică cu ordinea scrierii în `writeToParcel`."
 
 **Ce scriu în continuare:**
 ```java
@@ -391,7 +423,7 @@ public class NewsItem implements Parcelable {
     }
 ```
 
-**Ce spun:** "Implementez metoda `writeToParcel` care scrie toate câmpurile în Parcel în aceeași ordine ca în constructor. Metoda `describeContents` returnează 0 pentru obiecte simple fără file descriptors."
+**Note:** "Implementez metoda `writeToParcel` care scrie toate câmpurile în Parcel în aceeași ordine ca în constructor. Metoda `describeContents` returnează 0 pentru obiecte simple fără file descriptors."
 
 **Ce scriu în continuare:**
 ```java
@@ -408,7 +440,7 @@ public class NewsItem implements Parcelable {
     };
 ```
 
-**Ce spun:** "Creez constanta `CREATOR` care este obligatorie pentru `Parcelable`. Aceasta conține două metode: `createFromParcel` care creează un obiect din Parcel și `newArray` care creează un array de obiecte. Android folosește acest CREATOR pentru a reconstrui obiectele."
+**Note:** "Creez constanta `CREATOR` care este obligatorie pentru `Parcelable`. Aceasta conține două metode: `createFromParcel` care creează un obiect din Parcel și `newArray` care creează un array de obiecte. Android folosește acest CREATOR pentru a reconstrui obiectele."
 
 **Ce scriu în continuare:**
 ```java
@@ -471,7 +503,7 @@ public class NewsItem implements Parcelable {
 }
 ```
 
-**Ce spun:** "Adaug getter-ele și setter-ele pentru toate câmpurile. Acestea permit accesul controlat la datele obiectului."
+**Note:** "Adaug getter-ele și setter-ele pentru toate câmpurile. Acestea permit accesul controlat la datele obiectului."
 
 **Checkpoint:** Clasa `NewsItem` este creată cu implementarea completă a `Parcelable`.
 
@@ -479,7 +511,7 @@ public class NewsItem implements Parcelable {
 
 ### Pasul 10: Crearea clasei NewsAPI
 
-**Ce fac:** Creez clasa `NewsAPI` care face apeluri HTTP către API-ul de știri.
+**Actiuni:** Creez clasa `NewsAPI` care face apeluri HTTP către API-ul de știri.
 
 **Ce scriu în `api/NewsAPI.java`:**
 ```java
@@ -499,7 +531,7 @@ public class NewsAPI {
     private static final String API_URL = "https://eventregistry.org/api/v1/article/getArticles";
 ```
 
-**Ce spun:** "Creez clasa `NewsAPI` care va gestiona comunicarea cu API-ul. Declar URL-ul API-ului ca constantă statică."
+**Note:** "Creez clasa `NewsAPI` care va gestiona comunicarea cu API-ul. Declar URL-ul API-ului ca constantă statică."
 
 **Ce scriu în continuare:**
 ```java
@@ -513,7 +545,7 @@ public class NewsAPI {
     }
 ```
 
-**Ce spun:** "Creez o metodă helper privată `readJsonFromAssets` care citește un fișier JSON din directorul `assets`. Folosesc `InputStream` pentru a citi fișierul ca array de bytes, apoi îl convertesc în String cu encoding UTF-8."
+**Note:** "Creez o metodă helper privată `readJsonFromAssets` care citește un fișier JSON din directorul `assets`. Folosesc `InputStream` pentru a citi fișierul ca array de bytes, apoi îl convertesc în String cu encoding UTF-8."
 
 **Ce scriu în continuare:**
 ```java
@@ -535,7 +567,7 @@ public class NewsAPI {
         jsonBody = requestBody.toString();
 ```
 
-**Ce spun:** "Implementez metoda statică `fetchNews`. Inițializez un client OkHttp. Citesc ambele fișiere JSON din assets, le parsez în obiecte JSONObject, apoi adaug cheia API din `api_key.json` în request body. Convertesc înapoi la String pentru a-l folosi în request."
+**Note:** "Implementez metoda statică `fetchNews`. Inițializez un client OkHttp. Citesc ambele fișiere JSON din assets, le parsez în obiecte JSONObject, apoi adaug cheia API din `api_key.json` în request body. Convertesc înapoi la String pentru a-l folosi în request."
 
 **Ce scriu în continuare:**
 ```java
@@ -556,7 +588,7 @@ public class NewsAPI {
 }
 ```
 
-**Ce spun:** "Creez `MediaType` pentru JSON, apoi creez `RequestBody` cu datele JSON. Construiesc request-ul HTTP POST cu URL-ul și body-ul. Execut request-ul și returnez răspunsul ca String. Folosesc try-with-resources pentru a închide automat response-ul."
+**Note:** "Creez `MediaType` pentru JSON, apoi creez `RequestBody` cu datele JSON. Construiesc request-ul HTTP POST cu URL-ul și body-ul. Execut request-ul și returnez răspunsul ca String. Folosesc try-with-resources pentru a închide automat response-ul."
 
 **Checkpoint:** Clasa `NewsAPI` este creată și poate face apeluri HTTP către API.
 
@@ -564,7 +596,7 @@ public class NewsAPI {
 
 ### Pasul 11: Crearea clasei NewsParser
 
-**Ce fac:** Creez clasa `NewsParser` care parsează răspunsul JSON și creează obiecte `NewsItem`.
+**Actiuni:** Creez clasa `NewsParser` care parsează răspunsul JSON și creează obiecte `NewsItem`.
 
 **Ce scriu în `parser/NewsParser.java`:**
 ```java
@@ -585,7 +617,7 @@ import org.threeten.bp.ZoneId;
 public class NewsParser {
 ```
 
-**Ce spun:** "Creez clasa `NewsParser` care va parsa JSON-ul primit de la API. Import bibliotecile necesare: Gson pentru parsare și ThreeTenABP pentru procesarea datelor."
+**Note:** "Creez clasa `NewsParser` care va parsa JSON-ul primit de la API. Import bibliotecile necesare: Gson pentru parsare și ThreeTenABP pentru procesarea datelor."
 
 **Ce scriu în continuare:**
 ```java
@@ -598,7 +630,7 @@ public class NewsParser {
             .getAsJsonArray("results");
 ```
 
-**Ce spun:** "Implementez metoda statică `parseNews` care primește răspunsul JSON ca String. Creez o listă goală pentru rezultate și un obiect Gson. Parsez JSON-ul și extrag array-ul `results` din obiectul `articles`."
+**Note:** "Implementez metoda statică `parseNews` care primește răspunsul JSON ca String. Creez o listă goală pentru rezultate și un obiect Gson. Parsez JSON-ul și extrag array-ul `results` din obiectul `articles`."
 
 **Ce scriu în continuare:**
 ```java
@@ -631,7 +663,7 @@ public class NewsParser {
             }
 ```
 
-**Ce spun:** "Parcurg fiecare articol din array. Pentru fiecare articol, creez un nou `NewsItem` și extrag câmpurile: titlu, corp, URL imagine și limbă. Folosesc verificări pentru a evita erorile când câmpurile lipsesc sau sunt null, oferind valori default."
+**Note:** "Parcurg fiecare articol din array. Pentru fiecare articol, creez un nou `NewsItem` și extrag câmpurile: titlu, corp, URL imagine și limbă. Folosesc verificări pentru a evita erorile când câmpurile lipsesc sau sunt null, oferind valori default."
 
 **Ce scriu în continuare:**
 ```java
@@ -647,7 +679,7 @@ public class NewsParser {
             }
 ```
 
-**Ce spun:** "Extrag sursa articolului. Observați că `source` este un obiect JSON, nu un string simplu, deci trebuie să extrag obiectul și apoi câmpul `title` din el."
+**Note:** "Extrag sursa articolului. Observați că `source` este un obiect JSON, nu un string simplu, deci trebuie să extrag obiectul și apoi câmpul `title` din el."
 
 **Ce scriu în continuare:**
 ```java
@@ -692,7 +724,7 @@ public class NewsParser {
             }
 ```
 
-**Ce spun:** "Procesez data și ora. Parsez string-ul ISO 8601 într-un `Instant`, apoi îl convertesc în `LocalDateTime` folosind timezone-ul sistemului. Formatez data ca "HH:mm yyyy-MM-dd". Calculez diferența de timp față de acum și creez un string relativ ("X minutes ago", "X hours ago", etc.). Combin formatul absolut cu cel relativ."
+**Note:** "Procesez data și ora. Parsez string-ul ISO 8601 într-un `Instant`, apoi îl convertesc în `LocalDateTime` folosind timezone-ul sistemului. Formatez data ca "HH:mm yyyy-MM-dd". Calculez diferența de timp față de acum și creez un string relativ ("X minutes ago", "X hours ago", etc.). Combin formatul absolut cu cel relativ."
 
 **Ce scriu în continuare:**
 ```java
@@ -721,7 +753,7 @@ public class NewsParser {
 }
 ```
 
-**Ce spun:** "Parsez conceptele care sunt un array de obiecte complexe. Pentru fiecare concept, extrag obiectul `label` și apoi câmpul `eng` din el. Adaug toate conceptele într-o listă și o setez pe item. La final, adaug item-ul în listă și returnez lista completă."
+**Note:** "Parsez conceptele care sunt un array de obiecte complexe. Pentru fiecare concept, extrag obiectul `label` și apoi câmpul `eng` din el. Adaug toate conceptele într-o listă și o setez pe item. La final, adaug item-ul în listă și returnez lista completă."
 
 **Checkpoint:** Clasa `NewsParser` este creată și poate parsa JSON-ul în obiecte `NewsItem`.
 
@@ -729,7 +761,7 @@ public class NewsParser {
 
 ### Pasul 12: Crearea layout-ului item_news.xml
 
-**Ce fac:** Creez layout-ul pentru un element din RecyclerView.
+**Actiuni:** Creez layout-ul pentru un element din RecyclerView.
 
 **Ce scriu în `res/layout/item_news.xml`:**
 ```xml
@@ -816,7 +848,7 @@ public class NewsParser {
 </androidx.cardview.widget.CardView>
 ```
 
-**Ce spun:** "Creez layout-ul pentru un element din listă folosind `CardView` pentru un aspect modern cu umbre. Layout-ul conține: o imagine thumbnail la stânga, titlul lângă imagine, corpul articolului sub thumbnail, o linie separator, data/ora aliniată la dreapta și tag-urile. Folosesc `ConstraintLayout` pentru poziționare flexibilă."
+**Note:** "Creez layout-ul pentru un element din listă folosind `CardView` pentru un aspect modern cu umbre. Layout-ul conține: o imagine thumbnail la stânga, titlul lângă imagine, corpul articolului sub thumbnail, o linie separator, data/ora aliniată la dreapta și tag-urile. Folosesc `ConstraintLayout` pentru poziționare flexibilă."
 
 **Checkpoint:** Layout-ul `item_news.xml` este creat.
 
@@ -824,7 +856,7 @@ public class NewsParser {
 
 ### Pasul 13: Crearea clasei NewsAdapter
 
-**Ce fac:** Creez adapterul pentru RecyclerView care conectează datele cu view-urile.
+**Actiuni:** Creez adapterul pentru RecyclerView care conectează datele cu view-urile.
 
 **Ce scriu în `adapter/NewsAdapter.java`:**
 ```java
@@ -850,7 +882,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     private final List<NewsItem> newsItemList;
 ```
 
-**Ce spun:** "Creez clasa `NewsAdapter` care extinde `RecyclerView.Adapter`. Declar câmpurile: context-ul pentru acces la resurse și lista de `NewsItem` care va fi afișată."
+**Note:** "Creez clasa `NewsAdapter` care extinde `RecyclerView.Adapter`. Declar câmpurile: context-ul pentru acces la resurse și lista de `NewsItem` care va fi afișată."
 
 **Ce scriu în continuare:**
 ```java
@@ -866,7 +898,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 ```
 
-**Ce spun:** "Adaug constructorul care inițializează câmpurile și metoda `updateData` care actualizează lista și notifică RecyclerView despre schimbări."
+**Note:** "Adaug constructorul care inițializează câmpurile și metoda `updateData` care actualizează lista și notifică RecyclerView despre schimbări."
 
 **Ce scriu în continuare:**
 ```java
@@ -878,7 +910,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 ```
 
-**Ce spun:** "Implementez `onCreateViewHolder` care creează un nou ViewHolder prin inflarea layout-ului `item_news.xml`. Această metodă este apelată când RecyclerView are nevoie de un nou ViewHolder."
+**Note:** "Implementez `onCreateViewHolder` care creează un nou ViewHolder prin inflarea layout-ului `item_news.xml`. Această metodă este apelată când RecyclerView are nevoie de un nou ViewHolder."
 
 **Ce scriu în continuare:**
 ```java
@@ -904,7 +936,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         holder.tagsTextView.setText(tags);
 ```
 
-**Ce spun:** "Implementez `onBindViewHolder` care populează view-urile cu datele. Folosesc Glide pentru încărcarea asincronă a imaginii din URL. Setez titlul, trunchiez corpul la 300 de caractere, setez data/ora și afișez primele 5 concepte ca tag-uri separate prin virgulă."
+**Note:** "Implementez `onBindViewHolder` care populează view-urile cu datele. Folosesc Glide pentru încărcarea asincronă a imaginii din URL. Setez titlul, trunchiez corpul la 300 de caractere, setez data/ora și afișez primele 5 concepte ca tag-uri separate prin virgulă."
 
 **Ce scriu în continuare:**
 ```java
@@ -924,7 +956,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 ```
 
-**Ce spun:** "Adaug un click listener pe întregul item care creează un Intent către `NewsDetailActivity` și trimite obiectul `NewsItem` ca extra folosind `putExtra`. Deoarece `NewsItem` implementează `Parcelable`, Android poate serializa automat obiectul. Implementez `getItemCount` care returnează numărul de elemente."
+**Note:** "Adaug un click listener pe întregul item care creează un Intent către `NewsDetailActivity` și trimite obiectul `NewsItem` ca extra folosind `putExtra`. Deoarece `NewsItem` implementează `Parcelable`, Android poate serializa automat obiectul. Implementez `getItemCount` care returnează numărul de elemente."
 
 **Ce scriu în continuare:**
 ```java
@@ -948,7 +980,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 }
 ```
 
-**Ce spun:** "Creez clasa internă `NewsViewHolder` care extinde `RecyclerView.ViewHolder`. ViewHolder-ul păstrează referințe către view-urile din layout pentru a evita apeluri repetate la `findViewById`. În constructor, inițializez toate referințele folosind ID-urile din layout."
+**Note:** "Creez clasa internă `NewsViewHolder` care extinde `RecyclerView.ViewHolder`. ViewHolder-ul păstrează referințe către view-urile din layout pentru a evita apeluri repetate la `findViewById`. În constructor, inițializez toate referințele folosind ID-urile din layout."
 
 **Checkpoint:** Clasa `NewsAdapter` este creată cu ViewHolder și logica de binding.
 
@@ -956,7 +988,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
 ### Pasul 14: Crearea layout-ului activity_main.xml
 
-**Ce fac:** Creez layout-ul principal cu RecyclerView și indicatori de încărcare.
+**Actiuni:** Creez layout-ul principal cu RecyclerView și indicatori de încărcare.
 
 **Ce scriu în `res/layout/activity_main.xml`:**
 ```xml
@@ -1026,7 +1058,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-**Ce spun:** "Creez layout-ul principal cu un `RecyclerView` care ocupă tot spațiul disponibil, un `ProgressBar` și un `TextView` pentru indicatori de încărcare (inițial invizibile), și două `FloatingActionButton`-uri pentru quit și refresh."
+**Note:** "Creez layout-ul principal cu un `RecyclerView` care ocupă tot spațiul disponibil, un `ProgressBar` și un `TextView` pentru indicatori de încărcare (inițial invizibile), și două `FloatingActionButton`-uri pentru quit și refresh."
 
 **Checkpoint:** Layout-ul `activity_main.xml` este creat.
 
@@ -1034,7 +1066,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
 ### Pasul 15: Crearea clasei MainActivity
 
-**Ce fac:** Creez activitatea principală care inițializează RecyclerView și face apelul API.
+**Actiuni:** Creez activitatea principală care inițializează RecyclerView și face apelul API.
 
 **Ce scriu în `MainActivity.java`:**
 ```java
@@ -1071,7 +1103,7 @@ public class MainActivity extends AppCompatActivity {
     private ExecutorService executorService;
 ```
 
-**Ce spun:** "Creez clasa `MainActivity` cu toate import-urile necesare. Declar câmpurile: RecyclerView, adapter, indicatori de încărcare și un ExecutorService pentru thread-uri de background."
+**Note:** "Creez clasa `MainActivity` cu toate import-urile necesare. Declar câmpurile: RecyclerView, adapter, indicatori de încărcare și un ExecutorService pentru thread-uri de background."
 
 **Ce scriu în continuare:**
 ```java
@@ -1099,7 +1131,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "În `onCreate`, inițializez ThreeTenABP pentru procesarea datelor, setez layout-ul, creez ExecutorService cu un singur thread, configurez butoanele FAB, setez LinearLayoutManager pentru RecyclerView (care afișează elementele vertical) și apelez `refreshNewsData` pentru a încărca știrile la pornire."
+**Note:** "În `onCreate`, inițializez ThreeTenABP pentru procesarea datelor, setez layout-ul, creez ExecutorService cu un singur thread, configurez butoanele FAB, setez LinearLayoutManager pentru RecyclerView (care afișează elementele vertical) și apelez `refreshNewsData` pentru a încărca știrile la pornire."
 
 **Ce scriu în continuare:**
 ```java
@@ -1118,7 +1150,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Implementez `onDestroy` pentru a închide ExecutorService și evit memory leaks. Creez metoda `isNetworkAvailable` care verifică dacă există conexiune la internet folosind ConnectivityManager."
+**Note:** "Implementez `onDestroy` pentru a închide ExecutorService și evit memory leaks. Creez metoda `isNetworkAvailable` care verifică dacă există conexiune la internet folosind ConnectivityManager."
 
 **Ce scriu în continuare:**
 ```java
@@ -1135,7 +1167,7 @@ public class MainActivity extends AppCompatActivity {
         });
 ```
 
-**Ce spun:** "Încep implementarea metodei `refreshNewsData`. Verific conectivitatea și afișez un mesaj dacă nu există. Apoi, pe thread-ul UI, fac vizibile indicatorii de încărcare și ascund RecyclerView-ul."
+**Note:** "Încep implementarea metodei `refreshNewsData`. Verific conectivitatea și afișez un mesaj dacă nu există. Apoi, pe thread-ul UI, fac vizibile indicatorii de încărcare și ascund RecyclerView-ul."
 
 **Ce scriu în continuare:**
 ```java
@@ -1179,7 +1211,7 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-**Ce spun:** "Execut operațiile de rețea pe thread-ul de background. Apelez `NewsAPI.fetchNews` pentru a obține JSON-ul, apoi `NewsParser.parseNews` pentru a crea lista de `NewsItem`. Pe thread-ul UI, ascund indicatorii, fac vizibil RecyclerView-ul, scroll la poziția 0, și actualizez adapterul (creez unul nou dacă nu există, altfel actualizez datele). Gestionez erorile cu try-catch și afișez mesaje Toast pentru utilizator."
+**Note:** "Execut operațiile de rețea pe thread-ul de background. Apelez `NewsAPI.fetchNews` pentru a obține JSON-ul, apoi `NewsParser.parseNews` pentru a crea lista de `NewsItem`. Pe thread-ul UI, ascund indicatorii, fac vizibil RecyclerView-ul, scroll la poziția 0, și actualizez adapterul (creez unul nou dacă nu există, altfel actualizez datele). Gestionez erorile cu try-catch și afișez mesaje Toast pentru utilizator."
 
 **Checkpoint:** Clasa `MainActivity` este creată și poate încărca știri de la API.
 
@@ -1187,7 +1219,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 16: Crearea layout-ului activity_news_detail.xml
 
-**Ce fac:** Creez layout-ul pentru activitatea de detalii.
+**Actiuni:** Creez layout-ul pentru activitatea de detalii.
 
 **Ce scriu în `res/layout/activity_news_detail.xml`:**
 ```xml
@@ -1250,7 +1282,7 @@ public class MainActivity extends AppCompatActivity {
 </LinearLayout>
 ```
 
-**Ce spun:** "Creez layout-ul pentru activitatea de detalii folosind `LinearLayout` vertical. Conține: titlul, un `ScrollView` cu imaginea, descrierea completă și tag-urile, și un buton Back. ScrollView permite derularea conținutului lung."
+**Note:** "Creez layout-ul pentru activitatea de detalii folosind `LinearLayout` vertical. Conține: titlul, un `ScrollView` cu imaginea, descrierea completă și tag-urile, și un buton Back. ScrollView permite derularea conținutului lung."
 
 **Checkpoint:** Layout-ul `activity_news_detail.xml` este creat.
 
@@ -1258,7 +1290,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 17: Crearea clasei NewsDetailActivity
 
-**Ce fac:** Creez activitatea de detalii care primește `NewsItem` prin Intent și îl afișează.
+**Actiuni:** Creez activitatea de detalii care primește `NewsItem` prin Intent și îl afișează.
 
 **Ce scriu în `NewsDetailActivity.java`:**
 ```java
@@ -1288,7 +1320,7 @@ public class NewsDetailActivity extends AppCompatActivity {
     private Button backButton;
 ```
 
-**Ce spun:** "Creez clasa `NewsDetailActivity` cu toate import-urile necesare, inclusiv pentru Glide și RequestListener. Declar câmpurile pentru view-uri."
+**Note:** "Creez clasa `NewsDetailActivity` cu toate import-urile necesare, inclusiv pentru Glide și RequestListener. Declar câmpurile pentru view-uri."
 
 **Ce scriu în continuare:**
 ```java
@@ -1306,7 +1338,7 @@ public class NewsDetailActivity extends AppCompatActivity {
         NewsItem newsItem = getIntent().getParcelableExtra("news_item");
 ```
 
-**Ce spun:** "În `onCreate`, setez layout-ul, obțin referințele la view-uri și extrag obiectul `NewsItem` din Intent folosind `getParcelableExtra`. Android deserializează automat obiectul Parcelable."
+**Note:** "În `onCreate`, setez layout-ul, obțin referințele la view-uri și extrag obiectul `NewsItem` din Intent folosind `getParcelableExtra`. Android deserializează automat obiectul Parcelable."
 
 **Ce scriu în continuare:**
 ```java
@@ -1349,7 +1381,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 }
 ```
 
-**Ce spun:** "Dacă `newsItem` nu este null, setez texturile pentru titlu, descriere și tag-uri. Folosesc Glide pentru încărcarea imaginii cu un `RequestListener` care ajustează înălțimea ImageView-ului proporțional cu lățimea, păstrând aspect ratio-ul imaginii. Dacă `newsItem` este null, afișez un mesaj default. Butonul Back apelează `finish()` pentru a închide activitatea."
+**Note:** "Dacă `newsItem` nu este null, setez texturile pentru titlu, descriere și tag-uri. Folosesc Glide pentru încărcarea imaginii cu un `RequestListener` care ajustează înălțimea ImageView-ului proporțional cu lățimea, păstrând aspect ratio-ul imaginii. Dacă `newsItem` este null, afișez un mesaj default. Butonul Back apelează `finish()` pentru a închide activitatea."
 
 **Checkpoint:** Clasa `NewsDetailActivity` este creată și poate afișa detaliile unei știri.
 
@@ -1359,7 +1391,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 
 ### Build APK debug
 
-**Ce fac:** Compilez aplicația într-un APK debug.
+**Actiuni:** Compilez aplicația într-un APK debug.
 
 **Ce scriu în terminal:**
 ```bash
@@ -1367,7 +1399,7 @@ cd akrilki_06
 gradle assembleDebug
 ```
 
-**Ce spun:** "Compilez aplicația folosind Gradle. Comanda `assembleDebug` creează un APK debug în `app/build/outputs/apk/debug/`."
+**Note:** "Compilez aplicația folosind Gradle. Comanda `assembleDebug` creează un APK debug în `app/build/outputs/apk/debug/`."
 
 **Checkpoint:** APK-ul debug este generat.
 
@@ -1375,14 +1407,14 @@ gradle assembleDebug
 
 ### Listare dispozitive
 
-**Ce fac:** Listez dispozitivele Android conectate.
+**Actiuni:** Listez dispozitivele Android conectate.
 
 **Ce scriu în terminal:**
 ```bash
 adb devices
 ```
 
-**Ce spun:** "Listez dispozitivele conectate. Asigurați-vă că aveți un emulator pornit sau un dispozitiv fizic conectat prin USB cu USB debugging activat."
+**Note:** "Listez dispozitivele conectate. Asigurați-vă că aveți un emulator pornit sau un dispozitiv fizic conectat prin USB cu USB debugging activat."
 
 **Checkpoint:** Dispozitivul este listat.
 
@@ -1390,14 +1422,14 @@ adb devices
 
 ### Instalare APK
 
-**Ce fac:** Instalez APK-ul pe dispozitiv.
+**Actiuni:** Instalez APK-ul pe dispozitiv.
 
 **Ce scriu în terminal:**
 ```bash
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-**Ce spun:** "Instalez APK-ul pe dispozitiv. Flag-ul `-r` permite reinstalarea dacă aplicația există deja."
+**Note:** "Instalez APK-ul pe dispozitiv. Flag-ul `-r` permite reinstalarea dacă aplicația există deja."
 
 **Checkpoint:** Aplicația este instalată pe dispozitiv.
 
@@ -1405,14 +1437,14 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 ### Lansare activitate principală
 
-**Ce fac:** Lansez activitatea principală.
+**Actiuni:** Lansez activitatea principală.
 
 **Ce scriu în terminal:**
 ```bash
 adb shell am start -n ro.makore.akrilki_06/.MainActivity
 ```
 
-**Ce spun:** "Lansez activitatea principală folosind `am start` cu numele complet al pachetului și activității."
+**Note:** "Lansez activitatea principală folosind `am start` cu numele complet al pachetului și activității."
 
 **Checkpoint:** Aplicația se deschide și începe să încarce știrile.
 
@@ -1420,14 +1452,15 @@ adb shell am start -n ro.makore.akrilki_06/.MainActivity
 
 ### Afișare loguri filtrate
 
-**Ce fac:** Afișez logurile filtrate pentru aplicație.
+**Actiuni:** Afișez logurile filtrate pentru aplicație.
 
 **Ce scriu în terminal:**
 ```bash
 adb logcat | grep -E "(NEWS06|Glide|AndroidRuntime)"
 ```
 
-**Ce spun:** "Afișez logurile filtrate pentru tag-urile noastre (`NEWS06`, `Glide`) și erorile (`AndroidRuntime`). Observați mesajele de la API call, parsare JSON și încărcare imagini."
+**Note:** "Afișez logurile filtrate pentru tag-urile noastre (`NEWS06`, `Glide`) și erorile (`AndroidRuntime`). Observați mesajele de la API call, parsare JSON și încărcare imagini."
 
 **Checkpoint:** Logurile sunt afișate și pot fi monitorizate pentru debugging.
+
 

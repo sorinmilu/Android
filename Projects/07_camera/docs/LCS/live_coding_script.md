@@ -1,5 +1,38 @@
 # Script Live Coding - Aplicație Cameră cu SurfaceView
 
+<!-- TOC -->
+
+- [Script Live Coding - Aplicație Cameră cu SurfaceView](#script-live-coding---aplica%C8%9Bie-camer%C4%83-cu-surfaceview)
+    - [Prezentare Aplicație](#prezentare-aplica%C8%9Bie)
+    - [Structura Directorului Aplicației](#structura-directorului-aplica%C8%9Biei)
+    - [Pași Live Coding](#pa%C8%99i-live-coding)
+        - [Pasul 1: Crearea structurii de directoare](#pasul-1-crearea-structurii-de-directoare)
+        - [Pasul 2: Crearea fișierului settings.gradle](#pasul-2-crearea-fi%C8%99ierului-settingsgradle)
+        - [Pasul 3: Crearea fișierului build.gradle la rădăcină](#pasul-3-crearea-fi%C8%99ierului-buildgradle-la-r%C4%83d%C4%83cin%C4%83)
+        - [Pasul 4: Crearea fișierului gradle.properties](#pasul-4-crearea-fi%C8%99ierului-gradleproperties)
+        - [Pasul 5: Crearea fișierului build.gradle pentru app](#pasul-5-crearea-fi%C8%99ierului-buildgradle-pentru-app)
+        - [Pasul 6: Crearea fișierului AndroidManifest.xml](#pasul-6-crearea-fi%C8%99ierului-androidmanifestxml)
+        - [Pasul 7: Crearea fișierului strings.xml](#pasul-7-crearea-fi%C8%99ierului-stringsxml)
+        - [Pasul 8: Crearea layout-ului activity_main.xml](#pasul-8-crearea-layout-ului-activity_mainxml)
+        - [Pasul 9: Crearea clasei MainActivity - Declarații și onCreate](#pasul-9-crearea-clasei-mainactivity---declara%C8%9Bii-%C8%99i-oncreate)
+        - [Pasul 10: Implementarea SurfaceHolder.Callback](#pasul-10-implementarea-surfaceholdercallback)
+        - [Pasul 11: Implementarea metodei onResume și hasCameraPermission](#pasul-11-implementarea-metodei-onresume-%C8%99i-hascamerapermission)
+        - [Pasul 12: Implementarea metodei openCamera](#pasul-12-implementarea-metodei-opencamera)
+        - [Pasul 13: Implementarea metodelor pentru flash](#pasul-13-implementarea-metodelor-pentru-flash)
+        - [Pasul 14: Implementarea metodei switchCamera](#pasul-14-implementarea-metodei-switchcamera)
+        - [Pasul 15: Implementarea metodei takePicture](#pasul-15-implementarea-metodei-takepicture)
+        - [Pasul 16: Implementarea metodei saveImage](#pasul-16-implementarea-metodei-saveimage)
+        - [Pasul 17: Implementarea metodelor onPause, stopCamera și onRequestPermissionsResult](#pasul-17-implementarea-metodelor-onpause-stopcamera-%C8%99i-onrequestpermissionsresult)
+    - [Build, Install și Run](#build-install-%C8%99i-run)
+        - [Build APK debug](#build-apk-debug)
+        - [Listare dispozitive](#listare-dispozitive)
+        - [Instalare APK](#instalare-apk)
+        - [Lansare activitate principală](#lansare-activitate-principal%C4%83)
+        - [Afișare loguri filtrate](#afi%C8%99are-loguri-filtrate)
+
+<!-- /TOC -->
+
+
 ## Prezentare Aplicație
 
 Această aplicație Android demonstrează interacțiunea cu camera dispozitivului folosind Camera API-ul clasic (deprecated, dar încă funcțional). Aplicația permite utilizatorului să facă fotografii, să comute între camera frontală și cea din spate, și să controleze modul flash-ului.
@@ -55,7 +88,7 @@ akrilki_07/
 
 ### Pasul 1: Crearea structurii de directoare
 
-**Ce fac:** Creez structura completă de directoare pentru aplicația Android.
+**Actiuni:** Creez structura completă de directoare pentru aplicația Android.
 
 **Ce scriu în terminal:**
 ```bash
@@ -63,7 +96,7 @@ mkdir -p akrilki_07/app/src/main/java/ro/makore/akrilki_07
 mkdir -p akrilki_07/app/src/main/res/{layout,drawable,values}
 ```
 
-**Ce spun:** "Vom începe prin a crea structura de directoare pentru aplicația noastră de cameră. Această aplicație este mai simplă din punct de vedere structural decât aplicațiile anterioare - nu avem nevoie de directoare separate pentru model, adapter sau API, deoarece toată logica este în MainActivity."
+**Note:** "Vom începe prin a crea structura de directoare pentru aplicația noastră de cameră. Această aplicație este mai simplă din punct de vedere structural decât aplicațiile anterioare - nu avem nevoie de directoare separate pentru model, adapter sau API, deoarece toată logica este în MainActivity."
 
 **Checkpoint:** Structura de directoare este creată.
 
@@ -71,7 +104,7 @@ mkdir -p akrilki_07/app/src/main/res/{layout,drawable,values}
 
 ### Pasul 2: Crearea fișierului settings.gradle
 
-**Ce fac:** Creez fișierul `settings.gradle` la rădăcina proiectului.
+**Actiuni:** Creez fișierul `settings.gradle` la rădăcina proiectului.
 
 **Ce scriu:**
 ```groovy
@@ -100,7 +133,7 @@ rootProject.name = "akrilki_07"
 include ':app'
 ```
 
-**Ce spun:** "Creez fișierul `settings.gradle` cu configurația standard. Observați că numele proiectului este `akrilki_07`."
+**Note:** "Creez fișierul `settings.gradle` cu configurația standard. Observați că numele proiectului este `akrilki_07`."
 
 **Checkpoint:** Fișierul `settings.gradle` este creat.
 
@@ -108,7 +141,7 @@ include ':app'
 
 ### Pasul 3: Crearea fișierului build.gradle la rădăcină
 
-**Ce fac:** Creez fișierul `build.gradle` la nivelul rădăcină.
+**Actiuni:** Creez fișierul `build.gradle` la nivelul rădăcină.
 
 **Ce scriu:**
 ```groovy
@@ -123,7 +156,7 @@ buildscript {
 }
 ```
 
-**Ce spun:** "Creez fișierul `build.gradle` la rădăcină care configurează plugin-ul Android pentru Gradle."
+**Note:** "Creez fișierul `build.gradle` la rădăcină care configurează plugin-ul Android pentru Gradle."
 
 **Checkpoint:** Fișierul `build.gradle` la rădăcină este creat.
 
@@ -131,7 +164,7 @@ buildscript {
 
 ### Pasul 4: Crearea fișierului gradle.properties
 
-**Ce fac:** Creez fișierul `gradle.properties` cu configurații pentru build.
+**Actiuni:** Creez fișierul `gradle.properties` cu configurații pentru build.
 
 **Ce scriu:**
 ```properties
@@ -140,7 +173,7 @@ android.useAndroidX=true
 android.enableJetifier=true
 ```
 
-**Ce spun:** "Creez fișierul `gradle.properties` cu configurații standard pentru AndroidX și encoding."
+**Note:** "Creez fișierul `gradle.properties` cu configurații standard pentru AndroidX și encoding."
 
 **Checkpoint:** Fișierul `gradle.properties` este creat.
 
@@ -148,7 +181,7 @@ android.enableJetifier=true
 
 ### Pasul 5: Crearea fișierului build.gradle pentru app
 
-**Ce fac:** Creez fișierul `app/build.gradle` cu dependențele necesare.
+**Actiuni:** Creez fișierul `app/build.gradle` cu dependențele necesare.
 
 **Ce scriu:**
 ```groovy
@@ -185,7 +218,7 @@ dependencies {
 }
 ```
 
-**Ce spun:** "Creez fișierul `build.gradle` pentru modulul app. Observați că `minSdkVersion` este 21, necesar pentru Camera API-ul clasic. Dependențele sunt minime - doar AppCompat și ConstraintLayout. Camera API-ul clasic este parte din Android SDK și nu necesită dependențe externe."
+**Note:** "Creez fișierul `build.gradle` pentru modulul app. Observați că `minSdkVersion` este 21, necesar pentru Camera API-ul clasic. Dependențele sunt minime - doar AppCompat și ConstraintLayout. Camera API-ul clasic este parte din Android SDK și nu necesită dependențe externe."
 
 **Checkpoint:** Fișierul `app/build.gradle` este creat.
 
@@ -193,7 +226,7 @@ dependencies {
 
 ### Pasul 6: Crearea fișierului AndroidManifest.xml
 
-**Ce fac:** Creez fișierul `AndroidManifest.xml` cu permisiunile și declarațiile necesare pentru cameră.
+**Actiuni:** Creez fișierul `AndroidManifest.xml` cu permisiunile și declarațiile necesare pentru cameră.
 
 **Ce scriu:**
 ```xml
@@ -228,7 +261,7 @@ dependencies {
 </manifest>
 ```
 
-**Ce spun:** "Creez fișierul `AndroidManifest.xml`. Observați permisiunile: `CAMERA` pentru accesul la cameră, `WRITE_EXTERNAL_STORAGE` și `READ_EXTERNAL_STORAGE` pentru salvarea imaginilor. Declar și caracteristicile hardware: `camera`, `camera.front` (opțional) și `camera.flash`. Activitatea este setată în modul landscape pentru o experiență mai bună cu camera."
+**Note:** "Creez fișierul `AndroidManifest.xml`. Observați permisiunile: `CAMERA` pentru accesul la cameră, `WRITE_EXTERNAL_STORAGE` și `READ_EXTERNAL_STORAGE` pentru salvarea imaginilor. Declar și caracteristicile hardware: `camera`, `camera.front` (opțional) și `camera.flash`. Activitatea este setată în modul landscape pentru o experiență mai bună cu camera."
 
 **Checkpoint:** Fișierul `AndroidManifest.xml` este creat.
 
@@ -236,7 +269,7 @@ dependencies {
 
 ### Pasul 7: Crearea fișierului strings.xml
 
-**Ce fac:** Creez fișierul `strings.xml` cu string-urile aplicației.
+**Actiuni:** Creez fișierul `strings.xml` cu string-urile aplicației.
 
 **Ce scriu:**
 ```xml
@@ -246,7 +279,7 @@ dependencies {
 </resources>
 ```
 
-**Ce spun:** "Creez fișierul `strings.xml` cu numele aplicației."
+**Note:** "Creez fișierul `strings.xml` cu numele aplicației."
 
 **Checkpoint:** Fișierul `strings.xml` este creat.
 
@@ -254,7 +287,7 @@ dependencies {
 
 ### Pasul 8: Crearea layout-ului activity_main.xml
 
-**Ce fac:** Creez layout-ul principal cu SurfaceView pentru preview-ul camerei și butoanele de control.
+**Actiuni:** Creez layout-ul principal cu SurfaceView pentru preview-ul camerei și butoanele de control.
 
 **Ce scriu în `res/layout/activity_main.xml`:**
 ```xml
@@ -269,7 +302,7 @@ dependencies {
         android:layout_height="match_parent" />
 ```
 
-**Ce spun:** "Creez layout-ul principal folosind `RelativeLayout`. Adaug un `SurfaceView` care va afișa preview-ul camerei. `SurfaceView` ocupă tot ecranul și permite redarea conținutului pe un thread separat, esențial pentru fluxul video al camerei."
+**Note:** "Creez layout-ul principal folosind `RelativeLayout`. Adaug un `SurfaceView` care va afișa preview-ul camerei. `SurfaceView` ocupă tot ecranul și permite redarea conținutului pe un thread separat, esențial pentru fluxul video al camerei."
 
 **Ce scriu în continuare:**
 ```xml
@@ -299,7 +332,7 @@ dependencies {
 </RelativeLayout>
 ```
 
-**Ce spun:** "Adaug trei butoane în partea de jos a ecranului: `btnSwitchCamera` pentru comutarea între camere, `btnTakePicture` pentru capturarea unei fotografii și `btnFlashMode` pentru controlul flash-ului. Butoanele sunt poziționate folosind `RelativeLayout` - unul la stânga, unul centrat și unul la dreapta."
+**Note:** "Adaug trei butoane în partea de jos a ecranului: `btnSwitchCamera` pentru comutarea între camere, `btnTakePicture` pentru capturarea unei fotografii și `btnFlashMode` pentru controlul flash-ului. Butoanele sunt poziționate folosind `RelativeLayout` - unul la stânga, unul centrat și unul la dreapta."
 
 **Checkpoint:** Layout-ul `activity_main.xml` este creat.
 
@@ -307,7 +340,7 @@ dependencies {
 
 ### Pasul 9: Crearea clasei MainActivity - Declarații și onCreate
 
-**Ce fac:** Creez clasa `MainActivity` cu declarațiile de câmpuri și metoda `onCreate`.
+**Actiuni:** Creez clasa `MainActivity` cu declarațiile de câmpuri și metoda `onCreate`.
 
 **Ce scriu în `MainActivity.java`:**
 ```java
@@ -346,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnSwitchCamera, btnTakePicture, btnFlashMode;
 ```
 
-**Ce spun:** "Creez clasa `MainActivity` cu toate import-urile necesare. Declar câmpurile: `camera` pentru instanța camerei, `currentCameraId` pentru a ține evidența camerei curente (0 = spate, 1 = față), `surfaceView` și `surfaceHolder` pentru preview, flag-uri pentru gestionarea stării și referințele la butoane."
+**Note:** "Creez clasa `MainActivity` cu toate import-urile necesare. Declar câmpurile: `camera` pentru instanța camerei, `currentCameraId` pentru a ține evidența camerei curente (0 = spate, 1 = față), `surfaceView` și `surfaceHolder` pentru preview, flag-uri pentru gestionarea stării și referințele la butoane."
 
 **Ce scriu în continuare:**
 ```java
@@ -362,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
         }
 ```
 
-**Ce spun:** "În `onCreate`, setez layout-ul. Apoi verific dacă dispozitivul rulează Android 6.0 (Marshmallow) sau mai nou și, dacă permisiunea pentru cameră nu a fost acordată, o solicit utilizatorului. Aceasta este gestionarea inițială a permisiunilor runtime."
+**Note:** "În `onCreate`, setez layout-ul. Apoi verific dacă dispozitivul rulează Android 6.0 (Marshmallow) sau mai nou și, dacă permisiunea pentru cameră nu a fost acordată, o solicit utilizatorului. Aceasta este gestionarea inițială a permisiunilor runtime."
 
 **Ce scriu în continuare:**
 ```java
@@ -373,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
         surfaceHolder = surfaceView.getHolder();
 ```
 
-**Ce spun:** "Obțin referințele la butoane și la `SurfaceView`. Apoi obțin `SurfaceHolder` din `SurfaceView` - acesta este interfața care permite controlul suprafeței și înregistrarea callback-urilor pentru evenimentele de lifecycle."
+**Note:** "Obțin referințele la butoane și la `SurfaceView`. Apoi obțin `SurfaceHolder` din `SurfaceView` - acesta este interfața care permite controlul suprafeței și înregistrarea callback-urilor pentru evenimentele de lifecycle."
 
 **Checkpoint:** Clasa `MainActivity` este creată cu declarațiile și `onCreate` parțial implementat.
 
@@ -381,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 10: Implementarea SurfaceHolder.Callback
 
-**Ce fac:** Implementez callback-urile pentru `SurfaceHolder` care gestionează lifecycle-ul suprafeței.
+**Actiuni:** Implementez callback-urile pentru `SurfaceHolder` care gestionează lifecycle-ul suprafeței.
 
 **Ce scriu în continuare în `onCreate`:**
 ```java
@@ -395,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
             }
 ```
 
-**Ce spun:** "Adaug un callback pentru `SurfaceHolder`. Metoda `surfaceCreated` este apelată când suprafața este creată și gata de utilizare. Setez flag-ul `isSurfaceReady` și, dacă permisiunea este acordată, deschid camera."
+**Note:** "Adaug un callback pentru `SurfaceHolder`. Metoda `surfaceCreated` este apelată când suprafața este creată și gata de utilizare. Setez flag-ul `isSurfaceReady` și, dacă permisiunea este acordată, deschid camera."
 
 **Ce scriu în continuare:**
 ```java
@@ -413,7 +446,7 @@ public class MainActivity extends AppCompatActivity {
             }
 ```
 
-**Ce spun:** "Implementez `surfaceChanged` care este apelată când suprafața se schimbă (de exemplu, la rotirea ecranului). Oprește preview-ul, setează noua suprafață și repornește preview-ul. Aceasta asigură că preview-ul se adaptează la noile dimensiuni."
+**Note:** "Implementez `surfaceChanged` care este apelată când suprafața se schimbă (de exemplu, la rotirea ecranului). Oprește preview-ul, setează noua suprafață și repornește preview-ul. Aceasta asigură că preview-ul se adaptează la noile dimensiuni."
 
 **Ce scriu în continuare:**
 ```java
@@ -425,7 +458,7 @@ public class MainActivity extends AppCompatActivity {
         });
 ```
 
-**Ce spun:** "Implementez `surfaceDestroyed` care este apelată când suprafața este distrusă. Setez flag-ul și opresc camera pentru a elibera resursele. Aceasta este crucială pentru a evita blocarea camerei."
+**Note:** "Implementez `surfaceDestroyed` care este apelată când suprafața este distrusă. Setez flag-ul și opresc camera pentru a elibera resursele. Aceasta este crucială pentru a evita blocarea camerei."
 
 **Ce scriu în continuare:**
 ```java
@@ -435,7 +468,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Conectez butoanele la metodele lor respective folosind lambda expressions. Închid metoda `onCreate`."
+**Note:** "Conectez butoanele la metodele lor respective folosind lambda expressions. Închid metoda `onCreate`."
 
 **Checkpoint:** Callback-urile `SurfaceHolder` sunt implementate și butoanele sunt conectate.
 
@@ -443,7 +476,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 11: Implementarea metodei onResume și hasCameraPermission
 
-**Ce fac:** Implementez `onResume` pentru gestionarea lifecycle-ului și metoda helper pentru verificarea permisiunilor.
+**Actiuni:** Implementez `onResume` pentru gestionarea lifecycle-ului și metoda helper pentru verificarea permisiunilor.
 
 **Ce scriu:**
 ```java
@@ -463,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Implementez `onResume` care este apelată când activitatea devine vizibilă. Verific permisiunile și, dacă sunt acordate și suprafața este gata, deschid camera. `hasCameraPermission` verifică dacă permisiunea CAMERA a fost acordată folosind `ContextCompat.checkSelfPermission`."
+**Note:** "Implementez `onResume` care este apelată când activitatea devine vizibilă. Verific permisiunile și, dacă sunt acordate și suprafața este gata, deschid camera. `hasCameraPermission` verifică dacă permisiunea CAMERA a fost acordată folosind `ContextCompat.checkSelfPermission`."
 
 **Checkpoint:** Metodele `onResume` și `hasCameraPermission` sunt implementate.
 
@@ -471,7 +504,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 12: Implementarea metodei openCamera
 
-**Ce fac:** Implementez metoda `openCamera` care deschide camera și configurează preview-ul.
+**Actiuni:** Implementez metoda `openCamera` care deschide camera și configurează preview-ul.
 
 **Ce scriu:**
 ```java
@@ -501,7 +534,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Implementez `openCamera` care primește ID-ul camerei. Mai întâi, dacă există deja o cameră deschisă, o opresc și o eliberez pentru a evita memory leaks. Apoi deschid camera cu ID-ul specificat folosind `Camera.open`. Obțin parametrii camerei, verific dacă flash-ul este suportat și actualizez textul butonului. Setez preview display-ul pe `surfaceHolder` și pornesc preview-ul."
+**Note:** "Implementez `openCamera` care primește ID-ul camerei. Mai întâi, dacă există deja o cameră deschisă, o opresc și o eliberez pentru a evita memory leaks. Apoi deschid camera cu ID-ul specificat folosind `Camera.open`. Obțin parametrii camerei, verific dacă flash-ul este suportat și actualizez textul butonului. Setez preview display-ul pe `surfaceHolder` și pornesc preview-ul."
 
 **Checkpoint:** Metoda `openCamera` este implementată.
 
@@ -509,7 +542,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 13: Implementarea metodelor pentru flash
 
-**Ce fac:** Implementez metodele pentru gestionarea flash-ului.
+**Actiuni:** Implementez metodele pentru gestionarea flash-ului.
 
 **Ce scriu:**
 ```java
@@ -538,7 +571,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Implementez `updateFlashButtonText` care actualizează textul butonului flash în funcție de modul curent (Off, Auto, On). `isFlashSupported` verifică dacă dispozitivul suportă flash prin verificarea listei de moduri suportate din parametrii camerei."
+**Note:** "Implementez `updateFlashButtonText` care actualizează textul butonului flash în funcție de modul curent (Off, Auto, On). `isFlashSupported` verifică dacă dispozitivul suportă flash prin verificarea listei de moduri suportate din parametrii camerei."
 
 **Ce scriu în continuare:**
 ```java
@@ -568,7 +601,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Implementez `toggleFlashMode` care ciclă prin modurile flash: Off → Auto → On → Off. Oprește preview-ul, setează noul mod flash, repornește preview-ul și actualizează textul butonului. Dacă flash-ul nu este suportat, afișez un mesaj Toast."
+**Note:** "Implementez `toggleFlashMode` care ciclă prin modurile flash: Off → Auto → On → Off. Oprește preview-ul, setează noul mod flash, repornește preview-ul și actualizează textul butonului. Dacă flash-ul nu este suportat, afișez un mesaj Toast."
 
 **Checkpoint:** Metodele pentru gestionarea flash-ului sunt implementate.
 
@@ -576,7 +609,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 14: Implementarea metodei switchCamera
 
-**Ce fac:** Implementez metoda `switchCamera` care comută între camera frontală și cea din spate.
+**Actiuni:** Implementez metoda `switchCamera` care comută între camera frontală și cea din spate.
 
 **Ce scriu:**
 ```java
@@ -586,7 +619,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Implementez `switchCamera` care comută ID-ul camerei între 0 (spate) și 1 (față) folosind un operator ternar, apoi deschide noua cameră."
+**Note:** "Implementez `switchCamera` care comută ID-ul camerei între 0 (spate) și 1 (față) folosind un operator ternar, apoi deschide noua cameră."
 
 **Checkpoint:** Metoda `switchCamera` este implementată.
 
@@ -594,7 +627,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 15: Implementarea metodei takePicture
 
-**Ce fac:** Implementez metoda `takePicture` care capturează o fotografie.
+**Actiuni:** Implementez metoda `takePicture` care capturează o fotografie.
 
 **Ce scriu:**
 ```java
@@ -620,7 +653,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Implementez `takePicture`. Verific dacă camera este disponibilă, obțin parametrii și asigur că flash-ul este setat corect. Folosesc un `Handler` cu delay de 200ms pentru a permite flash-ului să se activeze înainte de captură. Apelez `camera.takePicture` cu trei parametri: primul și al doilea sunt null (pentru ShutterCallback și PictureCallback intermediar), al treilea este un lambda care primește datele imaginii ca byte array. În callback, salvez imaginea și repornesc preview-ul."
+**Note:** "Implementez `takePicture`. Verific dacă camera este disponibilă, obțin parametrii și asigur că flash-ul este setat corect. Folosesc un `Handler` cu delay de 200ms pentru a permite flash-ului să se activeze înainte de captură. Apelez `camera.takePicture` cu trei parametri: primul și al doilea sunt null (pentru ShutterCallback și PictureCallback intermediar), al treilea este un lambda care primește datele imaginii ca byte array. În callback, salvez imaginea și repornesc preview-ul."
 
 **Checkpoint:** Metoda `takePicture` este implementată.
 
@@ -628,7 +661,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 16: Implementarea metodei saveImage
 
-**Ce fac:** Implementez metoda `saveImage` care salvează imaginea pe stocarea externă.
+**Actiuni:** Implementez metoda `saveImage` care salvează imaginea pe stocarea externă.
 
 **Ce scriu:**
 ```java
@@ -663,7 +696,7 @@ public class MainActivity extends AppCompatActivity {
     }
 ```
 
-**Ce spun:** "Implementez `saveImage` care primește datele imaginii ca byte array. Folosesc `getExternalFilesDir` cu `DIRECTORY_PICTURES` pentru a obține directorul pentru imagini al aplicației, apoi creez subdirectorul 'CameraApp' dacă nu există. Generez un nume de fișier unic folosind timestamp-ul curent. Scriu datele în fișier folosind `FileOutputStream`, flush pentru a mă asigura că datele sunt scrise, și afișez calea completă într-un Toast. Gestionez erorile cu try-catch-finally și închid stream-ul în blocul finally."
+**Note:** "Implementez `saveImage` care primește datele imaginii ca byte array. Folosesc `getExternalFilesDir` cu `DIRECTORY_PICTURES` pentru a obține directorul pentru imagini al aplicației, apoi creez subdirectorul 'CameraApp' dacă nu există. Generez un nume de fișier unic folosind timestamp-ul curent. Scriu datele în fișier folosind `FileOutputStream`, flush pentru a mă asigura că datele sunt scrise, și afișez calea completă într-un Toast. Gestionez erorile cu try-catch-finally și închid stream-ul în blocul finally."
 
 **Checkpoint:** Metoda `saveImage` este implementată.
 
@@ -671,7 +704,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Pasul 17: Implementarea metodelor onPause, stopCamera și onRequestPermissionsResult
 
-**Ce fac:** Implementez metodele finale pentru gestionarea lifecycle-ului și permisiunilor.
+**Actiuni:** Implementez metodele finale pentru gestionarea lifecycle-ului și permisiunilor.
 
 **Ce scriu:**
 ```java
@@ -707,7 +740,7 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-**Ce spun:** "Implementez `onPause` care oprește și eliberează camera când activitatea este pusă pe pauză - esențial pentru a evita blocarea camerei. `stopCamera` este o metodă helper care face același lucru și este apelată din `surfaceDestroyed`. `onRequestPermissionsResult` este apelată când utilizatorul răspunde la cererea de permisiune - dacă permisiunea este acordată, deschid camera, altfel afișez un mesaj."
+**Note:** "Implementez `onPause` care oprește și eliberează camera când activitatea este pusă pe pauză - esențial pentru a evita blocarea camerei. `stopCamera` este o metodă helper care face același lucru și este apelată din `surfaceDestroyed`. `onRequestPermissionsResult` este apelată când utilizatorul răspunde la cererea de permisiune - dacă permisiunea este acordată, deschid camera, altfel afișez un mesaj."
 
 **Checkpoint:** Toate metodele pentru gestionarea lifecycle-ului și permisiunilor sunt implementate.
 
@@ -717,7 +750,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### Build APK debug
 
-**Ce fac:** Compilez aplicația într-un APK debug.
+**Actiuni:** Compilez aplicația într-un APK debug.
 
 **Ce scriu în terminal:**
 ```bash
@@ -725,7 +758,7 @@ cd akrilki_07
 gradle assembleDebug
 ```
 
-**Ce spun:** "Compilez aplicația folosind Gradle. Comanda `assembleDebug` creează un APK debug în `app/build/outputs/apk/debug/`."
+**Note:** "Compilez aplicația folosind Gradle. Comanda `assembleDebug` creează un APK debug în `app/build/outputs/apk/debug/`."
 
 **Checkpoint:** APK-ul debug este generat.
 
@@ -733,14 +766,14 @@ gradle assembleDebug
 
 ### Listare dispozitive
 
-**Ce fac:** Listez dispozitivele Android conectate.
+**Actiuni:** Listez dispozitivele Android conectate.
 
 **Ce scriu în terminal:**
 ```bash
 adb devices
 ```
 
-**Ce spun:** "Listez dispozitivele conectate. Asigurați-vă că aveți un emulator pornit sau un dispozitiv fizic conectat prin USB cu USB debugging activat. Pentru aplicația de cameră, recomand un dispozitiv fizic sau un emulator cu suport pentru cameră."
+**Note:** "Listez dispozitivele conectate. Asigurați-vă că aveți un emulator pornit sau un dispozitiv fizic conectat prin USB cu USB debugging activat. Pentru aplicația de cameră, recomand un dispozitiv fizic sau un emulator cu suport pentru cameră."
 
 **Checkpoint:** Dispozitivul este listat.
 
@@ -748,14 +781,14 @@ adb devices
 
 ### Instalare APK
 
-**Ce fac:** Instalez APK-ul pe dispozitiv.
+**Actiuni:** Instalez APK-ul pe dispozitiv.
 
 **Ce scriu în terminal:**
 ```bash
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-**Ce spun:** "Instalez APK-ul pe dispozitiv. Flag-ul `-r` permite reinstalarea dacă aplicația există deja."
+**Note:** "Instalez APK-ul pe dispozitiv. Flag-ul `-r` permite reinstalarea dacă aplicația există deja."
 
 **Checkpoint:** Aplicația este instalată pe dispozitiv.
 
@@ -763,14 +796,14 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 ### Lansare activitate principală
 
-**Ce fac:** Lansez activitatea principală.
+**Actiuni:** Lansez activitatea principală.
 
 **Ce scriu în terminal:**
 ```bash
 adb shell am start -n ro.makore.akrilki_07/.MainActivity
 ```
 
-**Ce spun:** "Lansez activitatea principală folosind `am start` cu numele complet al pachetului și activității. Aplicația va solicita permisiunea pentru cameră la prima lansare."
+**Note:** "Lansez activitatea principală folosind `am start` cu numele complet al pachetului și activității. Aplicația va solicita permisiunea pentru cameră la prima lansare."
 
 **Checkpoint:** Aplicația se deschide și solicită permisiunea pentru cameră.
 
@@ -778,14 +811,15 @@ adb shell am start -n ro.makore.akrilki_07/.MainActivity
 
 ### Afișare loguri filtrate
 
-**Ce fac:** Afișez logurile filtrate pentru aplicație.
+**Actiuni:** Afișez logurile filtrate pentru aplicație.
 
 **Ce scriu în terminal:**
 ```bash
 adb logcat | grep -E "(MainActivity|Camera|AndroidRuntime)"
 ```
 
-**Ce spun:** "Afișez logurile filtrate pentru tag-urile relevante (`MainActivity`, `Camera`) și erorile (`AndroidRuntime`). Observați mesajele legate de deschiderea camerei, permisiuni și salvarea imaginilor."
+**Note:** "Afișez logurile filtrate pentru tag-urile relevante (`MainActivity`, `Camera`) și erorile (`AndroidRuntime`). Observați mesajele legate de deschiderea camerei, permisiuni și salvarea imaginilor."
 
 **Checkpoint:** Logurile sunt afișate și pot fi monitorizate pentru debugging.
+
 
