@@ -266,6 +266,13 @@ Specifică contractul: request pentru UN SINGUR permission.
 
 ```java
                 isGranted -> {
+                    if (isGranted) {
+                        // Permission granted, fetch location
+                        fetchLocationAndUpdateUI();
+                    } else {
+                        Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show();
+                    }
+                }
 ```
 
 **Explicație detaliată:**
@@ -276,31 +283,13 @@ Lambda expression care primește rezultatul permission request-ului.
 
 **Apelare:** Callback apelat AUTOMAT după ce user răspunde la dialog-ul de permission.
 
----
+**Logică:**
+- **Dacă isGranted = true**: Apelează `fetchLocationAndUpdateUI()` pentru a obține și afișa locația imediat
+- **Dacă isGranted = false**: Afișează Toast cu mesaj "Location permission denied"
 
-### Verificare Permission Denied
-
-```java
-                    if (!isGranted) {
-```
-
-Verifică dacă permission-ul a fost refuzat.
-
----
-
-### Toast Permission Denied
-
-```java
-                        Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show();
-```
-
-**DIFERENȚĂ:** AddressFragment nu afișează Toast-uri pentru permission status.
-
-Afișează mesaj scurt că permission-ul a fost refuzat.
+**DIFERENȚĂ CRITICĂ față de versiunea inițială:** Acum apelează `fetchLocationAndUpdateUI()` când permission e granted, astfel încât datele de locație sunt afișate imediat după acordarea permission-ului. Versiunea veche avea bug - nu făcea nimic când permission era granted.
 
 **Toast.LENGTH_SHORT:** Afișare ~2 secunde.
-
-**Note:** Nu există handling special pentru "granted" (se va apela automat fetchLocationAndUpdateUI la următoarea încercare).
 
 ---
 
@@ -539,15 +528,16 @@ GeodataFragment: Doar `binding = null` (fără MapView).
 ### Metoda fetchLocationAndUpdateUI - Semnătura
 
 ```java
-    private void fetchLocationAndUpdateUI(TextView tvLatitude, TextView tvLongitude, TextView tvAccuracy, TextView tvAltitude,
-                                                        TextView tvSpeed, TextView tvBearing, TextView tvProvider, TextView tvTime) {
+    private void fetchLocationAndUpdateUI() {
 ```
 
 **DIFERENȚĂ MAJORĂ:** Metodă complet nouă, nu există în AddressFragment.
 
-Metodă helper care obține locația curentă și actualizează TextViews.
+Metodă helper care obține locația curentă și actualizează TextViews folosind binding.
 
-**Parametri:** Toate cele 8 TextViews pentru afișarea datelor de locație.
+**Parametri:** NICIUN parametru - folosește `binding` direct pentru accesarea TextViews.
+
+**SIMPLIFICARE față de versiunea inițială:** Versiunea veche primea toate cele 8 TextViews ca parametri. Versiunea nouă folosește binding direct, cod mai curat și mai simplu.
 
 ---
 

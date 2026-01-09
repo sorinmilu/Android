@@ -12,16 +12,17 @@
 
 **Caracteristici:**
 - Geocoding pentru adresa "Bucharest, Calea Văcăreşti, nr. 189"
+- Fallback la coordonate hardcoded dacă geocoding eșuează (44.3967, 26.1242)
 - Butoane pentru schimbarea tipului de hartă (Normal/Satellite/Terrain)
 - Controale UI activate (zoom, compass, rotation)
 - Gestionare lifecycle MapView (onStart, onResume, onPause, onStop, onDestroy, onLowMemory)
-- Fallback la coordonate default dacă geocoding eșuează
+- **NU folosește locația curentă a dispozitivului** - doar geocoding pentru adresă statică
 
 **Diferențe față de alte fragmente:**
-- Implementează `OnMapReadyCallback` pentru inițializare asincronă hartă
-- Gestionează lifecycle MapView explicit în toate metodele lifecycle
-- Folosește Geocoder pentru conversie adresă → coordonate
-- Nu folosește ViewModel (UI-focused fragment)
+- **AddressFragment**: Geocoding adresă statică → marker (FĂRĂ GPS)
+- **GeodataFragment**: GPS location → afișare date text în TextViews
+- **HomeFragment**: GPS location → hartă cu "My Location" layer
+- **LocationFragment**: GPS location → hartă cu POI-uri vizibile
 
 ## Analiza Linie cu Linie
 
@@ -468,24 +469,15 @@ Apelează metoda helper pentru conversie adresă text → coordonate LatLng.
 
 **Rezultat:**
 - `LatLng` cu coordonatele adresei dacă geocoding reușește
-- `null` dacă adresa nu e găsită sau geocoding eșuează
-
----
-
-### Verificare Rezultat Geocoding
-
-```java
-        if (addressLatLng != null) {
-```
-
-Verifică dacă geocoding-ul a reușit (adresa a fost găsită).
+- `LatLng` cu coordonate hardcoded (44.3967, 26.1242) dacă geocoding eșuează
+- **Întotdeauna returnează coordonate valide** (niciodată null)
 
 ---
 
 ### Mutare Cameră la Adresă
 
 ```java
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(addressLatLng, 15));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(addressLatLng, 15));
 ```
 
 Mută camera hărții la coordonatele adresei cu zoom level 15.
@@ -497,6 +489,8 @@ Mută camera hărții la coordonatele adresei cu zoom level 15.
 - Al doilea parametru: zoom level (1 = world, 20 = buildings)
 - 15 = zoom potrivit pentru vizualizare stradă/clădire
 
+**Siguranță:** addressLatLng e întotdeauna non-null (fallback garantat).
+
 **Alternative:**
 - `animateCamera()` = mută cu animație smoothly
 - `newLatLng()` = mută fără schimbare zoom
@@ -506,7 +500,7 @@ Mută camera hărții la coordonatele adresei cu zoom level 15.
 ### Adăugare Marker la Adresă
 
 ```java
-            googleMap.addMarker(new MarkerOptions().position(addressLatLng).title(address));
+        googleMap.addMarker(new MarkerOptions().position(addressLatLng).title(address));
 ```
 
 Adaugă un marker roșu pe hartă la coordonatele adresei.
@@ -518,42 +512,6 @@ Adaugă un marker roșu pe hartă la coordonatele adresei.
 **.title(address):** Setează titlul afișat când user-ul tapează marker-ul.
 
 **Rezultat:** Marker roșu clasic Google Maps cu info window conținând adresa.
-
----
-
-### Branch Else - Geocoding Eșuat
-
-```java
-        } else {
-```
-
-Branch executat când geocoding-ul eșuează (adresa nu e găsită).
-
----
-
-### Coordonate Default București
-
-```java
-            LatLng defaultLatLng = new LatLng(44.4268, 26.1025);
-```
-
-Creează coordonate default pentru București (centru oraș).
-
-**44.4268** = latitude (Nord)
-
-**26.1025** = longitude (Est)
-
----
-
-### Mutare Cameră la Coordonate Default
-
-```java
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 12));
-```
-
-Mută camera la coordonatele default București cu zoom 12 (vedere oraș).
-
-**Zoom 12:** Mai mare decât zoom 15, arată o zonă mai mare (oraș întreg vs cartier).
 
 ---
 
@@ -750,13 +708,29 @@ Printează stack trace-ul erorii în logcat pentru debugging.
 
 ---
 
-### Return Null pentru Eroare
+### Return Fallback Coordinates
 
 ```java
-        return null;
+        // Fallback to hardcoded coordinates if geocoding fails
+        return new LatLng(44.3967, 26.1242);
+    }
 ```
 
-Returnează `null` când geocoding-ul eșuează (listă goală sau IOException).
+**Explicație detaliată:**
+
+Returnează coordonate hardcoded când geocoding-ul eșuează (listă goală sau IOException).
+
+**Coordonate hardcoded:** 44.3967, 26.1242 = Calea Văcărești 189, București
+
+**De ce fallback:**
+- Geocoding poate eșua din multiple motive (internet, API, format adresă)
+- Garantează că harta ÎNTOTDEAUNA afișează o locație validă
+- User experience mai bun decât hartă goală sau eroare
+
+**Strategie:**
+1. **Încearcă geocoding** prin Geocoder API (conversie dinamică)
+2. **Dacă eșuează**, folosește coordonate cunoscute (hardcoded)
+3. **Rezultat**: Harta funcționează întotdeauna, chiar fără geocoding
 
 ---
 
