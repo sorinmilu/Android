@@ -63,18 +63,8 @@ public class AddressFragment extends Fragment implements OnMapReadyCallback {
 
         String address = "Bucharest, Calea Văcăreşti, nr. 189";
         LatLng addressLatLng = getLocationFromAddress(address);
-
-        if (addressLatLng != null) {
-            Log.d(TAG, "Geocoding successful: " + addressLatLng);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(addressLatLng, 15));
-            googleMap.addMarker(new MarkerOptions().position(addressLatLng).title(address));
-        } else {
-            Log.w(TAG, "Geocoding failed for address: " + address);
-            Toast.makeText(requireContext(), "Unable to find location. Using default location.", Toast.LENGTH_SHORT).show();
-            // If the address is not found, you can center the map to a default location, e.g., Bucharest
-            LatLng defaultLatLng = new LatLng(44.4268, 26.1025); // Bucharest default coordinates
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 12));
-        }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(addressLatLng, 15));
+        googleMap.addMarker(new MarkerOptions().position(addressLatLng).title(address));
 
         binding.getRoot().findViewById(R.id.satelliteButton).setOnClickListener(v -> googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE));
         binding.getRoot().findViewById(R.id.normalButton).setOnClickListener(v -> googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL));
@@ -84,29 +74,18 @@ public class AddressFragment extends Fragment implements OnMapReadyCallback {
 
     private LatLng getLocationFromAddress(String address) {
         Geocoder geocoder = new Geocoder(requireContext());
-        
-        if (!Geocoder.isPresent()) {
-            Log.e(TAG, "Geocoder service is not available on this device");
-            Toast.makeText(requireContext(), "Geocoder not available", Toast.LENGTH_SHORT).show();
-            return null;
-        }
-        
         List<Address> addressList;
         try {
-            Log.d(TAG, "Attempting to geocode address: " + address);
             addressList = geocoder.getFromLocationName(address, 1);
             if (addressList != null && !addressList.isEmpty()) {
                 Address location = addressList.get(0);
-                Log.d(TAG, "Geocoding result - Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
                 return new LatLng(location.getLatitude(), location.getLongitude());
-            } else {
-                Log.w(TAG, "Geocoder returned empty or null result");
             }
         } catch (IOException e) {
-            Log.e(TAG, "Geocoding failed with IOException", e);
             e.printStackTrace();
         }
-        return null;
+        // Fallback to hardcoded coordinates if geocoding fails
+        return new LatLng(44.3967, 26.1242);
     }
 
     @Override
