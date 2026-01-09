@@ -1,7 +1,6 @@
 package ro.makore.akrilki_01;
 
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 

@@ -19,10 +19,7 @@ Aceasta este prima aplicație Android care folosește **XML pentru layout** în 
 
 ---
 
-
----
-
-## Analiza Linie cu Linie
+## Analiza
 
 ### 1. Declarația Pachetului
 
@@ -69,30 +66,10 @@ Object → Context → ContextWrapper → ContextThemeWrapper
   → Activity → FragmentActivity → AppCompatActivity → MainActivity
 ```
 
-#### 2.4 `import androidx.core.view.ViewCompat;`
-
-**ViewCompat:**
-Clasă helper pentru compatibilitate cross-version a View API-urilor. Permite folosirea API-urilor noi pe versiuni vechi de Android.
-
-**În această aplicație:**
-Import prezent dar **nefolosit**. Poate fi șters.
-
-#### 2.5 `import androidx.core.view.WindowCompat;`
-
-**Ce este WindowCompat:**
-Clasă helper pentru compatibilitate window features pe versiuni vechi Android.
-
-**Utilizare tipică:**
-```java
-WindowCompat.setDecorFitsSystemWindows(window, false);
-```
-
-**În această aplicație:**
-Import prezent dar **nefolosit**. Poate fi șters.
 
 #### 2.6 `import android.widget.Button;`
 
-**Ce este Button:**
+**Button:**
 Widget interactiv care răspunde la click-uri utilizatorului.
 
 **Ierarhie:**
@@ -108,41 +85,6 @@ View → TextView → Button
 
 **În această aplicație:**
 Folosit pentru butonul "Quit" care închide aplicația.
-
-#### 2.7 `import androidx.core.view.WindowInsetsCompat;`
-
-**Ce este WindowInsetsCompat:**
-Versiune compatibilă a WindowInsets pentru gestionarea spațiilor sistemului.
-
-**În această aplicație:**
-Import prezent dar **nefolosit**. Poate fi șters.
-
-**Import-uri Inutilizate:**
-```java
-// ❌ Importate dar nefolosite în cod
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-// ✅ Folosite efectiv
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.widget.Button;
-```
-
-**Cod optimizat (fără import-uri inutile):**
-```java
-package ro.makore.akrilki_01;
-
-import android.os.Bundle;
-import android.widget.Button;
-import androidx.appcompat.app.AppCompatActivity;
-
-public class MainActivity extends AppCompatActivity {
-    // ... rest of code
-}
-```
 
 ---
 
@@ -244,22 +186,23 @@ You need to use a Theme.AppCompat theme (or descendant) with this activity.
 **`setContentView(...)`**
 - Metodă moștenită din AppCompatActivity
 - Setează UI-ul activității
-- Inflează (încarcă) layout-ul XML
+- Încarcă layout-ul XML
 
 **`R.layout.activity_main`**
 - Referință către fișierul XML de layout
-- `R` = clasa auto-generată care conține ID-uri ale resurselor
+- `R` = clasa auto-generată care conține ID-uri ale resurselor R vine de la Resources (R.layout.activity_main → res/layout/activity_main.xml)
 - `layout` = categoria de resurse (layouts)
 - `activity_main` = numele fișierului (fără extensia .xml)
 
-**Mapare:**
-```
-R.layout.activity_main → res/layout/activity_main.xml
-```
 
-**Procesul de inflate:**
+**Procesul de creare a resurselor din XML:**
+
 ```java
 setContentView(R.layout.activity_main) {
+
+}
+```
+
     1. Citește activity_main.xml
     2. Parsează XML-ul
     3. Creează obiectele View din XML
@@ -270,43 +213,6 @@ setContentView(R.layout.activity_main) {
     5. Aplică constraint-uri (poziționare)
     6. Măsoară și poziționează view-urile
     7. Desenează pe ecran
-}
-```
-
-**Clasa R:**
-```java
-// Auto-generată în build/generated/source/r/debug/...
-public final class R {
-    public static final class layout {
-        public static final int activity_main = 0x7f0b001a;
-    }
-    public static final class id {
-        public static final int quitButton = 0x7f08012a;
-    }
-}
-```
-
-**Diferență față de 01_hello_world:**
-```java
-// 01_hello_world - UI programatic
-LinearLayout layout = new LinearLayout(this);
-TextView textView = new TextView(this);
-layout.addView(textView);
-setContentView(layout);
-
-// 01_simple - UI din XML
-setContentView(R.layout.activity_main);  // Mult mai simplu!
-```
-
-**Ierarhia view-urilor după inflate:**
-```
-MainActivity (Window)
-  └─ DecorView
-      └─ ContentView
-          └─ ConstraintLayout (R.id.main)
-              ├─ TextView ("Hello World")
-              └─ Button (R.id.quitButton)
-```
 
 ---
 
@@ -317,12 +223,8 @@ MainActivity (Window)
         Button quitButton = findViewById(R.id.quitButton);
 ```
 
-**Analiza:**
-
 **Comentariu:**
-```java
-// Find the quit button
-```
+
 Explică că vom căuta butonul definit în XML.
 
 **`Button quitButton`**
@@ -355,13 +257,14 @@ Button quitButton = findViewById(R.id.quitButton);  ← Căutare după ID
 **Ce face findViewById():**
 ```java
 findViewById(R.id.quitButton) {
+}
+```
+
     1. Începe de la root view (ConstraintLayout)
     2. Parcurge ierarhia view-urilor
     3. Verifică fiecare view dacă are ID-ul căutat
     4. Găsește Button cu ID = quitButton
     5. Returnează referința către acel Button
-}
-```
 
 **Tipuri de return:**
 ```java
@@ -442,7 +345,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
     quitButton.setOnClickListener { finishAffinity() }  // Direct by ID!
 }
 ```
-
 ---
 
 ### 7. Event Listener (Click Handler)
@@ -451,14 +353,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
         // Add the quit button action
         quitButton.setOnClickListener(v -> finishAffinity());
 ```
-
-**Analiza:**
-
-**Comentariu:**
-```java
-// Add the quit button action
-```
-Explică că setăm acțiunea butonului.
 
 **`quitButton.setOnClickListener(...)`**
 - Metodă din clasa View (moștenită de Button)
@@ -479,26 +373,9 @@ quitButton.setOnClickListener(new View.OnClickListener() {
     }
 });
 
-// Echivalent cu method reference
-quitButton.setOnClickListener(v -> this.finishAffinity());
-```
-
-**Parametrul `v`:**
-- Reprezintă view-ul care a fost apăsat (quitButton)
-- Tip: `View`
-- Nu este folosit în acest caz (nu avem nevoie de el)
-
-**Ignorarea parametrului:**
-```java
-// Dacă nu folosim parametrul, putem să-l lăsăm
-quitButton.setOnClickListener(v -> finishAffinity());
-
-// Sau să folosim underscore (Java 21+)
-quitButton.setOnClickListener(_ -> finishAffinity());
-```
 
 **Ce este un Listener:**
-```
+
 Listener = Callback care ascultă evenimente
 
 Event: Utilizatorul apasă butonul
@@ -510,230 +387,15 @@ Android apelează onClick(View v)
 Codul nostru se execută: finishAffinity()
 ```
 
-**Tipuri de listenere:**
-```java
-// Click
-button.setOnClickListener(v -> { });
-
-// Long Click (apăsare lungă)
-button.setOnLongClickListener(v -> {
-    return true;  // true = event consumed
-});
-
-// Touch (mai granular)
-button.setOnTouchListener((v, event) -> {
-    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-        // Touch down
-    }
-    return false;
-});
-
-// Focus
-button.setOnFocusChangeListener((v, hasFocus) -> {
-    if (hasFocus) {
-        // Button has focus
-    }
-});
-```
-
-**Gestionarea mai multor butoane:**
-```java
-// Varianta 1: Lambda pentru fiecare
-button1.setOnClickListener(v -> handleButton1());
-button2.setOnClickListener(v -> handleButton2());
-
-// Varianta 2: Același listener, switch pe ID
-View.OnClickListener listener = v -> {
-    switch (v.getId()) {
-        case R.id.button1:
-            handleButton1();
-            break;
-        case R.id.button2:
-            handleButton2();
-            break;
-    }
-};
-button1.setOnClickListener(listener);
-button2.setOnClickListener(listener);
-
-// Varianta 3: Activity implements OnClickListener
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        button1.setOnClickListener(this);
-        button2.setOnClickListener(this);
-    }
-    
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.button1) {
-            handleButton1();
-        }
-    }
-}
-```
-
-**Click în XML (alternativă):**
-```xml
-<Button
-    android:id="@+id/quitButton"
-    android:onClick="onQuitClick"  ← Metodă din Activity
-    ... />
-```
-
-```java
-// În MainActivity.java
-public void onQuitClick(View view) {
-    finishAffinity();
-}
-```
 
 ---
 
 ### 8. Metoda finishAffinity()
 
-```java
-        quitButton.setOnClickListener(v -> finishAffinity());
-```
-
-**Ce este finishAffinity():**
+**finishAffinity():**
 - Metodă moștenită din Activity
 - Închide activitatea curentă și toate activitățile din același task
 - Elimină aplicația din lista de aplicații recente
-
-**Comportament:**
-```
-Task Stack înainte:
-┌─────────────┐
-│ MainActivity│ ← Current
-└─────────────┘
-
-finishAffinity() apelat
-    ↓
-Task Stack după:
-(gol - aplicația s-a închis complet)
-```
-
-**Diferență față de alte metode:**
-
-**`finish()`:**
-```java
-button.setOnClickListener(v -> finish());
-```
-- Închide doar activitatea curentă
-- Dacă există alte activități în stack, revine la ele
-- Nu elimină task-ul
-
-**Exemplu:**
-```
-Stack:
-┌─────────────┐
-│  Activity C │ ← finish() aici
-├─────────────┤
-│  Activity B │ ← revine aici
-├─────────────┤
-│  Activity A │
-└─────────────┘
-```
-
-**`finishAffinity()`:**
-```java
-button.setOnClickListener(v -> finishAffinity());
-```
-- Închide activitatea curentă
-- Închide toate activitățile din același task (affinity)
-- Elimină task-ul complet
-
-**Exemplu:**
-```
-Stack:
-┌─────────────┐
-│  Activity C │
-├─────────────┤
-│  Activity B │  ← finishAffinity() aici
-├─────────────┤
-│  Activity A │  (același task)
-└─────────────┘
-    ↓
-Toate se închid
-```
-
-**`finishAndRemoveTask()`:**
-```java
-button.setOnClickListener(v -> finishAndRemoveTask());
-```
-- Ca finishAffinity() DAR
-- Elimină și task-ul din Overview (Recent Apps)
-
-**`System.exit(0)`:**
-```java
-button.setOnClickListener(v -> System.exit(0));  // ❌ NU FACE ASTA!
-```
-- Oprește procesul forțat
-- Nu respectă lifecycle-ul Android
-- Nu salvează starea
-- Poate cauza memory leaks
-- **Anti-pattern** în Android
-
-**`moveTaskToBack(true)`:**
-```java
-button.setOnClickListener(v -> moveTaskToBack(true));
-```
-- Nu închide aplicația
-- O mută în background (ca și butonul Home)
-- Aplicația rămâne în memorie
-
-**Ce metodă să folosești:**
-
-| Scenariu | Metodă | Efect |
-|----------|--------|-------|
-| Închide ecranul curent, revino la anterior | `finish()` | Închide Activity curent |
-| Ieșire completă din aplicație | `finishAffinity()` | Închide tot task-ul |
-| Ieșire + eliminare din Recent Apps | `finishAndRemoveTask()` | Închide și șterge task |
-| Trimite app în background | `moveTaskToBack(true)` | Minimizează |
-| **NICIODATĂ** | `System.exit(0)` | ❌ Anti-pattern |
-
-**În acest context (01_simple):**
-```java
-quitButton.setOnClickListener(v -> finishAffinity());
-```
-- Aplicația are o singură activitate (MainActivity)
-- `finishAffinity()` = ieșire completă din aplicație
-- Comportament așteptat pentru un buton "Quit"
-
-**Task Affinity:**
-```
-Task Affinity = grupare de activități care aparțin logic împreună
-
-Implicit: package name
-ro.makore.akrilki_01
-
-Personalizat (în AndroidManifest.xml):
-<activity
-    android:name=".MainActivity"
-    android:taskAffinity="ro.makore.custom" />
-```
-
-**Lifecycle după finishAffinity():**
-```
-User apasă "Quit"
-    ↓
-finishAffinity() apelat
-    ↓
-onPause() apelat
-    ↓
-onStop() apelat
-    ↓
-onDestroy() apelat
-    ↓
-Activity distrusă
-    ↓
-Task eliminat
-    ↓
-Aplicație închisă
-```
-
----
 
 ## Rezumat Fluxul Complet
 
@@ -782,25 +444,6 @@ Aplicație închisă
    ✅ Layout: ConstraintLayout (responsive)
 ```
 
-### Structura Vizuală Finală
-
-```
-┌────────────────────────────────────┐
-│ MainActivity (Window)              │
-│ ┌────────────────────────────────┐ │
-│ │ ConstraintLayout               │ │
-│ │                                │ │
-│ │      HELLO WORLD               │ │  ← TextView (42sp, uppercase)
-│ │          (centrat)             │ │
-│ │                                │ │
-│ │                                │ │
-│ │ ┌────────────────────────────┐ │ │
-│ │ │         Quit               │ │ │  ← Button (87dp height)
-│ │ └────────────────────────────┘ │ │
-│ └────────────────────────────────┘ │
-└────────────────────────────────────┘
-```
-
 ### Ierarhia View-urilor
 
 ```
@@ -822,48 +465,3 @@ MainActivity
                       - onClick: finishAffinity()
 ```
 
----
-
-## Diferențe față de 01_hello_world
-
-| Aspect | 01_hello_world | 01_simple |
-|--------|----------------|-----------|
-| **UI Creation** | Programatic (Java) | XML Layout |
-| **Code Lines** | 28 linii | 26 linii |
-| **Layout** | LinearLayout | ConstraintLayout |
-| **Widgets** | TextView (static) | TextView + Button |
-| **Interactivity** | ❌ None | ✅ Quit button |
-| **findViewById** | ❌ Not needed | ✅ Required |
-| **Event Listeners** | ❌ None | ✅ setOnClickListener |
-| **Separation** | ❌ UI + logic mixed | ✅ UI (XML) + logic (Java) |
-| **Maintainability** | ❌ Hard to modify UI | ✅ Easy (edit XML) |
-| **Preview** | ❌ No preview | ✅ Layout Editor preview |
-| **Best Practice** | ❌ Educational only | ✅ Industry standard |
-
----
-
-## Concepte Cheie
-
-### 1. XML Layouts
-Layout-ul UI este definit în fișiere XML separate din `res/layout/`.
-
-### 2. Resource IDs
-View-urile sunt identificate prin ID-uri (`android:id="@+id/name"`).
-
-### 3. findViewById()
-Conectează Java la XML, căutând view-uri după ID.
-
-### 4. Event Listeners
-Gestionează interacțiunile utilizatorului (click, long click, touch).
-
-### 5. Lambda Expressions
-Sintaxă concisă pentru implementarea interfețelor cu o singură metodă.
-
-### 6. finishAffinity()
-Închide complet aplicația (toate activitățile din task).
-
-### 7. ConstraintLayout
-Layout manager modern și flexibil pentru poziționare complexă.
-
-### 8. Separation of Concerns
-UI (XML) separat de logică (Java) pentru mentenabilitate.

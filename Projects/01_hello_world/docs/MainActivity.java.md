@@ -1,4 +1,41 @@
-# MainActivity.java - Documentație Completă (01_hello_world)
+# MainActivity.java
+
+<!-- TOC -->
+
+- [MainActivity.java](#mainactivityjava)
+    - [1. Prezentare Generală](#1-prezentare-general%C4%83)
+    - [2. Analiza Linie cu Linie](#2-analiza-linie-cu-linie)
+        - [2.1. Declarația Pachetului](#21-declara%C8%9Bia-pachetului)
+        - [2.2. Import pachete](#22-import-pachete)
+            - [2.2.1. import android.os.Bundle;](#221-import-androidosbundle)
+            - [2.2.2. import android.widget.LinearLayout;](#222-import-androidwidgetlinearlayout)
+            - [2.2.3. import android.widget.TextView;](#223-import-androidwidgettextview)
+            - [2.2.4. import androidx.appcompat.app.AppCompatActivity;](#224-import-androidxappcompatappappcompatactivity)
+        - [2.3. Declarația Clasei](#23-declara%C8%9Bia-clasei)
+            - [2.3.1. public](#231-public)
+            - [2.3.2. class MainActivity](#232-class-mainactivity)
+            - [2.3.3. extends AppCompatActivity](#233-extends-appcompatactivity)
+        - [2.4. Metoda onCreate](#24-metoda-oncreate)
+            - [2.4.1. @Override](#241-override)
+            - [2.4.2. protected](#242-protected)
+            - [2.4.3. void](#243-void)
+            - [2.4.4. onCreate](#244-oncreate)
+            - [2.4.5. Bundle savedInstanceState](#245-bundle-savedinstancestate)
+        - [2.5. Apelul super.onCreate](#25-apelul-superoncreate)
+            - [2.5.1. Linia 1: Crearea Layout-ului](#251-linia-1-crearea-layout-ului)
+            - [2.5.2. Linia 2: Setarea Orientării](#252-linia-2-setarea-orient%C4%83rii)
+        - [2.6. Crearea TextView-ului](#26-crearea-textview-ului)
+            - [2.6.1. Linia 1: Instanțierea TextView](#261-linia-1-instan%C8%9Bierea-textview)
+            - [2.6.2. Linia 2: Setarea Textului](#262-linia-2-setarea-textului)
+            - [2.6.3. Linia 3: Setarea Dimensiunii Textului](#263-linia-3-setarea-dimensiunii-textului)
+        - [2.7. Adăugarea TextView în Layout](#27-ad%C4%83ugarea-textview-%C3%AEn-layout)
+        - [2.8. Setarea Layout-ului ca Content View](#28-setarea-layout-ului-ca-content-view)
+    - [3. Rezumat Fluxul Complet](#3-rezumat-fluxul-complet)
+        - [3.1. Secvența de Execuție](#31-secven%C8%9Ba-de-execu%C8%9Bie)
+        - [3.2. Structura Vizuală Finală](#32-structura-vizual%C4%83-final%C4%83)
+        - [3.3. Ierarhia Obiectelor](#33-ierarhia-obiectelor)
+
+<!-- /TOC -->
 
 ## Prezentare Generală
 
