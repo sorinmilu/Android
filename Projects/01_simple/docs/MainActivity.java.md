@@ -69,29 +69,10 @@ Object → Context → ContextWrapper → ContextThemeWrapper
   → Activity → FragmentActivity → AppCompatActivity → MainActivity
 ```
 
-#### 2.3 `import androidx.core.graphics.Insets;`
-
-**Insets:**
-Reprezintă marginile sistemului (status bar, navigation bar, keyboard).
-
-**Utilizare:**
-```java
-Insets = spațiile pe care sistemul le ocupă pe ecran
-- Top: Status bar (baterie, oră, notificări)
-- Bottom: Navigation bar (butoane back, home, recent)
-- Left/Right: Display cutouts (notch-uri)
-```
-
-**În această aplicație:**
-Import prezent dar **nefolosit** în cod. Poate fi șters sau folosit pentru gestionarea window insets.
-
 #### 2.4 `import androidx.core.view.ViewCompat;`
 
-**Ce este ViewCompat:**
-Clasă helper pentru compatibilitate cross-version a View API-urilor.
-
-**Scop:**
-Permite folosirea API-urilor noi pe versiuni vechi de Android.
+**ViewCompat:**
+Clasă helper pentru compatibilitate cross-version a View API-urilor. Permite folosirea API-urilor noi pe versiuni vechi de Android.
 
 **În această aplicație:**
 Import prezent dar **nefolosit**. Poate fi șters.
