@@ -1,5 +1,56 @@
 # MainActivity.java - Documentație Linie cu Linie
 
+<!-- TOC -->
+
+- [MainActivity.java - Documentație Linie cu Linie](#mainactivityjava---documenta%C8%9Bie-linie-cu-linie)
+    - [1. Prezentare](#1-prezentare)
+    - [2. Analiza Linie cu Linie](#2-analiza-linie-cu-linie)
+        - [2.1. Declararea Pachetului](#21-declararea-pachetului)
+        - [2.2. Import-uri Android Standard](#22-import-uri-android-standard)
+        - [2.3. Import-uri AndroidX](#23-import-uri-androidx)
+        - [2.4. Import-uri Widget-uri](#24-import-uri-widget-uri)
+        - [2.5. Import-uri JSON](#25-import-uri-json)
+        - [2.6. Import-uri I/O](#26-import-uri-io)
+        - [2.7. Import-uri OkHttp](#27-import-uri-okhttp)
+        - [2.8. Declararea Clasei](#28-declararea-clasei)
+        - [2.9. Variabile de Instanță](#29-variabile-de-instan%C8%9B%C4%83)
+        - [2.10. Metoda onCreate - Semnătura](#210-metoda-oncreate---semn%C4%83tura)
+            - [2.10.1. Apel Constructor Părinte](#2101-apel-constructor-p%C4%83rinte)
+            - [2.10.2. Setare Layout](#2102-setare-layout)
+            - [2.10.3. Inițializare Client HTTP](#2103-ini%C8%9Bializare-client-http)
+            - [2.10.4. Găsirea View-urilor](#2104-g%C4%83sirea-view-urilor)
+            - [2.10.5. Apel Descărcare Glumă Inițială](#2105-apel-desc%C4%83rcare-glum%C4%83-ini%C8%9Bial%C4%83)
+            - [2.10.6. Listener Buton Quit](#2106-listener-buton-quit)
+            - [2.10.7. Listener Buton Refresh](#2107-listener-buton-refresh)
+        - [2.11. Metoda fetchJoke - Semnătura](#211-metoda-fetchjoke---semn%C4%83tura)
+            - [2.11.1. Definire URL API](#2111-definire-url-api)
+            - [2.11.2. Construire Request HTTP](#2112-construire-request-http)
+            - [2.11.3. Execuție Asincronă Request](#2113-execu%C8%9Bie-asincron%C4%83-request)
+            - [2.11.4. Override Metodă onFailure](#2114-override-metod%C4%83-onfailure)
+            - [2.11.5. Logare Eroare](#2115-logare-eroare)
+            - [2.11.6. Actualizare UI la Eroare](#2116-actualizare-ui-la-eroare)
+            - [2.11.7. Override Metodă onResponse](#2117-override-metod%C4%83-onresponse)
+            - [2.11.8. Verificare Succes HTTP](#2118-verificare-succes-http)
+            - [2.11.9. UI Update la Răspuns Nesucces](#2119-ui-update-la-r%C4%83spuns-nesucces)
+            - [2.11.10. Return Timpuriu](#21110-return-timpuriu)
+            - [2.11.11. Bloc try - Parsare JSON](#21111-bloc-try---parsare-json)
+            - [2.11.12. Extragere Text Răspuns](#21112-extragere-text-r%C4%83spuns)
+            - [2.11.13. Parsare JSON](#21113-parsare-json)
+            - [2.11.14. Extragere Setup](#21114-extragere-setup)
+            - [2.11.15. Extragere Punchline](#21115-extragere-punchline)
+            - [2.11.16. Compunere Text Glumă](#21116-compunere-text-glum%C4%83)
+            - [2.11.17. Actualizare UI cu Gluma](#21117-actualizare-ui-cu-gluma)
+            - [2.11.18. Bloc catch - Prindere Excepție JSON](#21118-bloc-catch---prindere-excep%C8%9Bie-json)
+            - [2.11.19. Logare Eroare Parsare](#21119-logare-eroare-parsare)
+            - [2.11.20. UI Update la Eroare Parsare](#21120-ui-update-la-eroare-parsare)
+    - [3. Rezumat Flux de Execuție](#3-rezumat-flux-de-execu%C8%9Bie)
+        - [3.1. La Pornirea Aplicației](#31-la-pornirea-aplica%C8%9Biei)
+        - [3.2. La Apăsare Buton Refresh](#32-la-ap%C4%83sare-buton-refresh)
+        - [3.3. La Apăsare Buton Quit](#33-la-ap%C4%83sare-buton-quit)
+
+<!-- /TOC -->
+
+
 ## Prezentare
 
 Această aplicație Android demonstrează:
@@ -168,7 +219,7 @@ Suprascrie metoda `onCreate()` moștenită de la `AppCompatActivity`. Această m
 
 ---
 
-### Apel Constructor Părinte
+#### Apel Constructor Părinte
 
 ```java
         super.onCreate(savedInstanceState);
@@ -178,7 +229,7 @@ Apelează metoda `onCreate()` din clasa părinte (`AppCompatActivity`) pentru a 
 
 ---
 
-### Setare Layout
+#### Setare Layout
 
 ```java
         setContentView(R.layout.activity_main);
@@ -188,7 +239,7 @@ Apelează metoda `onCreate()` din clasa părinte (`AppCompatActivity`) pentru a 
 
 ---
 
-### Inițializare Client HTTP
+#### Inițializare Client HTTP
 
 ```java
         client = new OkHttpClient();
@@ -198,7 +249,7 @@ Creează o nouă instanță de `OkHttpClient` care va fi folosită pentru a face
 
 ---
 
-### Găsirea View-urilor (Prima Versiune)
+#### Găsirea View-urilor
 
 ```java
         jokeTextView = findViewById(R.id.jokeTextView);
@@ -212,59 +263,14 @@ Caută în layout-ul încărcat elementul cu ID-ul `jokeTextView` și returneaz�
 
 Caută în layout butonul cu ID-ul `refreshButton` și salvează referința în variabila de instanță `refreshButton`.
 
----
-
-### Găsirea View-urilor (A Doua Versiune - Duplicat)
 
 ```java
         Button quitButton = findViewById(R.id.quitButton);
 ```
 
-Caută butonul cu ID-ul `quitButton` și creează o variabilă locală de tip `Button`. Această variabilă este folosită doar în metoda `onCreate()`.
-
-```java
-        TextView jokeTextView = findViewById(R.id.jokeTextView);
-```
-
-**Atenție - Cod Duplicat:** Această linie creează o nouă variabilă **locală** cu același nume ca variabila de instanță `jokeTextView`. Aceasta **ascunde** (shadowing) variabila de instanță în restul metodei `onCreate()`. Totuși, în metodele `fetchJoke()` și callback-uri se va folosi variabila de instanță (care a fost inițializată corect mai sus), deci codul funcționează corect.
-
-**Diagrama Shadowing:**
-```
-┌─────────────────────────────────────┐
-│ Variabila de Instanță               │
-│ private TextView jokeTextView;      │ ← Declarată la nivel de clasă
-└─────────────────────────────────────┘
-           │
-           │ Inițializată:
-           │ jokeTextView = findViewById(R.id.jokeTextView);
-           ▼
-┌─────────────────────────────────────┐
-│ Variabila Locală (Shadowing)        │
-│ TextView jokeTextView = ...;        │ ← Creată local în onCreate()
-└─────────────────────────────────────┘
-           │
-           │ Ascunde variabila de instanță
-           │ doar în restul metodei onCreate()
-           ▼
-┌─────────────────────────────────────┐
-│ În fetchJoke() și callbacks         │
-│ se folosește variabila de instanță  │ ← Funcționează corect
-└─────────────────────────────────────┘
-```
-
 ---
 
-### Comentariu Preluare Prima Glumă
-
-```java
-        // fetch the first joke    
-```
-
-Comentariu care indică că următoarea linie va descărca prima glumă imediat după pornirea aplicației.
-
----
-
-### Apel Descărcare Glumă Inițială
+#### Apel Descărcare Glumă Inițială
 
 ```java
         fetchJoke();
@@ -274,17 +280,7 @@ Apelează metoda `fetchJoke()` pentru a descărca și afișa prima glumă imedia
 
 ---
 
-### Comentariu Acțiune Buton Quit
-
-```java
-        // Add the quit button action
-```
-
-Comentariu care indică că următoarea linie va atașa funcționalitatea butonului de quit.
-
----
-
-### Listener Buton Quit
+#### Listener Buton Quit
 
 ```java
         quitButton.setOnClickListener(v -> finishAffinity());
@@ -299,23 +295,13 @@ Atașează un listener la butonul `quitButton` folosind o expresie lambda. Când
 
 ---
 
-### Listener Buton Refresh
+#### Listener Buton Refresh
 
 ```java
         refreshButton.setOnClickListener(v -> fetchJoke());
 ```
 
 Atașează un listener la butonul `refreshButton`. Când utilizatorul apasă acest buton, se apelează metoda `fetchJoke()` care descarcă o nouă glumă de la API și actualizează interfața.
-
----
-
-### Închidere Metodă onCreate
-
-```java
-    }
-```
-
-Închide metoda `onCreate()`. La acest punct, activitatea este complet inițializată: layout-ul este încărcat, clientul HTTP este creat, toate View-urile sunt găsite, listener-ii sunt atașați, și prima glumă este în curs de descărcare.
 
 ---
 
@@ -329,7 +315,7 @@ Declară metoda privată `fetchJoke()` care nu returnează nimic (`void`). Aceas
 
 ---
 
-### Definire URL API
+#### Definire URL API
 
 ```java
         String url = "https://official-joke-api.appspot.com/random_joke";
@@ -349,7 +335,7 @@ Creează o variabilă locală `url` care conține adresa API-ului de unde se des
 
 ---
 
-### Construire Request HTTP
+#### Construire Request HTTP
 
 ```java
         Request request = new Request.Builder()
@@ -364,21 +350,9 @@ Creează un obiect `Request` folosind pattern-ul Builder:
 
 Acest request va fi un **GET request** implicit (metoda HTTP implicită).
 
-**Diagrama Request Builder:**
-```
-Request.Builder()
-    │
-    ├─── .url("https://...")     ← Setare URL
-    │
-    └─── .build()                ← Construire obiect Request
-           │
-           ▼
-        Request gata de execuție
-```
-
 ---
 
-### Execuție Asincronă Request
+#### Execuție Asincronă Request
 
 ```java
         client.newCall(request).enqueue(new Callback() {
@@ -412,7 +386,7 @@ Main Thread (UI)              Background Thread
 
 ---
 
-### Override Metodă onFailure
+#### Override Metodă onFailure
 
 ```java
             @Override
@@ -427,7 +401,7 @@ Parametri:
 
 ---
 
-### Logare Eroare
+#### Logare Eroare
 
 ```java
                 Log.e("MainActivity", "Failed to fetch joke", e);
@@ -442,7 +416,7 @@ Acest log ajută la debugging și identificarea problemelor.
 
 ---
 
-### Actualizare UI la Eroare
+#### Actualizare UI la Eroare
 
 ```java
                 runOnUiThread(() -> jokeTextView.setText("Failed to load joke."));
@@ -472,17 +446,7 @@ Background Thread                Main Thread (UI)
 
 ---
 
-### Închidere Metodă onFailure
-
-```java
-            }
-```
-
-Închide metoda `onFailure()`.
-
----
-
-### Override Metodă onResponse
+#### Override Metodă onResponse
 
 ```java
             @Override
@@ -499,7 +463,7 @@ Parametri:
 
 ---
 
-### Verificare Succes HTTP
+#### Verificare Succes HTTP
 
 ```java
                 if (!response.isSuccessful()) {
@@ -514,7 +478,7 @@ Coduri HTTP comune:
 
 ---
 
-### UI Update la Răspuns Nesucces
+#### UI Update la Răspuns Nesucces
 
 ```java
                     runOnUiThread(() -> jokeTextView.setText("Failed to load joke."));
@@ -524,7 +488,7 @@ Execută pe Main Thread actualizarea UI-ului cu mesaj de eroare. Aceasta se înt
 
 ---
 
-### Return Timpuriu
+#### Return Timpuriu
 
 ```java
                     return;
@@ -534,17 +498,8 @@ Iese din metoda `onResponse()` fără a continua procesarea. Aceasta previne exe
 
 ---
 
-### Închidere Bloc if Nesucces
 
-```java
-                }
-```
-
-Închide blocul `if` pentru răspunsuri HTTP nesuccessful. Dacă execuția ajunge după această acoladă, înseamnă că răspunsul este **succes** (status code 200-299).
-
----
-
-### Bloc try - Parsare JSON
+#### Bloc try - Parsare JSON
 
 ```java
                 try {
@@ -554,7 +509,7 @@ Deschide un bloc `try` pentru a gestiona excepțiile care pot apărea în timpul
 
 ---
 
-### Extragere Text Răspuns
+#### Extragere Text Răspuns
 
 ```java
                     String responseData = response.body().string();
@@ -573,7 +528,7 @@ Exemplu `responseData`:
 
 ---
 
-### Parsare JSON
+#### Parsare JSON
 
 ```java
                     JSONObject json = new JSONObject(responseData);
@@ -594,7 +549,7 @@ JSONObject: {setup → "Why...", punchline → "To..."}
 
 ---
 
-### Extragere Setup
+#### Extragere Setup
 
 ```java
                     String setup = json.getString("setup");
@@ -608,7 +563,7 @@ Dacă câmpul `"setup"` nu există, se va arunca `JSONException`.
 
 ---
 
-### Extragere Punchline
+#### Extragere Punchline
 
 ```java
                     String punchline = json.getString("punchline");
@@ -620,7 +575,7 @@ Exemplu: `"To get to the other side!"`
 
 ---
 
-### Compunere Text Glumă
+#### Compunere Text Glumă
 
 ```java
                     String joke = setup + "\n\n" + punchline;
@@ -640,17 +595,8 @@ To get to the other side!
 
 ---
 
-### Comentariu Actualizare UI
 
-```java
-                    // Update the UI
-```
-
-Comentariu care indică că următoarea linie va actualiza interfața utilizatorului cu gluma descărcată.
-
----
-
-### Actualizare UI cu Gluma
+#### Actualizare UI cu Gluma
 
 ```java
                     runOnUiThread(() -> jokeTextView.setText(joke));
@@ -676,7 +622,7 @@ Background Thread              Main Thread
 
 ---
 
-### Bloc catch - Prindere Excepție JSON
+#### Bloc catch - Prindere Excepție JSON
 
 ```java
                 } catch (JSONException e) {
@@ -689,7 +635,7 @@ Prinde excepția `JSONException` care este aruncată când:
 
 ---
 
-### Logare Eroare Parsare
+#### Logare Eroare Parsare
 
 ```java
                     Log.e("MainActivity", "Failed to parse joke JSON", e);
@@ -702,7 +648,7 @@ Scrie în Logcat un mesaj de eroare la nivel ERROR:
 
 ---
 
-### UI Update la Eroare Parsare
+#### UI Update la Eroare Parsare
 
 ```java
                     runOnUiThread(() -> jokeTextView.setText("Failed to load joke."));
@@ -712,43 +658,7 @@ Execută pe Main Thread actualizarea UI-ului cu mesaj de eroare. Utilizatorul ve
 
 ---
 
-### Închidere Bloc catch
 
-```java
-                }
-```
-
-Închide blocul `catch` care gestionează excepția `JSONException`.
-
----
-
-### Închidere Metodă onResponse
-
-```java
-            }
-```
-
-Închide metoda `onResponse()`.
-
----
-
-### Închidere Callback Anonim
-
-```java
-        });
-```
-
-Închide clasa anonimă `Callback` și apelul metodei `.enqueue()`. Acest punct marchează sfârșitul definirii callback-ului care procesează răspunsurile HTTP.
-
----
-
-### Închidere Metodă fetchJoke
-
-```java
-    }
-```
-
-Închide metoda `fetchJoke()`. Metoda a lansat request-ul HTTP asincron și a definit callback-urile care vor procesa răspunsul. Metoda se termină imediat, iar request-ul continuă în background.
 
 **Flux temporal:**
 ```
@@ -770,15 +680,6 @@ fetchJoke() apelată
 
 ---
 
-### Închidere Clasă MainActivity
-
-```java
-}
-```
-
-Închide clasa `MainActivity`. Aceasta este sfârșitul definiției clasei care conține toată logica aplicației de glume.
-
----
 
 ## Rezumat Flux de Execuție
 
@@ -827,186 +728,4 @@ fetchJoke() apelată
    └─── finishAffinity() → Închide aplicația complet
 ```
 
----
-
-## Diagrama Arhitecturii Request HTTP
-
-```
-MainActivity
-    │
-    ├─── OkHttpClient client
-    │    │
-    │    └─── Gestionare conexiuni HTTP
-    │         - Connection pooling
-    │         - Timeout management
-    │         - Cache (dacă configurat)
-    │
-    ├─── fetchJoke()
-    │    │
-    │    ├─── Request.Builder
-    │    │    │
-    │    │    └─── Construire obiect Request
-    │    │         - URL
-    │    │         - Metodă (GET implicit)
-    │    │         - Headers (implicit)
-    │    │
-    │    └─── client.newCall(request).enqueue()
-    │         │
-    │         ├─── Background Thread
-    │         │    │
-    │         │    ├─── Trimitere HTTP Request
-    │         │    ├─── Așteptare răspuns
-    │         │    └─── onResponse() / onFailure()
-    │         │
-    │         └─── Main Thread (UI)
-    │              │
-    │              └─── runOnUiThread()
-    │                   │
-    │                   └─── jokeTextView.setText()
-    │
-    └─── Listeners
-         │
-         ├─── refreshButton → fetchJoke()
-         └─── quitButton → finishAffinity()
-```
-
----
-
-## Gestionarea Thread-urilor
-
-### Main Thread (UI Thread)
-- Rulează `onCreate()`
-- Procesează evenimente de click
-- Actualizează UI-ul prin `setText()`
-- **Nu face operații blocante** (ex: request-uri HTTP sincrone)
-
-### Background Thread (OkHttp Worker)
-- Rulează `onResponse()` și `onFailure()`
-- Face operații I/O (network requests)
-- Parsează JSON
-- **Nu poate modifica UI-ul direct**
-
-### Comunicare între Thread-uri
-- `runOnUiThread()` transferă execuția de pe background pe Main Thread
-- Permite actualizarea sigură a UI-ului din callback-uri
-
-```
-┌─────────────────────────┐         ┌─────────────────────────┐
-│   Main Thread (UI)      │         │  Background Thread      │
-│                         │         │                         │
-│  - onCreate()           │         │  - HTTP Request         │
-│  - onClick()            │         │  - onResponse()         │
-│  - setText()            │◄────────│  - runOnUiThread()      │
-│                         │         │                         │
-└─────────────────────────┘         └─────────────────────────┘
-         │                                     │
-         │                                     │
-         └─────── Comunicare sigură ──────────┘
-                 prin runOnUiThread()
-```
-
----
-
-## Gestionarea Erorilor
-
-### Nivel 1: Erori de Rețea
-- **Captare:** `onFailure(Call, IOException)`
-- **Cauze:** Lipsă internet, timeout, DNS failure
-- **Acțiune:** Log.e() + afișare mesaj eroare utilizator
-
-### Nivel 2: Erori HTTP
-- **Captare:** `!response.isSuccessful()`
-- **Cauze:** 404 Not Found, 500 Server Error, etc.
-- **Acțiune:** Afișare mesaj eroare utilizator + return
-
-### Nivel 3: Erori de Parsare
-- **Captare:** `catch (JSONException e)`
-- **Cauze:** JSON invalid, câmpuri lipsă, tipuri greșite
-- **Acțiune:** Log.e() + afișare mesaj eroare utilizator
-
-```
-Request HTTP
-    │
-    ├─── Succes Rețea?
-    │    │
-    │    NO ──> onFailure() ──> Eroare nivel 1
-    │    │
-    │    YES
-    │    │
-    ├─── Succes HTTP (200-299)?
-    │    │
-    │    NO ──> !isSuccessful() ──> Eroare nivel 2
-    │    │
-    │    YES
-    │    │
-    ├─── Parsare JSON reușită?
-    │    │
-    │    NO ──> JSONException ──> Eroare nivel 3
-    │    │
-    │    YES
-    │    │
-    └─── Afișare glumă în UI ──> SUCCES COMPLET
-```
-
----
-
-## Concepte Cheie
-
-### 1. Comunicare HTTP Asincronă
-- Request-urile HTTP se fac **în background** (pe thread separat)
-- UI-ul rămâne **responsive** în timp ce se așteaptă răspunsul
-- Folosește pattern-ul **Callback** pentru procesare asincronă
-- `enqueue()` = asincron vs `execute()` = sincron (blocant)
-
-### 2. Parsare JSON
-- JSON = format text pentru schimb de date structurate
-- `JSONObject` = parsează String-ul JSON în obiect Java
-- `.getString(key)` = extrage valoare String din JSON
-- Poate arunca `JSONException` dacă formatul este invalid
-
-### 3. Actualizare UI din Background Thread
-- Android permite modificarea UI **doar pe Main Thread**
-- `runOnUiThread(Runnable)` = execută cod pe Main Thread
-- Necesară pentru actualizarea View-urilor din callback-uri HTTP
-
-### 4. Expresii Lambda (Java 8+)
-- Sintaxă scurtă pentru interfețe funcționale (cu o singură metodă)
-- `v -> fetchJoke()` echivalent cu:
-  ```java
-  new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-          fetchJoke();
-      }
-  }
-  ```
-
-### 5. findViewById() și Referințe View
-- `findViewById(R.id.viewId)` = găsește View în layout după ID
-- Returnează referință către obiectul View din memorie
-- Permite modificarea proprietăților View-ului (text, culoare, etc.)
-
-### 6. Lifecycle Android
-- `onCreate()` = apelată când activitatea este creată
-- `finishAffinity()` = închide activitatea și task-ul complet
-- Activitatea poate fi recreată (ex: rotație ecran)
-
-### 7. Pattern Builder (OkHttp)
-- Construiește obiecte complexe pas cu pas
-- `new Request.Builder().url(...).build()`
-- Permite configurare fluentă și citibilă
-
-### 8. Dependency Injection Manual
-- `OkHttpClient` creat în `onCreate()` și salvat ca variabilă de instanță
-- Reutilizat pentru toate request-urile (eficient)
-- Alternativa: crearea unui client nou pentru fiecare request (ineficient)
-
-### 9. Variable Shadowing
-- Variabila locală `TextView jokeTextView` ascunde variabila de instanță
-- Codul funcționează pentru că metodele folosesc variabila de instanță
-- Este o **greșeală de stil**, dar nu o eroare funcțională
-
-### 10. Exception Handling
-- `try-catch` pentru operații care pot eșua (parsare JSON)
-- `throws IOException` în semnătura metodei `onResponse()`
-- Logging pentru debugging (`Log.e()`)
+-
