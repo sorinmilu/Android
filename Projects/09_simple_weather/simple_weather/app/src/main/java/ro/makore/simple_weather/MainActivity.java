@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         // Setup buttons
         findViewById(R.id.btnRefresh).setOnClickListener(v -> loadWeather(currentCity));
         findViewById(R.id.btnAddCity).setOnClickListener(v -> showAddCityDialog());
+        findViewById(R.id.fabQuit).setOnClickListener(v -> finishAffinity());
         
         // Get GPS location - this will load weather when ready
         // If GPS fails or permission denied, fallback to default city
