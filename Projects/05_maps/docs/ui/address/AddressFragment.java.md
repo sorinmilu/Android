@@ -101,16 +101,6 @@ Importă adnotarea `@NonNull` pentru validare compile-time.
 
 ---
 
-### Import ActivityCompat
-
-```java
-import androidx.core.app.ActivityCompat;
-```
-
-Importă `ActivityCompat` pentru verificarea permission-urilor în mod compatibil cu versiuni mai vechi de Android.
-
----
-
 ### Import Fragment
 
 ```java
@@ -118,31 +108,6 @@ import androidx.fragment.app.Fragment;
 ```
 
 Importă clasa de bază `Fragment`.
-
----
-
-### Import FusedLocationProviderClient
-
-```java
-import com.google.android.gms.location.FusedLocationProviderClient;
-```
-
-Importă `FusedLocationProviderClient` - client modern pentru obținerea locației device-ului.
-
-**Caracteristici:**
-- Combină multiple surse (GPS, WiFi, cell towers)
-- Battery-efficient
-- High accuracy
-
----
-
-### Import LocationServices
-
-```java
-import com.google.android.gms.location.LocationServices;
-```
-
-Importă clasa utilitară `LocationServices` pentru crearea `FusedLocationProviderClient`.
 
 ---
 
@@ -298,18 +263,6 @@ Declară variabila care va reține referința la obiectul GoogleMap după iniți
 
 ---
 
-### Variabilă FusedLocationProviderClient
-
-```java
-    private FusedLocationProviderClient fusedLocationProviderClient;
-```
-
-Declară clientul pentru obținerea locației device-ului.
-
-**Note:** Inițializat în `onCreateView()` dar nu este folosit în restul codului (probabil pregătit pentru funcționalitate viitoare).
-
----
-
 ### Metoda onCreateView - Semnătura
 
 ```java
@@ -331,20 +284,6 @@ Metodă de lifecycle apelată când fragmentul trebuie să-și creeze view-ul.
 Inflează layout-ul fragmentului folosind View Binding.
 
 **false:** NU atașa view-ul la container (FragmentManager face asta automat).
-
----
-
-### Inițializare FusedLocationProviderClient
-
-```java
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
-```
-
-Creează clientul pentru obținerea locației device-ului.
-
-**requireActivity():** Returnează Activity-ul părinte (nu null, aruncă excepție dacă fragmentul nu e atașat).
-
-**LocationServices.getFusedLocationProviderClient():** Factory method pentru crearea clientului.
 
 ---
 
@@ -618,45 +557,15 @@ Mută camera la coordonatele default București cu zoom 12 (vedere oraș).
 
 ---
 
-### Găsire Buton Satellite
-
-```java
-        Button satelliteButton = binding.getRoot().findViewById(R.id.satelliteButton);
-```
-
-Obține referința la butonul pentru schimbare la vedere satelit.
-
-**binding.getRoot().findViewById():** Caută butonul în view-ul root al binding-ului.
-
----
-
-### Găsire Buton Normal
-
-```java
-        Button normalButton = binding.getRoot().findViewById(R.id.normalButton);
-```
-
-Obține referința la butonul pentru schimbare la vedere normală (hartă stradală).
-
----
-
-### Găsire Buton Terrain
-
-```java
-        Button terrainButton = binding.getRoot().findViewById(R.id.terrainButton);
-```
-
-Obține referința la butonul pentru schimbare la vedere terrain (relief).
-
----
-
 ### Listener Buton Satellite
 
 ```java
-        satelliteButton.setOnClickListener(v -> googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE));
+        binding.getRoot().findViewById(R.id.satelliteButton).setOnClickListener(v -> googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE));
 ```
 
-Setează listener care schimbă tipul hărții la satelit când butonul e apăsat.
+Găsește butonul satelit și setează listener care schimbă tipul hărții la satelit când butonul e apăsat.
+
+**binding.getRoot().findViewById():** Caută butonul în view-ul root al binding-ului.
 
 **Lambda expression:** `v ->` (parameter view ignorat).
 
@@ -667,10 +576,10 @@ Setează listener care schimbă tipul hărții la satelit când butonul e apăsa
 ### Listener Buton Normal
 
 ```java
-        normalButton.setOnClickListener(v -> googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL));
+        binding.getRoot().findViewById(R.id.normalButton).setOnClickListener(v -> googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL));
 ```
 
-Setează listener care schimbă tipul hărții la normal (hartă stradală standard).
+Găsește butonul normal și setează listener care schimbă tipul hărții la normal (hartă stradală standard).
 
 **GoogleMap.MAP_TYPE_NORMAL:** Hartă stradală clasică cu străzi, etichete, culori.
 
@@ -679,10 +588,10 @@ Setează listener care schimbă tipul hărții la normal (hartă stradală stand
 ### Listener Buton Terrain
 
 ```java
-        terrainButton.setOnClickListener(v -> googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN));
+        binding.getRoot().findViewById(R.id.terrainButton).setOnClickListener(v -> googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN));
 ```
 
-Setează listener care schimbă tipul hărții la terrain (relief topografic).
+Găsește butonul terrain și setează listener care schimbă tipul hărții la terrain (relief topografic).
 
 **GoogleMap.MAP_TYPE_TERRAIN:** Hartă cu relief, munți, dealuri, șes.
 
@@ -848,166 +757,6 @@ Printează stack trace-ul erorii în logcat pentru debugging.
 ```
 
 Returnează `null` când geocoding-ul eșuează (listă goală sau IOException).
-
----
-
-### Metoda getApiKeyFromManifest - Semnătura
-
-```java
-    private String getApiKeyFromManifest() {
-```
-
-**Explicație detaliată:**
-
-Metodă helper care extrage Google Maps API key din metadatele AndroidManifest.xml.
-
-**Rol:** Obține cheia API configurată în manifest fără hardcoding în cod.
-
-**Note:** Metodă definită dar NU folosită în acest cod (probabil pentru utilizare viitoare).
-
----
-
-### Try Block - Extragere Meta-Data
-
-```java
-        try {
-```
-
-Începe bloc try pentru gestionarea erorilor de acces la meta-data.
-
----
-
-### Obținere ApplicationInfo
-
-```java
-            ApplicationInfo applicationInfo = requireContext().getPackageManager()
-                    .getApplicationInfo(requireContext().getPackageName(), PackageManager.GET_META_DATA);
-```
-
-Obține informațiile despre aplicație inclusiv metadatele din manifest.
-
-**requireContext().getPackageManager():** Acces la PackageManager.
-
-**getApplicationInfo(packageName, flags):**
-- Returnează informații despre aplicație
-- `GET_META_DATA` = include și meta-data din `<application>` tag
-
----
-
-### Extragere Bundle Meta-Data
-
-```java
-            Bundle metaData = applicationInfo.metaData;
-```
-
-Extrage Bundle-ul cu metadatele din ApplicationInfo.
-
-**metaData:** Conține toate `<meta-data>` tag-urile din `<application>` din AndroidManifest.xml.
-
----
-
-### Return API Key
-
-```java
-            return metaData.getString("com.google.android.geo.API_KEY");
-```
-
-Extrage și returnează valoarea cheii API din meta-data.
-
-**"com.google.android.geo.API_KEY":** Numele standard al meta-data pentru Google Maps API key.
-
-**În AndroidManifest.xml:**
-```xml
-<meta-data
-    android:name="com.google.android.geo.API_KEY"
-    android:value="YOUR_API_KEY_HERE" />
-```
-
----
-
-### Catch NameNotFoundException
-
-```java
-        } catch (PackageManager.NameNotFoundException e) {
-```
-
-Prinde excepția când pachetul aplicației nu e găsit (situație foarte rară).
-
----
-
-### Throw RuntimeException pentru NameNotFound
-
-```java
-            throw new RuntimeException("Failed to load meta-data, NameNotFound: " + e.getMessage());
-```
-
-Aruncă RuntimeException cu mesaj descriptiv pentru eroarea de căutare pachet.
-
----
-
-### Catch NullPointerException
-
-```java
-        } catch (NullPointerException e) {
-```
-
-Prinde excepția când metaData sau API key lipsește din manifest.
-
----
-
-### Throw RuntimeException pentru NullPointer
-
-```java
-            throw new RuntimeException("Failed to load meta-data, NullPointer: " + e.getMessage());
-```
-
-Aruncă RuntimeException când API key nu e configurat corect în manifest.
-
----
-
-### Metoda centerMapOnLocation - Semnătura
-
-```java
-    private void centerMapOnLocation(@NonNull Location location) {
-```
-
-**Explicație detaliată:**
-
-Metodă helper pentru centrarea hărții pe o locație și adăugarea unui marker.
-
-**@NonNull Location location:** Obiectul Location cu coordonatele.
-
-**Note:** Metodă definită dar NU folosită în acest cod (pregătită pentru funcționalitate "My Location").
-
----
-
-### Creare LatLng din Location
-
-```java
-        LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-```
-
-Convertește obiectul Location în LatLng pentru utilizare cu Google Maps.
-
----
-
-### Mutare Cameră la Locație Curentă
-
-```java
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
-```
-
-Mută camera la locația curentă cu zoom 15.
-
----
-
-### Adăugare Marker "You are here"
-
-```java
-        googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("You are here"));
-```
-
-Adaugă marker la locația curentă cu titlul "You are here".
 
 ---
 
@@ -1547,4 +1296,3 @@ new MarkerOptions()
 
 ---
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
