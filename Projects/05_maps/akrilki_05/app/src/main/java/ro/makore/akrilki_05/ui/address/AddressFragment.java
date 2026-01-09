@@ -3,11 +3,9 @@ package ro.makore.akrilki_05.ui.address;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,7 +24,6 @@ import ro.makore.akrilki_05.databinding.FragmentAddressBinding;
 
 public class AddressFragment extends Fragment implements OnMapReadyCallback {
 
-    private static final String TAG = "AddressFragment";
     private FragmentAddressBinding binding;
     private GoogleMap googleMap;
 

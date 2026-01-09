@@ -41,7 +41,10 @@ public class GeodataFragment extends Fragment {
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 isGranted -> {
-                    if (!isGranted) {
+                    if (isGranted) {
+                        // Permission granted, fetch location
+                        fetchLocationAndUpdateUI();
+                    } else {
                         Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -53,19 +56,10 @@ public class GeodataFragment extends Fragment {
         binding = FragmentGeodataBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView tvLatitude   = binding.tvLatitude;
-        final TextView tvLongitude   = binding.tvLongitude;
-        final TextView tvAccuracy    = binding.tvAccuracy;
-        final TextView tvAltitude    = binding.tvAltitude;
-        final TextView tvSpeed    = binding.tvSpeed;
-        final TextView tvBearing    = binding.tvBearing;
-        final TextView tvProvider    = binding.tvProvider;
-        final TextView tvTime = binding.tvTime;
-
         if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION);
         } else {
-            fetchLocationAndUpdateUI(tvLatitude, tvLongitude, tvAccuracy, tvAltitude, tvSpeed, tvBearing, tvProvider, tvTime);
+            fetchLocationAndUpdateUI();
         }
 
         return root;
@@ -77,8 +71,7 @@ public class GeodataFragment extends Fragment {
         binding = null;
     }
 
-    private void fetchLocationAndUpdateUI(TextView tvLatitude, TextView tvLongitude, TextView tvAccuracy, TextView tvAltitude,
-                                                        TextView tvSpeed, TextView tvBearing, TextView tvProvider, TextView tvTime) {
+    private void fetchLocationAndUpdateUI() {
         Log.i("GeodataFragment", "Get Location here");
         FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
@@ -99,14 +92,14 @@ public class GeodataFragment extends Fragment {
                     String formattedTime = formatter.format(date);
 
                     // Update TextViews
-                    tvLatitude.setText("Latitude: " + latitude);
-                    tvLongitude.setText("Longitude: " + longitude);
-                    tvAccuracy.setText("Accuracy: " + accuracy);
-                    tvAltitude.setText("Altitude: " + altitude);
-                    tvSpeed.setText("Speed: " + speed);
-                    tvBearing.setText("Bearing: " + bearing);
-                    tvProvider.setText("Provider: " + provider);
-                    tvTime.setText("Time: " + formattedTime);
+                    binding.tvLatitude.setText("Latitude: " + latitude);
+                    binding.tvLongitude.setText("Longitude: " + longitude);
+                    binding.tvAccuracy.setText("Accuracy: " + accuracy);
+                    binding.tvAltitude.setText("Altitude: " + altitude);
+                    binding.tvSpeed.setText("Speed: " + speed);
+                    binding.tvBearing.setText("Bearing: " + bearing);
+                    binding.tvProvider.setText("Provider: " + provider);
+                    binding.tvTime.setText("Time: " + formattedTime);
 
                 } else {
                     Toast.makeText(requireContext(), "Unable to get location", Toast.LENGTH_SHORT).show();
